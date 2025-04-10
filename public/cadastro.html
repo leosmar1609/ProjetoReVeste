@@ -1,35 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylecadastro.css">
-    <title>Cadastro ReVeste</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrossel de Cadastros</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="./css/cadastro.css">
 </head>
-
 <body>
 
-    <header>
-        <h1>Cadastro</h1>
-    </header>
+  <div class="swiper">
+    <div class="swiper-wrapper">
 
-    <form action=" cadastro.html " method="POST " id="registerForm ">
-        <label for="nome ">Nome:</label>
-        <input type="text " name="nome " id="nome " required>
+      <!-- Cadastro de Doador -->
+      <div class="swiper-slide">
+        <h2>Cadastro de Doador</h2>
+        <form id="registerForm">
+          <label for="nomeDoador">Nome Completo</label>
+          <input type="text" id="nomeDoador" required />
 
-        <label for="email ">E-mail:</label>
-        <input type="email " name="email " id="email " required>
+          <label for="emailDoador">E-mail</label>
+          <input type="email" id="emailDoador" required />
 
-        <label for="senha ">Senha:</label>
-        <input type="password " name="senha " id="senha " required>
+          <label for="senhaDoador">Senha</label>
+          <input type="password" id="senhaDoador" required />
 
-        <button type="submit ">Cadastrar</button>
-    </form>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
 
-    <footer>
-        <p>Já tem uma conta? <a href="login.html ">Faça login</a></p>
-    </footer>
+      <!-- Cadastro de Beneficiário -->
+      <div class="swiper-slide">
+        <h2>Cadastro de Beneficiário</h2>
+        <form id="beneficiarioForm">
+          <label for="tipoBeneficiario">Tipo</label>
+          <select id="tipoBeneficiario" required>
+            <option value="instituicao">Instituição</option>
+            <option value="pessoa">Pessoa Física</option>
+          </select>
+
+          <div id="instituicaoFields">
+            <label for="nomeInst">Nome da Instituição</label>
+            <input type="text" id="nomeInst" />
+
+            <label for="cnpjInst">CNPJ</label>
+            <input type="text" id="cnpjInst" />
+          </div>
+
+          <div id="pessoaFields" class="hidden">
+            <label for="nomePessoa">Nome Completo</label>
+            <input type="text" id="nomePessoa" />
+
+            <label for="cpfPessoa">CPF</label>
+            <input type="text" id="cpfPessoa" />
+          </div>
+
+          <label for="emailBenef">E-mail</label>
+          <input type="email" id="emailBenef" required />
+
+          <label for="senhaBenef">Senha</label>
+          <input type="password" id="senhaBenef" required />
+
+          <label for="historia">História</label>
+          <textarea id="historia" rows="3"></textarea>
+
+          <label for="fotos">Fotos (opcional)</label>
+          <input type="file" id="fotos" multiple accept="image/*" />
+
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script src="./CarroselCadastro.js"></script>
 </body>
-
 </html>
