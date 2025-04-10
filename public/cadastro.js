@@ -1,14 +1,17 @@
 document.getElementById('registerForm').addEventListener('submit', async(e) => {
     e.preventDefault();
 
-    const nome = document.getElementById('nome').value;
+    const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
+    const password = document.getElementById('password').value;
+    const cnpj = document.getElementById('cnpj').value;
+    const location = document.getElementById('location').value;
+    const history = document.getElementById('history').value;
 
-    const response = await fetch('/auth/register', {
+    const response = await fetch('/auth/registerIB', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, email, senha })
+        body: JSON.stringify({ name, email, password, cnpj, location, history })
     });
 
     const data = await response.json();

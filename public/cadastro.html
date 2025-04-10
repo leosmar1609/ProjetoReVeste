@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylecadastro.css">
+    <script defer src="cadastro.js"></script>
     <title>Cadastro ReVeste</title>
 </head>
 
@@ -14,22 +15,35 @@
         <h1>Cadastro</h1>
     </header>
 
-    <form action=" cadastro.html " method="POST " id="registerForm ">
-        <label for="nome ">Nome:</label>
-        <input type="text " name="nome " id="nome " required>
+    <form action="cadastro.html" method="POST" id="registerForm">
+        <label for="name">Nome:</label>
+        <input type="text" name="name" id="name" required>
 
-        <label for="email ">E-mail:</label>
-        <input type="email " name="email " id="email " required>
+        <label for="email">E-mail:</label>
+        <input type="email" name="email" id="email" required>
 
-        <label for="senha ">Senha:</label>
-        <input type="password " name="senha " id="senha " required>
+        <label for="password">Senha:</label>
+        <input type="password" name="senha" id="password" required>
 
-        <button type="submit ">Cadastrar</button>
+        <label for="cnpj">cnpj:</label>
+        <input type="text" name="senha" id="cnpj" required>
+
+        <label for="location">Local:</label>
+        <input type="text" name="senha" id="location" required>
+
+        <label for="history">historia:</label>
+        <input type="text" name="senha" id="history" required>
+
+
+
+        <button type="submit">Cadastrar</button>
     </form>
 
     <footer>
-        <p>Já tem uma conta? <a href="login.html ">Faça login</a></p>
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
     </footer>
 </body>
+
+</html>
 
 </html>
