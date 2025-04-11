@@ -1,124 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <<<<<<< HEAD <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="stylecadastro.css">
-        <script defer src="cadastro.js"></script>
-        <title>Cadastro ReVeste</title>
-        =======
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Carrossel de Cadastros</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-        <link rel="stylesheet" href="./css/cadastro.css"> >>>>>>> f72d327d7c32a7f0f5456a17a065bec0d8d4977c
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro ReVeste</title>
 
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="./css/cadastro.css" />
+
+  <style>
+    /* Adicionando uma classe hidden básica se não estiver no seu CSS */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
 <body>
 
-    <div class="swiper">
-        <div class="swiper-wrapper">
+  <!-- Carrossel de Cadastros -->
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      
+      <!-- Slide 1: Cadastro de Doador -->
+      <div class="swiper-slide">
+        <h2>Cadastro de Doador</h2>
+        <form id="registerFormDoador" method="POST">
+          <label for="nomeDoador">Nome Completo</label>
+          <input type="text" id="nomeDoador" name="nomeDoador" required />
 
-            <<<<<<< HEAD <form action="cadastro.html" method="POST" id="registerForm">
-                <label for="name">Nome:</label>
-                <input type="text" name="name" id="name" required>
+          <label for="emailDoador">E-mail</label>
+          <input type="email" id="emailDoador" name="emailDoador" required />
 
-                <label for="email">E-mail:</label>
-                <input type="email" name="email" id="email" required>
+          <label for="senhaDoador">Senha</label>
+          <input type="password" id="senhaDoador" name="senhaDoador" required />
 
-                <label for="password">Senha:</label>
-                <input type="password" name="senha" id="password" required>
+          <button type="submit">Cadastrar</button>
+        </form>
 
-                <label for="cnpj">cnpj:</label>
-                <input type="text" name="senha" id="cnpj" required>
+        <footer>
+          <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+        </footer>
+      </div>
 
-                <label for="location">Local:</label>
-                <input type="text" name="senha" id="location" required>
-
-                <label for="history">historia:</label>
-                <input type="text" name="senha" id="history" required>
-
-                < <button type="submit">Cadastrar</button>
-                    </form>
-
-                    <footer>
-                        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-                    </footer>
-</body>
-
-</html>
-
-</html>
-=======
-<!-- Cadastro de Doador -->
-<div class="swiper-slide">
-    <h2>Cadastro de Doador</h2>
-    <form id="registerForm">
-        <label for="nomeDoador">Nome Completo</label>
-        <input type="text" id="nomeDoador" required />
-
-        <label for="emailDoador">E-mail</label>
-        <input type="email" id="emailDoador" required />
-
-        <label for="senhaDoador">Senha</label>
-        <input type="password" id="senhaDoador" required />
-
-        <button type="submit">Cadastrar</button>
-    </form>
-</div>
-
-<!-- Cadastro de Beneficiário -->
-<div class="swiper-slide">
-    <h2>Cadastro de Beneficiário</h2>
-    <form id="beneficiarioForm">
-        <label for="tipoBeneficiario">Tipo</label>
-        <select id="tipoBeneficiario" required>
+      <!-- Slide 2: Cadastro de Beneficiário -->
+      <div class="swiper-slide">
+        <h2>Cadastro de Beneficiário</h2>
+        <form id="beneficiarioForm" method="POST">
+          <label for="tipoBeneficiario">Tipo</label>
+          <select id="tipoBeneficiario" name="tipoBeneficiario" required>
             <option value="instituicao">Instituição</option>
             <option value="pessoa">Pessoa Física</option>
           </select>
 
-        <div id="instituicaoFields">
+          <!-- Campos para Instituição -->
+          <div id="instituicaoFields">
             <label for="nomeInst">Nome da Instituição</label>
-            <input type="text" id="nomeInst" />
+            <input type="text" id="nomeInst" name="nomeInst" />
 
             <label for="cnpjInst">CNPJ</label>
-            <input type="text" id="cnpjInst" />
-        </div>
+            <input type="text" id="cnpjInst" name="cnpjInst" />
+          </div>
 
-        <div id="pessoaFields" class="hidden">
+          <!-- Campos para Pessoa Física -->
+          <div id="pessoaFields" class="hidden">
             <label for="nomePessoa">Nome Completo</label>
-            <input type="text" id="nomePessoa" />
+            <input type="text" id="nomePessoa" name="nomePessoa" />
 
             <label for="cpfPessoa">CPF</label>
-            <input type="text" id="cpfPessoa" />
-        </div>
+            <input type="text" id="cpfPessoa" name="cpfPessoa" />
+          </div>
 
-        <label for="emailBenef">E-mail</label>
-        <input type="email" id="emailBenef" required />
+          <label for="emailBenef">E-mail</label>
+          <input type="email" id="emailBenef" name="emailBenef" required />
 
-        <label for="senhaBenef">Senha</label>
-        <input type="password" id="senhaBenef" required />
+          <label for="senhaBenef">Senha</label>
+          <input type="password" id="senhaBenef" name="senhaBenef" required />
 
-        <label for="historia">História</label>
-        <textarea id="historia" rows="3"></textarea>
+          <label for="historia">História</label>
+          <textarea id="historia" name="historia" rows="3"></textarea>
 
-        <label for="fotos">Fotos (opcional)</label>
-        <input type="file" id="fotos" multiple accept="image/*" />
+          <label for="fotos">Fotos (opcional)</label>
+          <input type="file" id="fotos" name="fotos" multiple accept="image/*" />
 
-        <button type="submit">Cadastrar</button>
-    </form>
-</div>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
 
-</div>
+    </div>
 
-<div class="swiper-button-prev"></div>
-<div class="swiper-button-next"></div>
-</div>
+    <!-- Botões Swiper -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script src="./CarroselCadastro.js"></script>
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Script do carrossel + exibição dinâmica -->
+  <script>
+    // Inicializa o carrossel
+    const swiper = new Swiper('.swiper', {
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      loop: false,
+    });
+
+    // Espera o DOM carregar antes de manipular elementos
+    document.addEventListener('DOMContentLoaded', function () {
+      const tipoSelect = document.getElementById('tipoBeneficiario');
+      const instituicaoFields = document.getElementById('instituicaoFields');
+      const pessoaFields = document.getElementById('pessoaFields');
+
+      function atualizarCampos() {
+        if (tipoSelect.value === 'instituicao') {
+          instituicaoFields.classList.remove('hidden');
+          pessoaFields.classList.add('hidden');
+        } else {
+          instituicaoFields.classList.add('hidden');
+          pessoaFields.classList.remove('hidden');
+        }
+      }
+
+      tipoSelect.addEventListener('change', atualizarCampos);
+      atualizarCampos(); // chama no carregamento inicial
+    });
+  </script>
 </body>
-
 </html>
->>>>>>> f72d327d7c32a7f0f5456a17a065bec0d8d4977c
