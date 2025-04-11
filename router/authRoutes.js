@@ -29,4 +29,15 @@ router.post('/registerIB', (req, res) => {
     });
 });
 
+router.get('/instituicao', (req, res) => {
+    const sql = 'SELECT * FROM Instituicao_Beneficiaria WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar instituição:', err);
+        } else {
+            console.log('Instituição encontrada:', results);
+        }
+    });
+});
+
 module.exports = router;
