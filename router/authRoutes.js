@@ -40,4 +40,22 @@ router.get('/instituicao', (req, res) => {
     });
 });
 
+
+router.post('/registerPB', (req, res) => {
+    const { name, email, password, cpf, history } = req.body;
+
+    if (!name || !email || !password || !cpf || !history) {
+        return res.status(400).json({ error: 'Preencha todos os campos!' });
+    }
+
+    const sql = `INSERT INTO Pessoa_Beneficiaria (name, email, password, cpf, history, instituicao_beneficiaria_id) 
+               VALUES (?, ?, ?, ?, ?, ?)`;
+    db.query(sql, [name, email, password, cpf, history, instituicao_beneficiaria_id], (err, results) => {
+        if (err) {
+            console.error('Erro ao criar pessoa:', err);
+        } else {
+            console.log('Pessoa criada com sucesso:', results);
+        }
+    });
+});
 module.exports = router;
