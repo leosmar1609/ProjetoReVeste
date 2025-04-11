@@ -9,124 +9,117 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <link rel="stylesheet" href="./css/cadastro.css" />
 
-  <style>
-    /* Adicionando uma classe hidden básica se não estiver no seu CSS */
-    .hidden {
-      display: none;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Carrossel de Cadastros -->
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      
-      <!-- Slide 1: Cadastro de Doador -->
-      <div class="swiper-slide">
-        <h2>Cadastro de Doador</h2>
-        <form id="registerFormDoador" method="POST">
-          <label for="nomeDoador">Nome Completo</label>
-          <input type="text" id="nomeDoador" name="nomeDoador" required />
+ <!-- carrossel  DOS 3 FORMULARIOS-->
+<div class="swiper">
+  <div class="swiper-wrapper">
 
-          <label for="emailDoador">E-mail</label>
-          <input type="email" id="emailDoador" name="emailDoador" required />
+    <div class="swiper-slide">
+      <h2>Cadastro de Doador</h2>
+       <!-- FORMULARIO DE DOADOOOOOOOOR-->
+      <form id="registerFormDoador" method="POST">
+        <label for="nomeDoador">Nome Completo</label>
+        <input type="text" id="nomeDoador" name="nomeDoador" required />
 
-          <label for="senhaDoador">Senha</label>
-          <input type="password" id="senhaDoador" name="senhaDoador" required />
+        <label for="emailDoador">E-mail</label>
+        <input type="email" id="emailDoador" name="emailDoador" required />
 
-          <button type="submit">Cadastrar</button>
-        </form>
+        <label for="senhaDoador">Senha</label>
+        <input type="password" id="senhaDoador" name="senhaDoador" required />
 
-        <footer>
-          <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-        </footer>
-      </div>
+        <button type="submit">Cadastrar</button>
+      </form>
 
-      <!-- Slide 2: Cadastro de Beneficiário -->
-      <div class="swiper-slide">
-        <h2>Cadastro de Beneficiário</h2>
-        <form id="beneficiarioForm" method="POST">
-          <label for="tipoBeneficiario">Tipo</label>
-          <select id="tipoBeneficiario" name="tipoBeneficiario" required>
-            <option value="instituicao">Instituição</option>
-            <option value="pessoa">Pessoa Física</option>
-          </select>
-
-          <!-- Campos para Instituição -->
-          <div id="instituicaoFields">
-            <label for="nomeInst">Nome da Instituição</label>
-            <input type="text" id="nomeInst" name="nomeInst" />
-
-            <label for="cnpjInst">CNPJ</label>
-            <input type="text" id="cnpjInst" name="cnpjInst" />
-          </div>
-
-          <!-- Campos para Pessoa Física -->
-          <div id="pessoaFields" class="hidden">
-            <label for="nomePessoa">Nome Completo</label>
-            <input type="text" id="nomePessoa" name="nomePessoa" />
-
-            <label for="cpfPessoa">CPF</label>
-            <input type="text" id="cpfPessoa" name="cpfPessoa" />
-          </div>
-
-          <label for="emailBenef">E-mail</label>
-          <input type="email" id="emailBenef" name="emailBenef" required />
-
-          <label for="senhaBenef">Senha</label>
-          <input type="password" id="senhaBenef" name="senhaBenef" required />
-
-          <label for="historia">História</label>
-          <textarea id="historia" name="historia" rows="3"></textarea>
-
-          <label for="fotos">Fotos (opcional)</label>
-          <input type="file" id="fotos" name="fotos" multiple accept="image/*" />
-
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
-
+      <footer>
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+      </footer>
     </div>
 
-    <!-- Botões Swiper -->
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
+    <!-- FORMULARIO DE BENEFICIARIOOOOOO -->
+    <div class="swiper-slide">
+      <h2>Cadastro de Beneficiário</h2>
+      <form id="formPessoaFisica" method="POST">
+        <label for="nomePessoa">Nome Completo</label>
+        <input type="text" id="nomePessoa" name="nomePessoa" required />
+
+        <label for="cpfPessoa">CPF</label>
+        <input type="text" id="cpfPessoa" name="cpfPessoa" required />
+
+        <label for="emailPessoa">E-mail</label>
+        <input type="email" id="emailPessoa" name="emailPessoa" required />
+
+        <label for="senhaPessoa">Senha</label>
+        <input type="password" id="senhaPessoa" name="senhaPessoa" required />
+
+        <label for="historiaPessoa">História</label>
+        <textarea id="historiaPessoa" name="historiaPessoa" rows="3"></textarea>
+
+        <label for="fotosPessoa">Fotos (opcional)</label>
+        <input type="file" id="fotosPessoa" name="fotosPessoa" multiple accept="image/*" />
+
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+
+    <!-- FORMULARIO DE INSTITUIÇÃAAAAAAAAAAAAO CONFORME O BACK END CRIOU -->
+    <div class="swiper-slide">
+      <h2>Cadastro de Instituição</h2>
+      <form id="formInstituicao" method="POST">
+        <label for="nomeInst">Nome da Instituição</label>
+        <input type="text" id="nomeInst" name="nomeInst" required />
+
+        <label for="cnpjInst">CNPJ</label>
+        <input type="text" id="cnpjInst" name="cnpjInst" required />
+
+        <label for="emailInst">E-mail</label>
+        <input type="email" id="emailInst" name="emailInst" required />
+
+        <label for="senhaInst">Senha</label>
+        <input type="password" id="senhaInst" name="senhaInst" required />
+
+        <label for="historiaInst">História</label>
+        <textarea id="historiaInst" name="historiaInst" rows="3"></textarea>
+
+        <label for="location">Localização</label>
+        <input type="text" id="" name="location" required />
+
+
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+
   </div>
+
+  <!-- LITERALMENTE SÓ MUDAR OS ID CONFORME O BACK END CRIOU  -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
-  <!-- Script do carrossel + exibição dinâmica -->
   <script>
-    // Inicializa o carrossel
-    const swiper = new Swiper('.swiper', {
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      loop: false,
-    });
-
-    // Espera o DOM carregar antes de manipular elementos
-    document.addEventListener('DOMContentLoaded', function () {
-      const tipoSelect = document.getElementById('tipoBeneficiario');
-      const instituicaoFields = document.getElementById('instituicaoFields');
-      const pessoaFields = document.getElementById('pessoaFields');
-
-      function atualizarCampos() {
-        if (tipoSelect.value === 'instituicao') {
-          instituicaoFields.classList.remove('hidden');
-          pessoaFields.classList.add('hidden');
-        } else {
-          instituicaoFields.classList.add('hidden');
-          pessoaFields.classList.remove('hidden');
-        }
-      }
-
-      tipoSelect.addEventListener('change', atualizarCampos);
-      atualizarCampos(); // chama no carregamento inicial
-    });
+  const swiper = new Swiper('.swiper', {
+  effect: 'coverflow',
+  grabCursor: true,
+  centeredSlides: true,
+  slidesPerView: 'auto',
+  coverflowEffect: {
+    rotate: 50,
+    stretch: 0,
+    depth: 100,
+    modifier: 1,
+    slideShadows: true,
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  loop: false,
+});
   </script>
 </body>
 </html>
