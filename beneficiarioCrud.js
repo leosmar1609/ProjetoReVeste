@@ -14,15 +14,15 @@
 // // Criar (Create)
 
 // router.post('/registerIB', (req, res) => {
-//     const { name, email, password, cnpj, location, history } = req.body;
+//     const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
 
-//     if (!name || !email || !password || !cnpj || !location || !history) {
+//     if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !historyInc) {
 //         return res.status(400).json({ error: 'Preencha todos os campos!' });
 //     }
 
-//     const sql = `INSERT INTO Instituicao_Beneficiaria (name, email, password, cnpj, location, history) 
+//     const sql = `INSERT INTO instituicao_beneficiaria (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc) 
 //                VALUES (?, ?, ?, ?, ?, ?)`;
-//     connection.query(sql, [name, email, password, cnpj, location, history], (err, results) => {
+//     db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc], (err, results) => {
 //         if (err) {
 //             console.error('Erro ao criar instituição:', err);
 //         } else {
@@ -70,17 +70,22 @@
 
 // // CRUD para Pessoa_Beneficiaria
 // // Criar (Create)
-// function createPessoa(name, email, password, cpf, history, instituicao_beneficiaria_id) {
-//     const sql = `INSERT INTO Pessoa_Beneficiaria (name, email, password, cpf, history, instituicao_beneficiaria_id) 
-//                VALUES (?, ?, ?, ?, ?, ?)`;
-//     connection.query(sql, [name, email, password, cpf, history, instituicao_beneficiaria_id], (err, results) => {
-//         if (err) {
-//             console.error('Erro ao criar pessoa:', err);
-//         } else {
-//             console.log('Pessoa criada com sucesso:', results);
-//         }
-//     });
+// router.post('/registerPB', (req, res) => {
+// const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
+
+// if (!namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
+//     return res.status(400).json({ error: 'Preencha todos os campos!' });
 // }
+
+// const sql = `INSERT INTO Pessoa_Beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer) 
+//                VALUES (?, ?, ?, ?, ?)`;
+// db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer], (err, results) => {
+//     if (err) {
+//         console.error('Erro ao criar pessoa:', err);
+//     } else {
+//         console.log('Pessoa criada com sucesso:', results);
+//     }
+// });
 
 // // Ler (Read)
 // function getPessoaById(id) {

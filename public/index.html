@@ -1,92 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>DoeAgora</title>
-        <link rel="stylesheet" href="./css/styles.css" />
-    </head>
-    <script src="./js/main.js"></script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DoeAgora</title>
+    <link rel="stylesheet" href="./css/stylelogin.css" />
+</head>
+<script src="./js/main.js"></script>
 
 <body>
-  <header>
-    <div class="logo">
-      <img src="./imgs/Logo.png"Logo ReVest" />
-    </div>
-    <div class="overlay">
-      <h1>Conectando quem precisa com quem pode ajudar.</h1>
-    </div>
-    <div class="btn-container">
-      <a href="login.html" class="btn-login">Entrar</a>
-      <a href="cadastro.html" class="btn-signup">Cadastrar</a>
-    </div>
-  </header>
-
-  <nav class="main-nav">
-    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-<ul id="menu" class="menu">
-  <li><a href="#">PEDIDOS DE DOAÇÃO</a></li>
-  <li><a href="#">COMO AJUDAR</a></li>
-  <li><a href="#">SOBRE</a></li>
-  <li><a href="#">CONTATO</a></li>
-</ul>
-
-  </nav>
-
-  <main>
-    <section class="intro">
-      <h2>Cadastre um pedido de doação ou ajude alguém</h2>
-      <p>
-        No Revest, qualquer pessoa ou instituição pode cadastrar um pedido e
-        receber ajuda de doadores voluntários.
-      </p>
-      <a href="cadastro_pedido.html" class="btn">Criar pedido de doação</a>
-    </section>
-
-    <section class="categories">
-      <div class="category">
-        <img src="https://cdn-icons-png.flaticon.com/128/2331/2331970.png" alt="Roupas" />
-        <h3>Roupas</h3>
-      </div>
-      <div class="category">
-        <img src="https://cdn-icons-png.flaticon.com/128/2342/2342664.png" alt="Alimentos" />
-        <h3>Alimentos</h3>
-      </div>
-      <div class="category">
-        <img src="https://cdn-icons-png.flaticon.com/128/1532/1532630.png" alt="Brinquedos" />
-        <h3>Brinquedos</h3>
-      </div>
-    </section>
-
-    <section class="how-it-works">
-      <h2>Como funciona?</h2>
-      <div class="steps">
-        <div class="step">
-          <span>1</span>
-          <p>Cadastre um pedido de doação</p>
+    <header>
+        <div class="logo">
+            <img src="./imgs/Logo.png" />
         </div>
-        <div class="step">
-          <span>2</span>
-          <p>Doadores visualizam os pedidos</p>
+        <div class="overlay">
+            <h1>Conectando quem precisa com quem pode ajudar.</h1>
         </div>
-        <div class="step">
-          <span>3</span>
-          <p>Ajuda é entregue diretamente</p>
+        <div class="btn-container">
+            <a href="login.html" class="btn-login">Entrar</a>
+            <a href="cadastro.html" class="btn-signup">Cadastrar</a>
         </div>
-      </div>
-    </section>
-  </main>
+    </header>
 
-  <script>
-    const toggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
-  
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('active');
-    });
-  </script>
-  
+    <nav class="main-nav">
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <ul id="menu" class="menu">
+            <li><a href="#">PEDIDOS DE DOAÇÃO</a></li>
+            <li><a href="#">COMO AJUDAR</a></li>
+            <li><a href="#">SOBRE</a></li>
+            <li><a href="#">CONTATO</a></li>
+        </ul>
+
+    </nav>
+
+    <main>
+        <section class="intro">
+            <h2>Cadastre um pedido de doação ou ajude alguém</h2>
+            <p>
+                No Revest, qualquer pessoa ou instituição pode cadastrar um pedido e receber ajuda de doadores voluntários.
+            </p>
+            <a href="cadastro_pedido.html" class="btn">Criar pedido de doação</a>
+        </section>
+
+        <section class="categories">
+            <div class="category">
+                <img src="https://cdn-icons-png.flaticon.com/128/2331/2331970.png" alt="Roupas" />
+                <h3>Roupas</h3>
+            </div>
+            <div class="category">
+                <img src="https://cdn-icons-png.flaticon.com/128/2342/2342664.png" alt="Alimentos" />
+                <h3>Alimentos</h3>
+            </div>
+            <div class="category">
+                <img src="https://cdn-icons-png.flaticon.com/128/1532/1532630.png" alt="Brinquedos" />
+                <h3>Brinquedos</h3>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2>Como funciona?</h2>
+            <div class="steps">
+                <div class="step">
+                    <span>1</span>
+                    <p>Cadastre um pedido de doação</p>
+                </div>
+                <div class="step">
+                    <span>2</span>
+                    <p>Doadores visualizam os pedidos</p>
+                </div>
+                <div class="step">
+                    <span>3</span>
+                    <p>Ajuda é entregue diretamente</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+
 
 </body>
 

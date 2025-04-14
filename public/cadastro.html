@@ -1,125 +1,129 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro ReVeste</title>
 
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="./css/cadastro.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro ReVeste</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="./css/cadastro.css" />
+    <script defer src="cadastro.js"></script>
+    <script defer src="cadastropessoa.js"></script>
 
 </head>
+
 <body>
 
- <!-- carrossel  DOS 3 FORMULARIOS-->
-<div class="swiper">
-  <div class="swiper-wrapper">
+    <!-- carrossel  DOS 3 FORMULARIOS-->
+    <div class="swiper">
+        <div class="swiper-wrapper">
 
-    <div class="swiper-slide">
-      <h2>Cadastro de Doador</h2>
-       <!-- FORMULARIO DE DOADOOOOOOOOR-->
-      <form id="registerFormDoador" method="POST">
-        <label for="nomeDoador">Nome Completo</label>
-        <input type="text" id="nomeDoador" name="nomeDoador" required />
+            <div class="swiper-slide">
+                <h2>Cadastro de Doador</h2>
+                <!-- FORMULARIO DE DOADOOOOOOOOR-->
+                <form id="registerFormDoador" method="POST">
+                    <label for="nomeDoador">Nome Completo</label>
+                    <input type="text" id="nomeDoador" name="nomeDoador" />
 
-        <label for="emailDoador">E-mail</label>
-        <input type="email" id="emailDoador" name="emailDoador" required />
+                    <label for="emailDoador">E-mail</label>
+                    <input type="email" id="emailDoador" name="emailDoador" />
 
-        <label for="senhaDoador">Senha</label>
-        <input type="password" id="senhaDoador" name="senhaDoador" required />
+                    <label for="senhaDoador">Senha</label>
+                    <input type="password" id="senhaDoador" name="senhaDoador" />
 
-        <button type="submit">Cadastrar</button>
-      </form>
+                    <button type="submit">Cadastrar</button>
+                </form>
 
-      <footer>
-        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-      </footer>
+                <footer>
+                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </footer>
+            </div>
+
+            <!-- FORMULARIO DE BENEFICIARIOOOOOO -->
+            <div class="swiper-slide">
+                <h2>Cadastro de Beneficiário</h2>
+                <form id="registerPForm" method="POST">
+                    <label for="nomePessoa">Nome Completo</label>
+                    <input type="text" id="namePer" name="nomePessoa" />
+
+                    <label for="cpfPessoa">CPF</label>
+                    <input type="text" id="cpfPer" name="cpfPessoa" />
+
+                    <label for="emailPessoa">E-mail</label>
+                    <input type="email" id="emailPer" name="emailPessoa" />
+
+                    <label for="senhaPessoa">Senha</label>
+                    <input type="password" id="passwordPer" name="senhaPessoa" />
+
+                    <label for="historiaPessoa">História</label>
+                    <textarea id="historyPer" name="historiaPessoa" rows="3"></textarea>
+
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+
+            <!-- FORMULARIO DE INSTITUIÇÃAAAAAAAAAAAAO CONFORME O BACK END CRIOU -->
+            <div class="swiper-slide">
+                <h2>Cadastro de Instituição</h2>
+                <form id="registerForm">
+                    <label for="nomeInst">Nome da Instituição</label>
+                    <input type="text" id="nameInc" name="nomeInst" />
+
+                    <label for="cnpjInst">CNPJ</label>
+                    <input type="text" id="cnpjInc" name="cnpjInst" />
+
+                    <label for="emailInst">E-mail</label>
+                    <input type="email" id="emailInc" name="emailInst" />
+
+                    <label for="senhaInst">Senha</label>
+                    <input type="password" id="passwordInc" name="senhaInst" />
+
+                    <label for="historiaInst">História</label>
+                    <textarea id="historyInc" name="historiaInst" rows="3"></textarea>
+
+                    <label for="location">Localização</label>
+                    <input type="text" id="locationInc" name="location" />
+
+
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- LITERALMENTE SÓ MUDAR OS ID CONFORME O BACK END CRIOU  -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
 
-    <!-- FORMULARIO DE BENEFICIARIOOOOOO -->
-    <div class="swiper-slide">
-      <h2>Cadastro de Beneficiário</h2>
-      <form id="formPessoaFisica" method="POST">
-        <label for="nomePessoa">Nome Completo</label>
-        <input type="text" id="nomePessoa" name="nomePessoa" required />
 
-        <label for="cpfPessoa">CPF</label>
-        <input type="text" id="cpfPessoa" name="cpfPessoa" required />
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
-        <label for="emailPessoa">E-mail</label>
-        <input type="email" id="emailPessoa" name="emailPessoa" required />
-
-        <label for="senhaPessoa">Senha</label>
-        <input type="password" id="senhaPessoa" name="senhaPessoa" required />
-
-        <label for="historiaPessoa">História</label>
-        <textarea id="historiaPessoa" name="historiaPessoa" rows="3"></textarea>
-
-        <label for="fotosPessoa">Fotos (opcional)</label>
-        <input type="file" id="fotosPessoa" name="fotosPessoa" multiple accept="image/*" />
-
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
-
-    <!-- FORMULARIO DE INSTITUIÇÃAAAAAAAAAAAAO CONFORME O BACK END CRIOU -->
-    <div class="swiper-slide">
-      <h2>Cadastro de Instituição</h2>
-      <form id="formInstituicao" method="POST">
-        <label for="nomeInst">Nome da Instituição</label>
-        <input type="text" id="nomeInst" name="nomeInst" required />
-
-        <label for="cnpjInst">CNPJ</label>
-        <input type="text" id="cnpjInst" name="cnpjInst" required />
-
-        <label for="emailInst">E-mail</label>
-        <input type="email" id="emailInst" name="emailInst" required />
-
-        <label for="senhaInst">Senha</label>
-        <input type="password" id="senhaInst" name="senhaInst" required />
-
-        <label for="historiaInst">História</label>
-        <textarea id="historiaInst" name="historiaInst" rows="3"></textarea>
-
-        <label for="location">Localização</label>
-        <input type="text" id="" name="location" required />
+    <script>
+        const swiper = new Swiper('.swiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: false,
+        });
+    </script>
 
 
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
-
-  </div>
-
-  <!-- LITERALMENTE SÓ MUDAR OS ID CONFORME O BACK END CRIOU  -->
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-button-next"></div>
-</div>
-
-
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
-  <script>
-  const swiper = new Swiper('.swiper', {
-  effect: 'coverflow',
-  grabCursor: true,
-  centeredSlides: true,
-  slidesPerView: 'auto',
-  coverflowEffect: {
-    rotate: 50,
-    stretch: 0,
-    depth: 100,
-    modifier: 1,
-    slideShadows: true,
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-  loop: false,
-});
-  </script>
 </body>
+
 </html>

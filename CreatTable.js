@@ -21,21 +21,21 @@
 // const sql = `
 // CREATE TABLE IF NOT EXISTS Instituicao_Beneficiaria (
 //     id INT AUTO_INCREMENT PRIMARY KEY,
-//     name VARCHAR(255) NOT NULL,
-//     email VARCHAR(255) NOT NULL,
-//     password VARCHAR(255) NOT NULL,
-//     cnpj VARCHAR(20) NOT NULL,
-//     location VARCHAR(255),
-//     history TEXT
+//     nameInc VARCHAR(255) NOT NULL,
+//     emailInc VARCHAR(255) NOT NULL,
+//     passwordInc VARCHAR(255) NOT NULL,
+//     cnpjInc VARCHAR(20) NOT NULL,
+//     locationInc VARCHAR(255),
+//     historyInc TEXT
 // );
 
 // CREATE TABLE IF NOT EXISTS Pessoa_Beneficiaria (
 //     id INT AUTO_INCREMENT PRIMARY KEY,
-//     name VARCHAR(255) NOT NULL,
-//     email VARCHAR(255) NOT NULL,
-//     password VARCHAR(255) NOT NULL,
-//     cpf VARCHAR(20) NOT NULL,
-//     history TEXT,
+//     namePer VARCHAR(255) NOT NULL,
+//     emailPer VARCHAR(255) NOT NULL,
+//     passwordPer VARCHAR(255) NOT NULL,
+//     cpfPer VARCHAR(20) NOT NULL,
+//     historyPer TEXT,
 //     instituicao_beneficiaria_id INT,
 //     FOREIGN KEY (instituicao_beneficiaria_id) REFERENCES Instituicao_Beneficiaria(id)
 // );
