@@ -13,20 +13,20 @@ const db = mysql.createConnection({
 });
 
 router.post('/registerIB', (req, res) => {
-    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
+    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada } = req.body;
 
     if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !historyInc) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    const sql = `INSERT INTO instituicao_beneficiaria (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc) 
-               VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc], (err, results) => {
+    const sql = `INSERT INTO instituicao_beneficiaria (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada) 
+               VALUES (?, ?, ?, ?, ?, ?, 0)`;
+    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada], (err, results) => {
         if (err) {
             console.error('Erro ao criar instituição:', err);
         } else {
-            enviarEmailBoasVindas(emailInc, nameInc);
-            console.log('Instituição criada com sucesso:', results);
+            enviarEmailVerificacao(emailInc, nameInc);
+            res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
         }
     });
 });
@@ -76,6 +76,27 @@ router.get('/verificar-email', (req, res) => {
 
         const sql = 'UPDATE pessoa_beneficiaria SET verificado = 1 WHERE emailPer = ?';
         db.query(sql, [emailPer], (erro, resultado) => {
+            if (erro) {
+                console.error('Erro ao verificar e-mail:', erro);
+                return res.status(500).send('Erro interno.');
+            }
+            res.send(`<h2>E-mail verificado com sucesso!</h2><p>Você já pode acessar sua conta!</p>`);
+        });
+    });
+});
+
+router.get('/verificar-emailIB', (req, res) => {
+    const token = req.query.token;
+
+    if (!token) return res.status(400).send('Token ausente.');
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return res.status(401).send('Token inválido ou expirado.');
+
+        const emailInc = decoded.email;
+
+        const sql = 'UPDATE instituicao_beneficiaria SET verificada = 1 WHERE emailInc = ?';
+        db.query(sql, [emailInc], (erro, resultado) => {
             if (erro) {
                 console.error('Erro ao verificar e-mail:', erro);
                 return res.status(500).send('Erro interno.');
