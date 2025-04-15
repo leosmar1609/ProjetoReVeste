@@ -30,16 +30,17 @@ router.post('/registerIB', (req, res) => {
 });
 
 router.get('/instituicao', (req, res) => {
+    const id = req.query.id;
     const sql = 'SELECT * FROM Instituicao_Beneficiaria WHERE id = ?';
     db.query(sql, [id], (err, results) => {
         if (err) {
             console.error('Erro ao buscar instituição:', err);
+            res.status(500).send('Erro no servidor');
         } else {
-            console.log('Instituição encontrada:', results);
+            res.json(results);
         }
     });
 });
-
 
 router.post('/registerPB', (req, res) => {
     const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
@@ -58,4 +59,18 @@ router.post('/registerPB', (req, res) => {
         }
     });
 });
+
+router.get('/pessoa', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar instituição:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 module.exports = router;

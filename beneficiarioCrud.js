@@ -12,7 +12,7 @@
 // });
 // // CRUD para Instituicao_Beneficiaria
 // // Criar (Create)
-
+//✅
 // router.post('/registerIB', (req, res) => {
 //     const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
 
@@ -30,18 +30,20 @@
 //         }
 //     });
 // });
-
+//✅
 // // Ler (Read)
-// function getInstituicaoById(id) {
+// router.get('/instituicao', (req, res) => {
+//     const id = req.query.id;
 //     const sql = 'SELECT * FROM Instituicao_Beneficiaria WHERE id = ?';
-//     connection.query(sql, [id], (err, results) => {
+//     db.query(sql, [id], (err, results) => {
 //         if (err) {
 //             console.error('Erro ao buscar instituição:', err);
+//             res.status(500).send('Erro no servidor');
 //         } else {
-//             console.log('Instituição encontrada:', results);
+//             res.json(results);
 //         }
 //     });
-// }
+// });
 
 // // Atualizar (Update)
 // function updateInstituicao(id, name, email, password, cnpj, location, history) {
@@ -67,7 +69,7 @@
 //         }
 //     });
 // }
-
+//✅
 // // CRUD para Pessoa_Beneficiaria
 // // Criar (Create)
 // router.post('/registerPB', (req, res) => {
@@ -86,18 +88,20 @@
 //         console.log('Pessoa criada com sucesso:', results);
 //     }
 // });
-
+//✅
 // // Ler (Read)
-// function getPessoaById(id) {
+// router.get('/pessoa', (req, res) => {
+//     const id = req.query.id;
 //     const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
-//     connection.query(sql, [id], (err, results) => {
+//     db.query(sql, [id], (err, results) => {
 //         if (err) {
-//             console.error('Erro ao buscar pessoa:', err);
+//             console.error('Erro ao buscar instituição:', err);
+//             res.status(500).send('Erro no servidor');
 //         } else {
-//             console.log('Pessoa encontrada:', results);
+//             res.json(results);
 //         }
 //     });
-// }
+// });
 
 // // Atualizar (Update)
 // function updatePessoa(id, name, email, password, cpf, history, instituicao_beneficiaria_id) {
