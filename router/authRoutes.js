@@ -31,6 +31,25 @@ router.post('/registerIB', (req, res) => {
     });
 });
 
+router.post('/registerdonor', (req, res) => {
+    const { namedonor, emaildonor, passworddonor } = req.body;
+
+    if (!namedonor || !emaildonor || !passworddonor ) {
+        return res.status(400).json({ error: 'Preencha todos os campos!' });
+    }
+
+    const sql = `INSERT INTO doador (namedonor, emaildonor, passworddonor) 
+               VALUES (?, ?, ?)`;
+    db.query(sql, [namedonor, emaildonor, passworddonor], (err, results) => {
+        if (err) {
+            console.error('Erro ao criar a conta', err);
+        } else {
+           
+            res.status(201).send('Cadastro realizado!');
+        }
+    });
+});
+
 router.get('/instituicao', (req, res) => {
     const id = req.query.id;
     const sql = 'SELECT * FROM Instituicao_Beneficiaria WHERE id = ?';
