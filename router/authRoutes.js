@@ -119,4 +119,35 @@ router.get('/pessoa', (req, res) => {
     });
 });
 
+router.post('/cadastrar-item', async(req, res) => {
+    const { name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
+
+    if (!name_item || !description || !quantity_item || !category || !urgencia_enum || !locate) {
+        return res.status(400).json({ error: 'Preencha todos os campos!' });
+    }
+
+    const sql = `INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate)
+                VALUES (?, ?, ?, ?, 'open', ?, ?)`;
+    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate], (err, results) => {
+        if (err) {
+            console.error('Erro ao criar pedido:', err);
+        } else {
+            res.status(201).send('Pedido realizado.');
+        }
+    });
+});
+
+router.get('/pedido', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM Pedidos WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedido:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 module.exports = router;

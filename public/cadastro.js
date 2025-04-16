@@ -8,7 +8,7 @@ document.getElementById('registerForm').addEventListener('submit', async(e) => {
     const locationInc = document.getElementById('locationInc').value;
     const historyInc = document.getElementById('historyInc').value;
 
-    const response = await fetch('http://localhost:3000/auth/registerIB', {
+    const response = await fetch('./auth/registerIB', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc })
