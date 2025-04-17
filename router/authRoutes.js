@@ -34,7 +34,7 @@ router.post('/registerIB', (req, res) => {
 router.post('/registerdonor', (req, res) => {
     const { namedonor, emaildonor, passworddonor } = req.body;
 
-    if (!namedonor || !emaildonor || !passworddonor ) {
+    if (!namedonor || !emaildonor || !passworddonor) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
@@ -44,7 +44,7 @@ router.post('/registerdonor', (req, res) => {
         if (err) {
             console.error('Erro ao criar a conta', err);
         } else {
-           
+
             res.status(201).send('Cadastro realizado!');
         }
     });
@@ -126,17 +126,22 @@ router.get('/verificar-emailIB', (req, res) => {
 });
 
 router.get('/pessoa', (req, res) => {
-    const id = req.query.id;
-    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
-    db.query(sql, [id], (err, results) => {
+    const emailPer = req.query.emailPer;
+    const passwordPer = req.query.passwordPer;
+
+    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE emailPer = ? AND passwordPer = ?';
+    db.query(sql, [emailPer, passwordPer], (err, results) => {
         if (err) {
-            console.error('Erro ao buscar instituição:', err);
-            res.status(500).send('Erro no servidor');
+            console.error('Erro ao buscar pessoa:', err);
+            res.status(500).json({ error: 'Erro no servidor' });
+        } else if (results.length > 0) {
+            res.json(results[0]); // envia só o usuário logado
         } else {
-            res.json(results);
+            res.status(401).json({ error: 'Credenciais inválidas' });
         }
     });
 });
+
 
 router.post('/cadastrar-item', async(req, res) => {
     const { name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
