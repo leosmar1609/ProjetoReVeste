@@ -125,20 +125,29 @@ router.get('/verificar-emailIB', (req, res) => {
     });
 });
 
-router.get('/pessoa', (req, res) => {
-    const emailPer = req.query.emailPer;
-    const passwordPer = req.query.passwordPer;
 
-    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE emailPer = ? AND passwordPer = ?';
-    db.query(sql, [emailPer, passwordPer], (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar pessoa:', err);
-            res.status(500).json({ error: 'Erro no servidor' });
-        } else if (results.length > 0) {
-            res.json(results[0]); // envia só o usuário logado
-        } else {
-            res.status(401).json({ error: 'Credenciais inválidas' });
+router.post('/login', (req, res) => {
+    const { emailInc, passwordInc, emailPer, passwordPer, emaildonor, passworddonor } = req.body;
+
+    // Aqui você checa em cada tabela
+    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [emailInc, passwordInc], (err, result1) => {
+        if (result1.length > 0) {
+            return res.json({ tipo: 'instituicao', id: result1[0].id });
         }
+
+        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [emailPer, passwordPer], (err, result2) => {
+            if (result2.length > 0) {
+                return res.json({ tipo: 'pessoa', id: result2[0].id });
+            }
+
+            db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [emaildonor, passworddonor], (err, result3) => {
+                if (result3.length > 0) {
+                    return res.json({ tipo: 'doador', id: result3[0].id });
+                }
+
+                res.status(401).json({ error: 'Usuário ou senha inválidos' });
+            });
+        });
     });
 });
 

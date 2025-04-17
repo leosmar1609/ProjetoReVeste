@@ -6,15 +6,21 @@ document.addEventListener("DOMContentLoaded", function() {
         loginForm.addEventListener("submit", async function(event) {
             event.preventDefault();
 
-            const emailPer = document.getElementById("emailPer").value;
-            const passwordPer = document.getElementById("passwordPer").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const userType = document.getElementById("userType").value;
 
             try {
-                const response = await fetch(`./auth/pessoa?emailPer=${encodeURIComponent(emailPer)}&passwordPer=${encodeURIComponent(passwordPer)}`, {
-                    method: "GET",
+                const response = await fetch('./auth/login', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
+                        'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        userType
+                    })
                 });
 
                 const data = await response.json();
@@ -24,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     messageElement.style.color = "green";
 
                     setTimeout(() => {
-                        window.location.href = `PerfilDoador.html?id=${data.id}`;
+                        // Redirecionar para a página específica do tipo de usuário
+                        window.location.href = `${userType}Dashboard.html?id=${data.id}`;
                     }, 2000);
                 } else {
                     messageElement.innerText = "❌ " + data.error;
