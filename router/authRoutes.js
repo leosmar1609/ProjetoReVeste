@@ -127,29 +127,34 @@ router.get('/verificar-emailIB', (req, res) => {
 
 
 router.post('/login', (req, res) => {
-    const { emailInc, passwordInc, emailPer, passwordPer, emaildonor, passworddonor } = req.body;
+    const { email, password, userType } = req.body;
 
-    // Aqui você checa em cada tabela
-    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [emailInc, passwordInc], (err, result1) => {
-        if (result1.length > 0) {
-            return res.json({ tipo: 'instituicao', id: result1[0].id });
-        }
-
-        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [emailPer, passwordPer], (err, result2) => {
+    if (userType === "instituicao") {
+        db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [email, password], (err, result1) => {
+            if (result1.length > 0) {
+                return res.json({ tipo: 'instituicao', id: result1[0].id });
+            }
+            return res.status(401).json({ error: 'Usuário ou senha inválidos para Instituição' });
+        });
+    } else if (userType === "pessoa") {
+        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [email, password], (err, result2) => {
             if (result2.length > 0) {
                 return res.json({ tipo: 'pessoa', id: result2[0].id });
             }
-
-            db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [emaildonor, passworddonor], (err, result3) => {
-                if (result3.length > 0) {
-                    return res.json({ tipo: 'doador', id: result3[0].id });
-                }
-
-                res.status(401).json({ error: 'Usuário ou senha inválidos' });
-            });
+            return res.status(401).json({ error: 'Usuário ou senha inválidos para Pessoa' });
         });
-    });
+    } else if (userType === "doador") {
+        db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
+            if (result3.length > 0) {
+                return res.json({ tipo: 'doador', id: result3[0].id });
+            }
+            return res.status(401).json({ error: 'Usuário ou senha inválidos para Doador' });
+        });
+    } else {
+        return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
+    }
 });
+
 
 
 router.post('/cadastrar-item', async(req, res) => {

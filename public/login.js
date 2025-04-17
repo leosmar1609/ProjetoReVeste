@@ -30,8 +30,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     messageElement.style.color = "green";
 
                     setTimeout(() => {
-                        // Redirecionar para a página específica do tipo de usuário
-                        window.location.href = `${userType}Dashboard.html?id=${data.id}`;
+                        if (userType === "pessoa") {
+                            window.location.href = `pessoaBeneficiaria.html?id=${data.id}`;
+                        } else if (userType === "instituicao") {
+                            window.location.href = `instituicaoBeneficiaria.html?id=${data.id}`;
+                        } else if (userType === "doador") {
+                            window.location.href = `doador.html?id=${data.id}`;
+                        }
                     }, 2000);
                 } else {
                     messageElement.innerText = "❌ " + data.error;
