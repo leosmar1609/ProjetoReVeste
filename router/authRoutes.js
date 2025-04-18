@@ -179,7 +179,7 @@ router.post('/cadastrar-item', async(req, res) => {
 });
 
 
-router.get('/pedidos', (req, res) => {
+router.get('/pedidosP', (req, res) => {
     const id = req.query.id;
     const sql = 'SELECT * FROM Pedidos WHERE pessoa_beneficiaria_id = ?';
     db.query(sql, [id], (err, results) => {

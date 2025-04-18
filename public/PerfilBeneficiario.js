@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async() => {
 
     // 🟢 Carrega os pedidos da pessoa beneficiária
     try {
-        const response = await fetch(`./auth/pedidos?id=${id}`);
+        const response = await fetch(`./auth/pedidosP?id=${id}`);
         const pedidos = await response.json();
 
         const listaPedidos = document.getElementById("listaPedidos");
