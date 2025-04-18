@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', async() => {
-    // Captura o ID da URL (ex: ?id=123)
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    // 🟢 Carrega os pedidos da pessoa beneficiária
     try {
         const response = await fetch(`./auth/pedidosP?id=${id}`);
         const pedidos = await response.json();
@@ -35,11 +33,9 @@ document.addEventListener('DOMContentLoaded', async() => {
     }
 });
 
-// 🟢 Envio do formulário de novo pedido
 document.getElementById('form').addEventListener('submit', async(e) => {
     e.preventDefault();
 
-    // Captura o ID da URL
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
@@ -69,7 +65,6 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const item = await response.json();
 
     console.log("Item cadastrado:", item);
-    // Se quiser recarregar a lista após cadastrar:
     window.location.reload();
 });
 
@@ -90,7 +85,7 @@ document.getElementById('search').addEventListener('input', function() {
 function formatarData(dataISO) {
     const data = new Date(dataISO);
     const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro = 0
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
     const ano = data.getFullYear();
     const hora = String(data.getHours()).padStart(2, '0');
     const minutos = String(data.getMinutes()).padStart(2, '0');

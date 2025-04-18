@@ -253,4 +253,17 @@ router.get('/pedidos', (req, res) => {
     });
 });
 
+router.get('/doador', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM doador WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar doador:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 module.exports = router;

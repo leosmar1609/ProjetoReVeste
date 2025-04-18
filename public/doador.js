@@ -82,3 +82,26 @@ document.getElementById('search').addEventListener('input', function() {
         }
     });
 });
+
+// document.addEventListener("DOMContentLoaded", async function() {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const id = urlParams.get("id");
+
+//     if (!id) {
+//         window.location.href = "login.html";
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`./auth/doador?id=${id}`);
+//         const data = await response.json();
+
+//         document.getElementById("namedonor").innerText = data[0].nome;
+
+//     } catch (error) {
+//         console.error("Erro ao buscar doador:", error);
+//     }
+//     if (!id || isNaN(id)) {
+//         window.location.href = "login.html";
+//     }
+// });
