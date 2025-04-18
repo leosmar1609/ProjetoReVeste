@@ -70,3 +70,17 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     // Se quiser recarregar a lista após cadastrar:
     window.location.reload();
 });
+
+document.getElementById('search').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const cards = document.querySelectorAll('.card-pedido');
+
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(searchTerm)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
