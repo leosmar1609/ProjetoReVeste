@@ -178,7 +178,7 @@ router.post('/cadastrar-itemP', async(req, res) => {
 
     const sql = `
         INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, pessoa_beneficiaria_id)
-        VALUES (?, ?, ?, ?, 'open', ?, ?, ?)
+        VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?)
     `;
 
     db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, id], (err, results) => {
@@ -200,7 +200,7 @@ router.post('/cadastrar-itemI', async(req, res) => {
 
     const sql = `
         INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, instituicao_id)
-        VALUES (?, ?, ?, ?, 'open', ?, ?, ?)
+        VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?)
     `;
 
     db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, id], (err, results) => {

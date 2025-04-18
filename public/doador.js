@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', async() => {
                     <p><strong>Categoria:</strong> ${pedido.category}</p>
                     <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
-                    <p><strong>Data do pedido:</strong> ${pedido.opened_at}</p>
+                    <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
+                    <p><strong>Status:</strong> ${pedido.status}</p>
                 `;
 
                 listaPedidos.appendChild(card);
@@ -55,4 +56,29 @@ document.addEventListener('DOMContentLoaded', async() => {
         console.error("Erro ao carregar pedidos:", error);
         document.getElementById("listaPedidos").innerHTML = "<p>Erro ao carregar os pedidos.</p>";
     }
+});
+
+function formatarData(dataISO) {
+    const data = new Date(dataISO);
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro = 0
+    const ano = data.getFullYear();
+    const hora = String(data.getHours()).padStart(2, '0');
+    const minutos = String(data.getMinutes()).padStart(2, '0');
+
+    return `${dia}/${mes}/${ano} às ${hora}:${minutos}`;
+}
+
+document.getElementById('search').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const cards = document.querySelectorAll('.card-pedido');
+
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(searchTerm)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
 });
