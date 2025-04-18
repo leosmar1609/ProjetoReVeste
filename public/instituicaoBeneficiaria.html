@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReVeste - Criar Doação</title>
+    <link rel="stylesheet" href="./css/Beneficiario.css" />
+    <link rel="stylesheet" href="./css/pedidos.css">
+
+    <script defer src="InstituicaoBeneficiaria.js"></script>
+
+</head>
+
+<body>
+    <header class="header" id="mainHeader">
+        <h1 class="logo">ReVeste</h1>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar minhas doações" id="search" />
+        </div>
+
+        <button class="donate-button" id="openFormBtn">Pedir Doação</button>
+    </header>
+
+    <h2>Meus Pedidos</h2>
+    <div id="listaPedidos"></div>
+
+    <div id="formContainer">
+        <form method="POST" id="form">
+            <button type="button" class="close-btn" id="closeFormBtn">×</button>
+
+            <h2>Cadastrar Item</h2>
+
+            <label for="name_item">Nome do Item:</label>
+            <input type="text" id="name_item" name="name_item" required>
+
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="quantity_item">Quantidade:</label>
+            <input type="number" id="quantity_item" name="quantity_item" min="1" required>
+
+            <label for="category">Categoria:</label>
+            <select id="category" name="category" required>
+        <option value="roupas">Roupas</option>
+        <option value="alimentos">Alimentos</option>
+        <option value="móveis">Móveis</option>
+        <option value="eletrônicos">Eletrônicos</option>
+        <option value="brinquedos">Brinquedos</option>
+      </select>
+
+            <label for="urgencia_enum">Urgência:</label>
+            <select id="urgencia_enum" name="urgencia_enum" required>
+        <option value="Baixa">Baixa</option>
+        <option value="Média">Média</option>
+        <option value="Alta">Alta</option>
+        <option value="Urgente">Urgente</option>
+      </select>
+
+            <label for="locate">Localização:</label>
+            <input type="text" id="locate" name="locate" required>
+
+            <button type="submit">Pedir Doação</button>
+        </form>
+    </div>
+
+    <script>
+        const openFormBtn = document.getElementById('openFormBtn');
+        const closeFormBtn = document.getElementById('closeFormBtn');
+        const formContainer = document.getElementById('formContainer');
+        const header = document.getElementById('mainHeader');
+
+        openFormBtn.addEventListener('click', () => {
+            formContainer.style.display = 'flex';
+            header.style.display = 'none';
+        });
+
+        closeFormBtn.addEventListener('click', () => {
+            formContainer.style.display = 'none';
+            header.style.display = 'flex';
+        });
+
+        formContainer.addEventListener('click', (e) => {
+            if (e.target === formContainer) {
+                formContainer.style.display = 'none';
+                header.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+
+</html>

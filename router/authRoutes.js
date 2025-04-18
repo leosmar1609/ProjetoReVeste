@@ -63,6 +63,19 @@ router.get('/instituicao', (req, res) => {
     });
 });
 
+router.get('/pessoa', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar instituição:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 router.post('/registerPB', (req, res) => {
     const { namePer, emailPer, passwordPer, cpfPer, historyPer, verificado } = req.body;
 
@@ -156,7 +169,7 @@ router.post('/login', (req, res) => {
 });
 
 
-router.post('/cadastrar-item', async(req, res) => {
+router.post('/cadastrar-itemP', async(req, res) => {
     const { id, name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
 
     if (!id || !name_item || !description || !quantity_item || !category || !urgencia_enum || !locate) {
@@ -178,10 +191,58 @@ router.post('/cadastrar-item', async(req, res) => {
     });
 });
 
+router.post('/cadastrar-itemI', async(req, res) => {
+    const { id, name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
+
+    if (!id || !name_item || !description || !quantity_item || !category || !urgencia_enum || !locate) {
+        return res.status(400).json({ error: 'Preencha todos os campos!' });
+    }
+
+    const sql = `
+        INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, instituicao_id)
+        VALUES (?, ?, ?, ?, 'open', ?, ?, ?)
+    `;
+
+    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, id], (err, results) => {
+        if (err) {
+            console.error('Erro ao criar pedido:', err);
+            res.status(500).json({ error: 'Erro interno ao criar o pedido.' });
+        } else {
+            res.status(201).json({ message: 'Pedido realizado com sucesso.' });
+        }
+    });
+});
+
 
 router.get('/pedidosP', (req, res) => {
     const id = req.query.id;
     const sql = 'SELECT * FROM Pedidos WHERE pessoa_beneficiaria_id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedido:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/pedidosI', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM Pedidos WHERE instituicao_id = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedido:', err);
+            res.status(500).send('Erro no servidor');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/pedidos', (req, res) => {
+    const id = req.query.id;
+    const sql = 'SELECT * FROM Pedidos';
     db.query(sql, [id], (err, results) => {
         if (err) {
             console.error('Erro ao buscar pedido:', err);

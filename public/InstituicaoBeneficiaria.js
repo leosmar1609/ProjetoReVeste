@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async() => {
 
     // 🟢 Carrega os pedidos da pessoa beneficiária
     try {
-        const response = await fetch(`./auth/pedidosP?id=${id}`);
+        const response = await fetch(`./auth/pedidosI?id=${id}`);
         const pedidos = await response.json();
 
         const listaPedidos = document.getElementById("listaPedidos");
@@ -48,7 +48,7 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const urgencia_enum = document.getElementById("urgencia_enum").value;
     const locate = document.getElementById("locate").value;
 
-    const response = await fetch('./auth/cadastrar-itemP', {
+    const response = await fetch('./auth/cadastrar-itemI', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
