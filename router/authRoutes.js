@@ -312,4 +312,27 @@ router.delete('/deleteinstituicao', (req, res) => {
         res.status(200).json({ mensagem: 'Instituição deletada com sucesso' });
     });
 });
+
+router.delete('/deletepessoa', (req, res) => {
+    const id = req.query.id;
+
+    if (!id) {
+        return res.status(400).json({ mensagem: 'ID da pessoa é obrigatório' });
+    }
+
+    const sql = 'DELETE FROM pessoa_beneficiaria WHERE id = ?';
+
+    db.query(sql, [id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao deletar pessoa:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
+        }
+
+        res.status(200).json({ mensagem: 'Pessoa deletada com sucesso' });
+    });
+});
 module.exports = router;
