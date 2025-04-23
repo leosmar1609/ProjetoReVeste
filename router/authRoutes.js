@@ -266,4 +266,28 @@ router.get('/doador', (req, res) => {
     });
 });
 
+router.delete('/deletedoador', (req, res) => {
+    const id = req.query.id;
+
+    if (!id) {
+        return res.status(400).json({ mensagem: 'ID do doador é obrigatório' });
+    }
+
+    const sql = 'DELETE FROM doador WHERE id = ?';
+
+    db.query(sql, [id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao deletar doador:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Doador não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Doador deletado com sucesso' });
+    });
+});
+
+
 module.exports = router;
