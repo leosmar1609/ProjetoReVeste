@@ -335,4 +335,29 @@ router.delete('/deletepessoa', (req, res) => {
         res.status(200).json({ mensagem: 'Pessoa deletada com sucesso' });
     });
 });
+
+
+router.delete('/deletepedido', (req, res) => {
+    const id = req.query.id;
+
+    if (!id) {
+        return res.status(400).json({ mensagem: 'ID do pedido é obrigatório' });
+    }
+
+    const sql = 'DELETE FROM pedidos WHERE id = ?';
+
+    db.query(sql, [id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao deletar pedido:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Pedido não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Pedido deletado com sucesso' });
+    });
+});
+
 module.exports = router;
