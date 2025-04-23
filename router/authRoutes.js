@@ -360,4 +360,103 @@ router.delete('/deletepedido', (req, res) => {
     });
 });
 
+router.put('/doadorup', (req, res) => {
+    const id = req.body.id;
+    const { namedonor, emaildonor, passworddonor } = req.body;
+
+    if (!id || !namedonor || !emaildonor || !passworddonor) {
+        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+    }
+
+    const sql = 'UPDATE doador SET namedonor = ?, emaildonor = ?, passworddonor = ? WHERE id = ?';
+
+    db.query(sql, [namedonor, emaildonor, passworddonor, id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao atualizar doador:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Doador não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
+    });
+});
+
+
+router.put('/pessoaup', (req, res) => {
+    const id = req.body.id;
+    const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
+
+    if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
+        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+    }
+
+    const sql = 'UPDATE pessoa_beneficiaria SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, historyPer = ? WHERE id = ?';
+
+    db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer, id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao atualizar pessoaup:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Pessoa não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Pessoa atualizada com sucesso' });
+    });
+});
+
+
+router.put('/beneficiarioup', (req, res) => {
+    const id = req.body.id;
+    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
+
+    if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !historyInc || !locationInc) {
+        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+    }
+
+    const sql = 'UPDATE instituicao_beneficiaria SET nameInc = ?, emailInc = ?, passwordInc = ?, cnpjInc = ?, historyInc = ?, locationInc = ? WHERE id = ?';
+
+    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, historyInc, locationInc, id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao atualizar beneficiário:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Instituição não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Instituição atualizada com sucesso' });
+    });
+});
+
+
+router.put('/pedidosup', (req, res) => {
+    const id = req.body.id;
+    const { status } = req.body;
+
+    if (!status) {
+        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+    }
+
+    const sql = 'UPDATE pedidos SET status = ? WHERE id = ?';
+
+    db.query(sql, [status, id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao atualizar o pedido:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Pedido não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Pedido atualizado com sucesso' });
+    });
+});
+
 module.exports = router;
