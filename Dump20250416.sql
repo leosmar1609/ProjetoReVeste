@@ -83,7 +83,7 @@ CREATE TABLE `pedidos` (
   `description` text,
   `quantity_item` int NOT NULL,
   `category` varchar(255) NOT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'open',
+  `status` varchar(50) NOT NULL DEFAULT 'Aberto',
   `urgencia_enum` enum('Baixa','Média','Alta','Urgente') NOT NULL,
   `locate` varchar(255) NOT NULL,
   `opened_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,7 +96,7 @@ CREATE TABLE `pedidos` (
   CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`pessoa_beneficiaria_id`) REFERENCES `pessoa_beneficiaria` (`id`),
   CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`instituicao_id`) REFERENCES `instituicao_beneficiaria` (`id`),
   CONSTRAINT `pedidos_chk_1` CHECK ((`category` in (_utf8mb4'roupas',_utf8mb4'alimentos',_utf8mb4'móveis',_utf8mb4'eletrônicos',_utf8mb4'brinquedos'))),
-  CONSTRAINT `pedidos_chk_2` CHECK ((`status` in (_utf8mb4'open',_utf8mb4'in_progress',_utf8mb4'closed',_utf8mb4'cancelled')))
+  CONSTRAINT `pedidos_chk_2` CHECK ((`status` in (_utf8mb4'Aberto',_utf8mb4'Pendente',_utf8mb4'Fechado',_utf8mb4'Cancelado')))
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -106,7 +106,7 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (1,'Salgadinho','ggghhhhh',3,'alimentos','open','Urgente','Rua Gaivota, 16','2025-04-16 02:03:06','2025-04-16 02:03:06',NULL,NULL),(2,'Salgadinho','kaslndlsndkasjnd',3,'alimentos','open','Urgente','Rua Gaivota, 16','2025-04-16 02:20:19','2025-04-16 02:20:19',NULL,NULL),(3,'Salgadinho','kbjh,bljb',3,'alimentos','open','Urgente','Rua Gaivota, 16','2025-04-16 02:24:02','2025-04-16 02:24:02',NULL,NULL),(4,'Salgadinho','kkkkkkk',3,'alimentos','open','Urgente','Rua Gaivota, 16','2025-04-16 02:26:20','2025-04-16 02:26:20',NULL,NULL),(5,'Salgadinho','lasttest',3,'alimentos','open','Urgente','Rua Gaivota, 16','2025-04-16 02:27:51','2025-04-16 02:27:51',NULL,NULL);
+INSERT INTO `pedidos` VALUES (1,'Salgadinho','ggghhhhh',3,'alimentos','Aberto','Urgente','Rua Gaivota, 16','2025-04-16 02:03:06','2025-04-16 02:03:06',NULL,NULL),(2,'Salgadinho','kaslndlsndkasjnd',3,'alimentos','Aberto','Urgente','Rua Gaivota, 16','2025-04-16 02:20:19','2025-04-16 02:20:19',NULL,NULL),(3,'Salgadinho','kbjh,bljb',3,'alimentos','Aberto','Urgente','Rua Gaivota, 16','2025-04-16 02:24:02','2025-04-16 02:24:02',NULL,NULL),(4,'Salgadinho','kkkkkkk',3,'alimentos','Aberto','Urgente','Rua Gaivota, 16','2025-04-16 02:26:20','2025-04-16 02:26:20',NULL,NULL),(5,'Salgadinho','lasttest',3,'alimentos','Aberto','Urgente','Rua Gaivota, 16','2025-04-16 02:27:51','2025-04-16 02:27:51',NULL,NULL);
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
