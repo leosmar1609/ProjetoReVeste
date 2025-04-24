@@ -46,7 +46,7 @@
 //     description TEXT,
 //     quantity_item INT NOT NULL, 
 //     category VARCHAR(255) NOT NULL,
-//     status VARCHAR(50) NOT NULL DEFAULT 'open',
+//     status VARCHAR(50) NOT NULL DEFAULT 'Aberto',
 //     urgencia_enum ENUM('Baixa', 'Média', 'Alta', 'Urgente') NOT NULL,
 //     locate VARCHAR(255) NOT NULL,
 //     opened_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -56,7 +56,7 @@
 //     FOREIGN KEY (pessoa_beneficiaria_id) REFERENCES Pessoa_Beneficiaria(id),
 //     FOREIGN KEY (instituicao_id) REFERENCES Instituicao_Beneficiaria(id),
 //     CHECK (category IN ('roupas', 'alimentos', 'móveis', 'eletrônicos', 'brinquedos')),
-//     CHECK (status IN ('open', 'in_progress', 'closed', 'cancelled'))
+//     CHECK (status IN ('Aberto', 'Pendente', 'Fechado', 'Cancelado'))
 // );
 // `;
 
