@@ -43,3 +43,72 @@ h2 {
     font-size: 14px;
     color: #555;
 }
+
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal.hidden {
+    display: none;
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .fechar {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .user-menu {
+    position: relative;
+    margin-left: auto;
+  }
+  
+  .user-menu img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 10px;
+  }
+  
+  .dropdown button {
+    background-color: transparent;
+    border: none;
+    color: #c62828;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .dropdown button:hover {
+    color: #b71c1c;
+  }
+  
+  .hidden {
+    display: none;
+  }

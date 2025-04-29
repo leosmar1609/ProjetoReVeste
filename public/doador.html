@@ -19,10 +19,25 @@
         <div class="search-bar">
             <input type="text" placeholder="Pesquisar pedidos" id="search" />
         </div>
+        <div class="user-menu">
+            <img src="./imgs/user-icon.png" alt="Usuário" id="userIcon" />
+            <div class="dropdown hidden" id="dropdownMenu">
+              <button id="btnLogout">Sair</button>
+            </div>
+          </div>
     </header>
 
     <h2>Pedidos</h2>
     <div id="listaPedidos"></div>
+
+    <div id="modalDoacao" class="modal hidden">
+        <div class="modal-content">
+          <span id="fecharModal" class="fechar">&times;</span>
+          <h2>Confirmar Doação</h2>
+          <div id="modalInfo"></div>
+          <button id="confirmarDoacao">Confirmar Doação</button>
+        </div>
+      </div>
 </body>
 
 </html>
