@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', async() => {
                     <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
                     <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
-                    <p><strong>Status:</strong> ${pedido.status}</p>
-                `;
+                    <p><strong>Status:</strong> <span class="status">${pedido.status}</span></p>
+                    ${pedido.status !== "Fechado" ? `<button class="btn-confirmar" data-id="${pedido.id}">Confirmar recebimento</button>` : ""}
+                    `;
                 listaPedidos.appendChild(item);
             });
         }
@@ -32,6 +33,40 @@ document.addEventListener('DOMContentLoaded', async() => {
         document.getElementById("listaPedidos").innerHTML = "<p>Erro ao carregar os pedidos.</p>";
     }
 });
+
+// Supondo que seus cards estejam dentro de #listaPedidos
+document.getElementById('listaPedidos').addEventListener('click', async function(event) {
+    const btn = event.target;
+
+    if (btn.classList.contains('btn-confirmar')) {
+        const pedidoId = btn.getAttribute('data-id');
+        try {
+            const resp = await fetch(`./auth/confirmar-recebimento`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: pedidoId })
+            });
+
+            if (resp.ok) {
+                // Atualiza o status
+                const statusSpan = btn.previousElementSibling.querySelector('.status');
+                if (statusSpan) {
+                    statusSpan.textContent = 'Fechado';
+                }
+                btn.remove();
+                alert("Pedido confirmado com sucesso!");
+            } else {
+                alert("Erro ao confirmar pedido.");
+            }
+        } catch (error) {
+            console.error("Erro ao confirmar:", error);
+            alert("Erro ao confirmar pedido.");
+        }
+    }
+});
+
 
 document.getElementById('form').addEventListener('submit', async(e) => {
     e.preventDefault();

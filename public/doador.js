@@ -45,21 +45,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
                     <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
                     <p><strong>Status:</strong> ${pedido.status}</p>
-                    <p>
-                        <button class="btn-doar"
-                            data-id="${pedido.id}"
-                            data-nome="${pedido.name_item}"
-                            data-desc="${pedido.description}"
-                            data-doador="${nomeDoador}"
-                            data-quant="${pedido.quantity_item}"
-                            data-cat="${pedido.category}"
-                            data-urg="${pedido.urgencia_enum}"
-                            data-loc="${pedido.locate}"
-                            data-data="${pedido.opened_at}"
-                            data-status="${pedido.status}"
-                        >Doar</button>
-                    </p>
-                `;
+                    ${pedido.status === "Aberto" ? `
+                        <p>
+                            <button class="btn-doar"
+                                data-id="${pedido.id}"
+                                data-nome="${pedido.name_item}"
+                                data-desc="${pedido.description}"
+                                data-doador="${nomeDoador}"
+                                data-quant="${pedido.quantity_item}"
+                                data-cat="${pedido.category}"
+                                data-urg="${pedido.urgencia_enum}"
+                                data-loc="${pedido.locate}"
+                                data-data="${pedido.opened_at}"
+                                data-status="${pedido.status}"
+                            >Doar</button>
+                        </p>` : ""}`;
 
                 listaPedidos.appendChild(card);
             }
@@ -124,11 +124,30 @@ document.getElementById("fecharModal").addEventListener("click", () => {
 });
 
 
-document.getElementById("confirmarDoacao").addEventListener("click", () => {
+document.getElementById("confirmarDoacao").addEventListener("click", async () => {
     const idPedido = document.getElementById("modalDoacao").dataset.idPedido;
 
-    // aqui a gnt coloca pra fzr os ngcs no banco de dados
-    alert(`Doação confirmada para o pedido ID: ${idPedido}`);
+    try {
+        const response = await fetch('./auth/pedidosup', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: idPedido, status: 'Pendente' })
+        });
+
+        if (response.ok) {
+            alert('Doação confirmada! O pedido agora está como "Pendente".');
+            // Atualiza a página ou o card (opcional)
+            location.reload(); // ou atualize o card manualmente
+        } else {
+            const resData = await response.json();
+            alert(`Erro ao atualizar o pedido: ${resData.mensagem || response.statusText}`);
+        }
+    } catch (error) {
+        console.error("Erro ao enviar atualização:", error);
+        alert('Erro ao confirmar a doação. Tente novamente mais tarde.');
+    }
 
     document.getElementById("modalDoacao").classList.add("hidden");
 });
