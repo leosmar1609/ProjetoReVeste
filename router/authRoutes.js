@@ -483,5 +483,29 @@ router.put('/confirmar-recebimento', (req, res) => {
     });
 });
 
+router.put('/cancelar-pedido', (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ mensagem: 'ID do pedido é obrigatório' });
+    }
+
+    const sql = 'UPDATE pedidos SET status = ? WHERE id = ?';
+    const status = 'Fechado';
+
+    db.query(sql, [status, id], (err, resultado) => {
+        if (err) {
+            console.error('Erro ao confirmar recebimento do pedido:', err);
+            return res.status(500).send('Erro no servidor');
+        }
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ mensagem: 'Pedido não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Recebimento confirmado com sucesso' });
+    });
+});
+
 
 module.exports = router;
