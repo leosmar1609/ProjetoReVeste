@@ -45,3 +45,19 @@
   main{
     padding-top: 1rem;
   }
+
+  .btn-doar {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-doar:hover {
+  background-color: #1e40af;
+}

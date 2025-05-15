@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 card.innerHTML = `
+                    <head><link rel="stylesheet" href="../css/Doador.css"></head>
                     <h3>${pedido.name_item}</h3>
                     <p><strong>Feito por:</strong> ${nomeDoador}</p>
                     <p><strong>Descrição:</strong> ${pedido.description}</p>

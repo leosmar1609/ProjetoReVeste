@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async() => {
                 const item = document.createElement("div");
                 item.classList.add("card-pedido");
                 item.innerHTML = `
+                <head><link rel="stylesheet" href="../css/Beneficiario.css"></head>
                     <h3>${pedido.name_item}</h3>
                     <p><strong>Descrição:</strong> ${pedido.description}</p>
                     <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
@@ -23,8 +24,12 @@ document.addEventListener('DOMContentLoaded', async() => {
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
                     <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
                     <p><strong>Status:</strong> <span class="status">${pedido.status}</span></p>
-                    ${pedido.status !== "Fechado" ? `<button class="btn-confirmar" data-id="${pedido.id}">Confirmar recebimento</button>` : ""}
-                    ${pedido.status === "Aberto" ? `<button class="btn-cancelar" data-id="${pedido.id}">Cancelar pedido</button>` : ""}
+                    ${pedido.status !== "Fechado" && pedido.status !== "Cancelado" && pedido.status === "Pendente"
+                    ? `<button class="btn-confirmar" data-id="${pedido.id}">Confirmar recebimento</button>` 
+                    : ""}
+                    ${pedido.status === "Aberto" 
+                    ? `<button class="btn-cancelar" data-id="${pedido.id}">Cancelar pedido</button>` 
+                    : ""}
                     `;
                 listaPedidos.appendChild(item);
             });
@@ -86,7 +91,7 @@ document.getElementById('listaPedidos').addEventListener('click', async function
                 // Atualiza o status
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
-                    statusSpan.textContent = 'Fechado';
+                    statusSpan.textContent = 'Cancelado';
                 }
                 btn.remove();
                 alert("Pedido cancelado com sucesso!");

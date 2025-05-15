@@ -491,11 +491,11 @@ router.put('/cancelar-pedido', (req, res) => {
     }
 
     const sql = 'UPDATE pedidos SET status = ? WHERE id = ?';
-    const status = 'Fechado';
+    const status = 'Cancelado';
 
     db.query(sql, [status, id], (err, resultado) => {
         if (err) {
-            console.error('Erro ao confirmar recebimento do pedido:', err);
+            console.error('Erro ao cancelar o pedido:', err);
             return res.status(500).send('Erro no servidor');
         }
 
@@ -503,7 +503,7 @@ router.put('/cancelar-pedido', (req, res) => {
             return res.status(404).json({ mensagem: 'Pedido não encontrado' });
         }
 
-        res.status(200).json({ mensagem: 'Recebimento confirmado com sucesso' });
+        res.status(200).json({ mensagem: 'Pedido cancelado com sucesso' });
     });
 });
 
