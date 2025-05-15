@@ -171,3 +171,41 @@ document.addEventListener("click", (e) => {
     dropdownMenu.classList.add("hidden");
   }
 });
+
+function initMapWithEndereco(endereco) {
+    const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ address: endereco }, function(results, status) {
+        if (status === 'OK') {
+            const localizacao = results[0].geometry.location;
+
+            const mapa = new google.maps.Map(document.getElementById("mapaModal"), {
+                center: localizacao,
+                zoom: 15,
+            });
+
+            new google.maps.Marker({
+                position: localizacao,
+                map: mapa,
+                title: "Local da doação",
+            });
+        } else {
+            console.error("Erro ao geocodificar o endereço:", status);
+        }
+    });
+}
+
+const modal = document.getElementById("modalDoacao");
+
+const observer = new MutationObserver(() => {
+  if (!modal.classList.contains("hidden")) {
+    const endereco = modal.querySelector("p:nth-child(7)")?.textContent.split(":")[1]?.trim();
+    if (endereco) {
+      setTimeout(() => {
+        initMapWithEndereco(endereco);
+      }, 300);
+    }
+  }
+});
+
+observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
