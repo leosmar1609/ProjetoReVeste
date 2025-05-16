@@ -1,0 +1,164 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+header.header {
+  background: #2563eb;
+  color: white;
+  width: 100%;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+header .logo {
+  margin: 0;
+  font-size: 1.5rem;
+}
+header button#btnSair {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+main.perfil-container {
+  background: white;
+  max-width: 600px;
+  width: 90%;
+  margin: 30px 0;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.1);
+}
+main h2 {
+  margin-top: 0;
+  color: #2563eb;
+  text-align: center;
+}
+.info p {
+  font-size: 1.1rem;
+  margin: 15px 0;
+  color: #444;
+}
+.info strong {
+  color: #111;
+}
+.botoes-acao {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 25px;
+}
+.botoes-acao button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.botoes-acao button:hover {
+  background: #1d4ed8;
+}
+
+/* Modal estilo simples */
+#modalEditar {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+#modalEditar.active {
+  display: flex;
+}
+#modalEditar > div {
+  background: white;
+  border-radius: 12px;
+  padding: 25px 30px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  position: relative;
+}
+#modalEditar h3 {
+  margin-top: 0;
+  color: #2563eb;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#modalEditar label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+#modalEditar input, #modalEditar textarea {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  resize: vertical;
+}
+#modalEditar input:focus, #modalEditar textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  background-color: #f0f8ff;
+}
+#modalEditar button#salvarAlteracoes {
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+  padding: 12px 0;
+  border: none;
+  border-radius: 9999px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+  transition: background-color 0.3s ease;
+}
+#modalEditar button#salvarAlteracoes:hover {
+  background-color: #1d4ed8;
+}
+#modalEditar button#fecharModal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+#modalEditar button#fecharModal:hover {
+  color: #333;
+}
+
+#msgModal {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+}
+#msgModal.error {
+  color: #dc2626;
+}
+#msgModal.success {
+  color: #16a34a;
+}

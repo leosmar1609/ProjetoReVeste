@@ -44,8 +44,12 @@ document.addEventListener('DOMContentLoaded', async() => {
 document.getElementById('listaPedidos').addEventListener('click', async function(event) {
     const btn = event.target;
 
+    // CONFIRMAR RECEBIMENTO
     if (btn.classList.contains('btn-confirmar')) {
         const pedidoId = btn.getAttribute('data-id');
+        const confirmar = confirm("Tem certeza que deseja confirmar o recebimento deste item?");
+        if (!confirmar) return;
+
         try {
             const resp = await fetch(`./auth/confirmar-recebimento`, {
                 method: 'PUT',
@@ -56,7 +60,6 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             });
 
             if (resp.ok) {
-                // Atualiza o status
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
                     statusSpan.textContent = 'Fechado';
@@ -71,13 +74,13 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             alert("Erro ao confirmar pedido.");
         }
     }
-});
 
-document.getElementById('listaPedidos').addEventListener('click', async function(event) {
-    const btn = event.target;
-
+    // CANCELAR PEDIDO
     if (btn.classList.contains('btn-cancelar')) {
         const pedidoId = btn.getAttribute('data-id');
+        const confirmar = confirm("Você realmente deseja cancelar este pedido? Essa ação não poderá ser desfeita.");
+        if (!confirmar) return;
+
         try {
             const resp = await fetch(`./auth/cancelar-pedido`, {
                 method: 'PUT',
@@ -88,7 +91,6 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             });
 
             if (resp.ok) {
-                // Atualiza o status
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
                     statusSpan.textContent = 'Cancelado';
@@ -99,13 +101,11 @@ document.getElementById('listaPedidos').addEventListener('click', async function
                 alert("Erro ao cancelar pedido.");
             }
         } catch (error) {
-            console.error("Erro ao confirmar:", error);
+            console.error("Erro ao cancelar:", error);
             alert("Erro ao cancelar pedido.");
         }
     }
 });
-
-
 
 document.getElementById('form').addEventListener('submit', async(e) => {
     e.preventDefault();
@@ -179,4 +179,26 @@ document.getElementById('search').addEventListener('input', function() {
             card.style.display = "none";
         }
     });
+});
+
+const userIcon = document.getElementById("userIcon");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+userIcon.addEventListener("click", () => {
+  dropdownMenu.classList.toggle("hidden");
+});
+
+document.getElementById('btnPerfil').addEventListener('click', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (id) {
+    window.location.href = `perfilPessoa.html?id=${id}`;
+  } else {
+    alert("ID do usuário não encontrado na URL.");
+  }
+});
+
+document.getElementById("btnLogout").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  sessionStorage.clear();
+  window.location.href = "login.html";
 });

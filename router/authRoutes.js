@@ -385,28 +385,32 @@ router.put('/doadorup', (req, res) => {
 });
 
 
-router.put('/pessoaup', (req, res) => {
-    const id = req.body.id;
-    const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
+router.put('/pessoaup/:id', (req, res) => {
+  const id = req.params.id;
+  const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
 
-    if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
-        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
+    return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  }
+
+  const sql = `
+    UPDATE pessoa_beneficiaria
+    SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, historyPer = ?
+    WHERE id = ?
+  `;
+
+  db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer, id], (err, resultado) => {
+    if (err) {
+      console.error('Erro ao atualizar pessoaup:', err);
+      return res.status(500).send('Erro no servidor');
     }
 
-    const sql = 'UPDATE pessoa_beneficiaria SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, historyPer = ? WHERE id = ?';
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
+    }
 
-    db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer, id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao atualizar pessoaup:', err);
-            return res.status(500).send('Erro no servidor');
-        }
-
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Pessoa não encontrado' });
-        }
-
-        res.status(200).json({ mensagem: 'Pessoa atualizada com sucesso' });
-    });
+    res.status(200).json({ mensagem: 'Pessoa atualizada com sucesso' });
+  });
 });
 
 

@@ -128,6 +128,9 @@ document.getElementById("fecharModal").addEventListener("click", () => {
 document.getElementById("confirmarDoacao").addEventListener("click", async () => {
     const idPedido = document.getElementById("modalDoacao").dataset.idPedido;
 
+    const confirmar = confirm("Você realmente deseja confirmar a doação?");
+        if (!confirmar) return;
+
     try {
         const response = await fetch('./auth/pedidosup', {
             method: 'PUT',
@@ -138,7 +141,7 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
         });
 
         if (response.ok) {
-            alert('Doação confirmada! O pedido agora está como "Pendente".');
+            alert('Doação confirmada! O recebimento será confirmado em breve.');
             // Atualiza a página ou o card (opcional)
             location.reload(); // ou atualize o card manualmente
         } else {
