@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const msgModal = document.getElementById("msgModal");
 
   try {
-    const response = await fetch(`./auth/pessoa?id=${idPerfil}`);
+    const response = await fetch(`./auth/instituicao?id=${idPerfil}`);
     const dados = await response.json();
 
     if (dados.length === 0) {
@@ -22,23 +22,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const pessoa = dados[0];
+    const instituicao = dados[0];
 
     // Preenche informações visíveis
-    document.getElementById("namePer").textContent = pessoa.namePer;
-    document.getElementById("emailPer").textContent = pessoa.emailPer;
-    document.getElementById("historyPer").textContent = pessoa.historyPer;
+    document.getElementById("nameInc").textContent = instituicao.nameInc;
+    document.getElementById("emailInc").textContent = instituicao.emailInc;
+    document.getElementById("historyInc").textContent = instituicao.historyInc;
+    document.getElementById("locationInc").textContent = instituicao.locationInc;
+    document.getElementById("cnpjInc").textContent = instituicao.cnpjInc;
 
     // Se for o dono do perfil
-    if (idUsuarioLogado === String(pessoa.id)) {
+    if (idUsuarioLogado === String(instituicao.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
       // Preenche campos do formulário
-      document.getElementById("inputName").value = pessoa.namePer || "";
-      document.getElementById("inputEmail").value = pessoa.emailPer || "";
-      document.getElementById("inputCpf").value = pessoa.cpfPer || "";
-      document.getElementById("inputHistory").value = pessoa.historyPer || "";
-      document.getElementById("inputPassword").value = pessoa.passwordPer || "";
+      document.getElementById("inputName").value = instituicao.nameInc || "";
+      document.getElementById("inputEmail").value = instituicao.emailInc || "";
+      document.getElementById("inputCNPJ").value = instituicao.cnpjInc || "";
+      document.getElementById("inputHistory").value = instituicao.historyInc || "";
+      document.getElementById("inputPassword").value = instituicao.passwordInc || "";
+      document.getElementById("inputAddress").value = instituicao.locationInc || "";
 
       // Abertura e fechamento do modal
       btnAlterar.addEventListener("click", () => {

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil Instituição</title>
+  <link rel="stylesheet" href="./css/perfil.css" />
+  
+</head>
+<body>
+  <header class="header">
+    <h1 class="logo">ReVeste</h1>
+    <button id="btnSair">Sair</button>
+  </header>
+
+  <main class="perfil-container">
+    <h2>Perfil</h2>
+    
+    <div class="info">
+      <p><strong>Nome:</strong> <span id="nameInc"></span></p>
+      <p><strong>Email:</strong> <span id="emailInc"></span></p>
+      <p><strong>História:</strong> <span id="historyInc"></span></p>
+      <p><strong>CNPJ:</strong> <span id="cnpjInc"></span></p>
+        <p><strong>Endereço:</strong> <span id="locationInc"></span></p>
+    </div>
+
+    <div class="botoes-acao" id="botoesApenasDono">
+      <button id="btnAlterar">Alterar Dados</button>
+      <button id="btnExcluir">Excluir Conta</button>
+    </div>
+  </main>
+
+  <!-- Modal para editar dados -->
+  <div id="modalEditar" class="modal" style="display: none;">
+    <div class="modal-content">
+      <button id="fecharModal" title="Fechar" class="btn-fechar">&times;</button>
+      <h3>Alterar Dados</h3>
+      <form id="formAlterar" method="PUT">
+        <label for="inputName">Nome</label>
+        <input type="text" id="inputName" name="inputName" required />
+
+        <label for="inputEmail">Email</label>
+        <input type="email" id="inputEmail" name="inputEmail" required />
+
+        <label for="inputPassword">Senha</label>
+        <input type="password" id="inputPassword" name="inputPassword" required minlength="6" />
+
+        <label for="inputCNPJ">CNPJ</label>
+        <input type="text" id="inputCNPJ" name="inputCNPJ" required pattern="\d{14}" title="CNPJ deve conter 14 números sem pontos ou traços" />
+
+        <label for="inputHistory">História</label>
+        <textarea id="inputHistory" name="inputHistory" rows="4" required></textarea>
+
+        <label for="inputAddress">Endereço</label>
+        <input type="text" id="inputAddress" name="inputAddress" required />
+
+        <button type="submit" id="salvarAlteracoes">Salvar Alterações</button>
+      </form>
+      <p id="msgModal"></p>
+    </div>
+  </div>
+
+  <script>
+    const btnAbrir = document.getElementById('btnAlterar');
+    const modal = document.getElementById('modalEditar');
+    const btnFechar = document.getElementById('fecharModal');
+
+    btnAbrir.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    btnFechar.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+  <script src="./js/perfilInstituicao.js"></script>
+<script src="./js/atualizarPerfilInc.js"></script>
+
+</body>
+</html>

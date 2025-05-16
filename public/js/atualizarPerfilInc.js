@@ -10,25 +10,26 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const id = idPerfil;
-    const namePer = document.getElementById("inputName").value.trim();
-    const emailPer = document.getElementById("inputEmail").value.trim();
-    const passwordPer = document.getElementById("inputPassword").value.trim();
-    const cpfPer = document.getElementById("inputCpf").value.trim();
-    const historyPer = document.getElementById("inputHistory").value.trim();
+    const nameInc = document.getElementById("inputName").value.trim();
+    const emailInc = document.getElementById("inputEmail").value.trim();
+    const passwordInc = document.getElementById("inputPassword").value.trim();
+    const cnpjInc = document.getElementById("inputCNPJ").value.trim();
+    const historyInc = document.getElementById("inputHistory").value.trim();
+    const locationInc = document.getElementById("inputAddress").value.trim();
 
-    if (!namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
+    if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !historyInc || !locationInc) {
       msgModal.style.color = "red";
       msgModal.textContent = "Preencha todos os campos.";
       return;
     }
 
     try {
-      const res = await fetch(`./auth/pessoaup/${id}`, {
+      const res = await fetch(`./auth/beneficiarioup/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, namePer, emailPer, passwordPer, cpfPer, historyPer }),
+        body: JSON.stringify({ id, nameInc, emailInc, passwordInc, cnpjInc, historyInc , locationInc }),
       });
 
       const resultado = await res.json();
@@ -36,9 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         msgModal.style.color = "green";
         msgModal.textContent = "Dados atualizados com sucesso!";
-        document.getElementById("namePer").textContent = namePer;
-        document.getElementById("emailPer").textContent = emailPer;
-        document.getElementById("historyPer").textContent = historyPer;
+        document.getElementById("nameInc").textContent = nameInc;
+        document.getElementById("emailInc").textContent = emailInc;
+        document.getElementById("historyInc").textContent = historyInc;
+        document.getElementById("locationInc").textContent = locationInc;
+        document.getElementById("cnpjInc").value = cnpjInc;
 
         document.getElementById("inputPassword").value = "";
 

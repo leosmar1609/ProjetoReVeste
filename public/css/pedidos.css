@@ -1,3 +1,4 @@
+/* === Estilo Geral === */
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
@@ -10,6 +11,11 @@ h2 {
     color: #333;
 }
 
+.hidden {
+    display: none;
+}
+
+/* === Lista de Pedidos === */
 #listaPedidos {
     display: flex;
     flex-wrap: wrap;
@@ -44,48 +50,72 @@ h2 {
     color: #555;
 }
 
+/* === Modal === */
 .modal {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex; justify-content: center; align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
     z-index: 1000;
-  }
-  
-  .modal.hidden {
+}
+
+.modal.hidden {
     display: none;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
     position: relative;
-  }
-  
-  .fechar {
+}
+
+.fechar {
     position: absolute;
-    top: 10px; right: 15px;
+    top: 10px; 
+    right: 15px;
     font-size: 24px;
     cursor: pointer;
-  }
-  .user-menu {
+}
+
+/* === Botão de Confirmação da Doação === */
+#modalDoacao #confirmarDoacao {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#modalDoacao #confirmarDoacao:hover {
+    background-color: #1e40af;
+}
+
+/* === Menu do Usuário === */
+.user-menu {
     position: relative;
     margin-left: auto;
-  }
-  
-  .user-menu img {
+}
+
+.user-menu img {
     width: 40px;
     height: 40px;
     cursor: pointer;
     border-radius: 50%;
     border: 2px solid #ccc;
-  }
-  
-  .dropdown {
+}
+
+/* === Dropdown === */
+.dropdown {
     position: absolute;
     top: 50px;
     right: 0;
@@ -95,36 +125,16 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 10;
     padding: 10px;
-  }
-  
-  .dropdown button {
+}
+
+.dropdown button {
     background-color: transparent;
     border: none;
     color: #c62828;
     font-weight: bold;
     cursor: pointer;
-  }
-  
-  .dropdown button:hover {
-    color: #b71c1c;
-  }
-  
-  .hidden {
-    display: none;
-  }
-
-#modalDoacao #confirmarDoacao {
-  background-color: #2563eb;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 999px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#modalDoacao #confirmarDoacao:hover {
-  background-color: #1e40af;
+.dropdown button:hover {
+    color: #b71c1c;
 }

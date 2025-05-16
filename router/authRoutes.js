@@ -414,8 +414,8 @@ router.put('/pessoaup/:id', (req, res) => {
 });
 
 
-router.put('/beneficiarioup', (req, res) => {
-    const id = req.body.id;
+router.put('/beneficiarioup/:id', (req, res) => {
+    const id = req.params.id;
     const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
 
     if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !historyInc || !locationInc) {

@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', async() => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
+        const res = await fetch(`./auth/instituicao?id=${id}`);
+        const data = await res.json();
+
     // 🟢 Carrega os pedidos da pessoa beneficiária
     try {
         const response = await fetch(`./auth/pedidosI?id=${id}`);
@@ -119,7 +122,14 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const quantity_item = document.getElementById("quantity_item").value;
     const category = document.getElementById("category").value;
     const urgencia_enum = document.getElementById("urgencia_enum").value;
-    const locate = document.getElementById("locate").value;
+    if (data && data.locationInc) {
+            const locateInput = document.getElementById("locate");
+            if (locateInput) {
+                locateInput.value = data.locationInc;
+                locateInput.readOnly = true; // torna o campo não editável, se desejar
+            }
+        }
+
 
     const response = await fetch('./auth/cadastrar-itemI', {
         method: 'POST',
@@ -181,4 +191,26 @@ document.getElementById('search').addEventListener('input', function() {
             card.style.display = "none";
         }
     });
+});
+
+const userIcon = document.getElementById("userIcon");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+userIcon.addEventListener("click", () => {
+  dropdownMenu.classList.toggle("hidden");
+});
+
+document.getElementById('btnPerfil').addEventListener('click', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (id) {
+    window.location.href = `perfilInstituicao.html?id=${id}`;
+  } else {
+    alert("ID do usuário não encontrado na URL.");
+  }
+});
+
+document.getElementById("btnLogout").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  sessionStorage.clear();
+  window.location.href = "login.html";
 });
