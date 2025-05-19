@@ -111,5 +111,33 @@
 
         <a href="index.html" class="btn voltar">← Voltar ao Menu</a>
     </div>
+    <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nome = document.getElementById('nome').value;
+        const email = document.getElementById('email').value;
+        const mensagem = document.getElementById('mensagem').value;
+
+        try {
+            const resposta = await fetch('/api/enviar-formulario', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, mensagem })
+            });
+
+            const resultado = await resposta.json();
+            alert(resultado.message);
+            if (resposta.ok) {
+                form.reset();
+            }
+        } catch (error) {
+            alert('Erro ao enviar mensagem.');
+            console.error(error);
+        }
+    });
+</script>
+
 </body>
 </html>
