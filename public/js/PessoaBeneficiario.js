@@ -1,6 +1,50 @@
 document.addEventListener('DOMContentLoaded', async() => {
+   const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.warn('Token não encontrado no localStorage. Redirecionando para login.');
+        window.location.href = 'login.html';
+        return;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
+
+    if (!id || id === "") {
+        console.warn('ID do usuário não fornecido ou inválido na URL. Redirecionando para login.');
+        window.location.href = 'login.html';
+        return; 
+    }
+
+    try {
+        const res = await fetch(`./auth/pessoa?id=${id}`, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+
+        if (!res.ok) {
+            
+            const errorData = await res.json().catch(() => ({ message: res.statusText })); 
+            console.error(`Erro ao buscar usuário: Status ${res.status} - ${errorData.message}`);
+
+            if (res.status === 401 || res.status === 403) {
+                console.warn('Erro de autenticação/autorização. Redirecionando para login.');
+                window.location.href = 'login.html';
+                return;
+            } else {
+                window.location.href = 'login.html';
+                return; 
+            }
+        }
+        const data = await res.json();
+       
+    } catch (error) {
+        console.error("Erro na requisição ou processamento:", error);
+        window.location.href = 'login.html';
+    }
 
     try {
         const response = await fetch(`./auth/pedidosP?id=${id}`);

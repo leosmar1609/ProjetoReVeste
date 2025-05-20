@@ -2,6 +2,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const idPerfil = urlParams.get("id");
   const idUsuarioLogado = localStorage.getItem("idUsuarioLogado");
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Você precisa estar logado para acessar essa página.");
+    window.location.href = "login.html";
+    return;
+  }
+
 
   if (!idPerfil) {
     alert("ID do perfil não informado.");
@@ -14,15 +22,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   const msgModal = document.getElementById("msgModal");
 
   try {
-    const response = await fetch(`./auth/doador?id=${idPerfil}`);
-    const dados = await response.json();
+    const response = await fetch(`./auth/doador?id=${idPerfil}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-    if (dados.length === 0) {
-      alert("Perfil não encontrado.");
+    if (response.status === 401) {
+      alert("Token inválido ou expirado. Faça login novamente.");
+      window.location.href = "login.html";
       return;
     }
 
-    const doador = dados[0];
+    const dados = await response.json();
+console.log('Dados recebidos:', dados);
+
+if (!dados || Object.keys(dados).length === 0) {
+  alert("Perfil não encontrado.");
+  return;
+}
+
+    const doador = dados;
 
 
     document.getElementById("nameDoador").textContent = doador.namedonor;
@@ -59,4 +79,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Erro ao carregar perfil:", erro);
     alert("Erro ao carregar os dados do perfil.");
   }
+});
+
+document.getElementById('btnVoltar').addEventListener('click', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (id) {
+    window.location.href = `doador.html?id=${id}`;
+  } else {
+    alert("ID do usuário não encontrado na URL.");
+  }
+});
+
+document.getElementById("btnSair").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  sessionStorage.clear();
+  window.location.href = "login.html";
 });

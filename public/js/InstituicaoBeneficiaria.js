@@ -1,12 +1,51 @@
-document.addEventListener('DOMContentLoaded', async() => {
-    // Captura o ID da URL (ex: ?id=123)
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.warn('Token não encontrado no localStorage. Redirecionando para login.');
+        window.location.href = 'login.html';
+        return;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-        const res = await fetch(`./auth/instituicao?id=${id}`);
+    if (!id || id === "") {
+        console.warn('ID da instituição não fornecido ou inválido na URL. Redirecionando para login.');
+        window.location.href = 'login.html';
+        return; 
+    }
+
+    try {
+        const res = await fetch(`./auth/instituicao?id=${id}`, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+
+        if (!res.ok) {
+            
+            const errorData = await res.json().catch(() => ({ message: res.statusText })); 
+            console.error(`Erro ao buscar instituição: Status ${res.status} - ${errorData.message}`);
+
+            if (res.status === 401 || res.status === 403) {
+                console.warn('Erro de autenticação/autorização. Redirecionando para login.');
+                window.location.href = 'login.html';
+                return;
+            } else {
+                alert("Erro ao buscar dados da instituição. Tente novamente mais tarde.");
+                return; 
+            }
+        }
+
         const data = await res.json();
 
-    // 🟢 Carrega os pedidos da pessoa beneficiária
+    } catch (error) {
+        console.error("Erro na requisição ou processamento:", error);
+        window.location.href = 'login.html';
+    }
     try {
         const response = await fetch(`./auth/pedidosI?id=${id}`);
         const pedidos = await response.json();
@@ -122,14 +161,7 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const quantity_item = document.getElementById("quantity_item").value;
     const category = document.getElementById("category").value;
     const urgencia_enum = document.getElementById("urgencia_enum").value;
-    if (data && data.locationInc) {
-            const locateInput = document.getElementById("locate");
-            if (locateInput) {
-                locateInput.value = data.locationInc;
-                locateInput.readOnly = true; // torna o campo não editável, se desejar
-            }
-        }
-
+    const locate = document.getElementById("locate").value;
 
     const response = await fetch('./auth/cadastrar-itemI', {
         method: 'POST',

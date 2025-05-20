@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const secretKey = process.env.JWT_SECRET; 
 
 const router = express.Router();
 const { enviarEmailVerificacao } = require('../emailService');
@@ -10,7 +11,21 @@ const db = mysql.createConnection({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME
+     
 });
+
+function autenticarToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Pega o token após 'Bearer'
+
+    if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
+        if (err) return res.status(403).json({ message: 'Token inválido.' });
+        req.usuario = usuario; // Armazena os dados decodificados no request
+        next(); // Permite continuar
+    });
+}
 
 router.post('/registerIB', (req, res) => {
     const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada } = req.body;
@@ -50,31 +65,55 @@ router.post('/registerdonor', (req, res) => {
     });
 });
 
-router.get('/instituicao', (req, res) => {
+router.get('/instituicao', autenticarToken, (req, res) => {
     const id = req.query.id;
-    const sql = 'SELECT * FROM Instituicao_Beneficiaria WHERE id = ?';
+
+    if (!id) {
+        return res.status(400).json({ error: 'ID não fornecido' });
+    }
+
+    const sql = 'SELECT * FROM instituicao_Beneficiaria WHERE id = ?';
     db.query(sql, [id], (err, results) => {
         if (err) {
             console.error('Erro ao buscar instituição:', err);
-            res.status(500).send('Erro no servidor');
-        } else {
-            res.json(results);
+            return res.status(500).send('Erro no servidor');
         }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Instituição não encontrada' });
+        }
+
+        console.log("ID recebido:", id);
+        console.log("Resultado:", results[0]);
+        res.json(results[0]);
     });
 });
 
-router.get('/pessoa', (req, res) => {
+
+router.get('/pessoa', autenticarToken, (req, res) => {
     const id = req.query.id;
+
+    if (!id) {
+        return res.status(400).json({ error: 'ID não fornecido' });
+    }
+
     const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
     db.query(sql, [id], (err, results) => {
         if (err) {
-            console.error('Erro ao buscar instituição:', err);
-            res.status(500).send('Erro no servidor');
-        } else {
-            res.json(results);
+            console.error('Erro ao buscar pessoa:', err);
+            return res.status(500).send('Erro no servidor');
         }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Pessoa não encontrada' });
+        }
+
+        console.log("ID recebido:", id);
+        console.log("Resultado:", results[0]);
+        res.json(results[0]);
     });
 });
+
 
 router.post('/registerPB', (req, res) => {
     const { namePer, emailPer, passwordPer, cpfPer, historyPer, verificado } = req.body;
@@ -142,26 +181,37 @@ router.get('/verificar-emailIB', (req, res) => {
 router.post('/login', (req, res) => {
     const { email, password, userType } = req.body;
 
+    const handleLogin = (table, emailCol, passwordCol, type, result, res) => {
+        if (result.length > 0) {
+            const user = result[0];
+
+            const payload = {
+                id: user.id || user[emailCol],
+                userType: type,
+                email: user[emailCol]
+            };
+
+            const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+
+            return res.json({ tipo: type, id: user.id || user[emailCol], token: token });
+        }
+        return res.status(401).json({ error: `Usuário ou senha inválidos para ${type}` });
+    };
+
     if (userType === "instituicao") {
         db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [email, password], (err, result1) => {
-            if (result1.length > 0) {
-                return res.json({ tipo: 'instituicao', id: result1[0].id });
-            }
-            return res.status(401).json({ error: 'Usuário ou senha inválidos para Instituição' });
+            if (err) return res.status(500).json({ error: "Erro no servidor" });
+            handleLogin('instituicao_beneficiaria', 'emailInc', 'passwordInc', 'instituicao', result1, res);
         });
     } else if (userType === "pessoa") {
         db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [email, password], (err, result2) => {
-            if (result2.length > 0) {
-                return res.json({ tipo: 'pessoa', id: result2[0].id });
-            }
-            return res.status(401).json({ error: 'Usuário ou senha inválidos para Pessoa' });
+            if (err) return res.status(500).json({ error: "Erro no servidor" });
+            handleLogin('pessoa_beneficiaria', 'emailPer', 'passwordPer', 'pessoa', result2, res);
         });
     } else if (userType === "doador") {
         db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
-            if (result3.length > 0) {
-                return res.json({ tipo: 'doador', id: result3[0].id });
-            }
-            return res.status(401).json({ error: 'Usuário ou senha inválidos para Doador' });
+            if (err) return res.status(500).json({ error: "Erro no servidor" });
+            handleLogin('doador', 'emaildonor', 'passworddonor', 'doador', result3, res);
         });
     } else {
         return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
@@ -254,6 +304,13 @@ router.get('/pedidos', (req, res) => {
 });
 
 router.get('/doador', (req, res) => {
+     const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if (err) return res.sendStatus(403);
     const id = req.query.id;
     const sql = 'SELECT * FROM doador WHERE id = ?';
     db.query(sql, [id], (err, results) => {
@@ -261,9 +318,12 @@ router.get('/doador', (req, res) => {
             console.error('Erro ao buscar doador:', err);
             res.status(500).send('Erro no servidor');
         } else {
-            res.json(results);
+            res.json(results[0]);
+            console.log("ID recebido:", id);
+            console.log("Resultado:", results[0]);
         }
     });
+});
 });
 
 router.delete('/deletedoador', (req, res) => {
