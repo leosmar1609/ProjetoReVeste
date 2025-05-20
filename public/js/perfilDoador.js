@@ -60,3 +60,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     alert("Erro ao carregar os dados do perfil.");
   }
 });
+
+document.getElementById('btnPerfil').addEventListener('click', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (id) {
+    window.location.href = `perfilDoador.html?id=${id}`;
+  } else {
+    alert("ID do usuário não encontrado na URL.");
+  }
+});
