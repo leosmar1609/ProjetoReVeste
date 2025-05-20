@@ -24,21 +24,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const doador = dados[0];
 
-    // Preenche informações visíveis
+
     document.getElementById("nameDoador").textContent = doador.namedonor;
     document.getElementById("emailDoador").textContent = doador.emaildonor;
 
 
-    // Se for o dono do perfil
+
     if (idUsuarioLogado === String(doador.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
-      // Preenche campos do formulário
+
       document.getElementById("inputName").value = doador.namedonor || "";
       document.getElementById("inputEmail").value = doador.emaildonor || "";
       document.getElementById("inputPassword").value = doador.passworddonor || "";
 
-      // Abertura e fechamento do modal
+
       btnAlterar.addEventListener("click", () => {
         msgModal.textContent = "";
         msgModal.style.color = "";
