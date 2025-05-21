@@ -415,17 +415,17 @@ router.delete('/deletepedido', (req, res) => {
     });
 });
 
-router.put('/doadorup', (req, res) => {
-    const id = req.body.id;
-    const { namedonor, emaildonor, passworddonor } = req.body;
+router.put('/doadorup/:id', autenticarToken, (req, res) => {
+    const id = req.params.id;
+    const { nameDoador, emailDoador, passwordDoador } = req.body;
 
-    if (!id || !namedonor || !emaildonor || !passworddonor) {
+    if (!nameDoador || !emailDoador || !passwordDoador) {
         return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
     }
 
     const sql = 'UPDATE doador SET namedonor = ?, emaildonor = ?, passworddonor = ? WHERE id = ?';
 
-    db.query(sql, [namedonor, emaildonor, passworddonor, id], (err, resultado) => {
+    db.query(sql, [nameDoador, emailDoador, passwordDoador, id], (err, resultado) => {
         if (err) {
             console.error('Erro ao atualizar doador:', err);
             return res.status(500).send('Erro no servidor');
@@ -438,7 +438,6 @@ router.put('/doadorup', (req, res) => {
         res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
     });
 });
-
 
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;

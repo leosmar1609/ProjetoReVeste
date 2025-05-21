@@ -4,20 +4,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const formAlterar = document.getElementById("formAlterar");
   const msgModal = document.getElementById("msgModal");
 
+  // Verifica se há ID e se o formulário existe
   if (!idPerfil || !formAlterar) return;
 
   formAlterar.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const id = idPerfil;
-    const nameDoador = document.getElementById("inputName").value.trim();
-    const emailDoador = document.getElementById("inputEmail").value.trim();
-    const passwordDoador = document.getElementById("inputPassword").value.trim();
+    const nameDoador = document.getElementById("inputName")?.value.trim();
+    const emailDoador = document.getElementById("inputEmail")?.value.trim();
+    const passwordDoador = document.getElementById("inputPassword")?.value.trim();
 
-
-    if (!nameDoador || !emailDoador || !passwordDoador ) {
+    // Verifica se todos os campos foram preenchidos
+    if (!nameDoador || !emailDoador || !passwordDoador) {
       msgModal.style.color = "red";
       msgModal.textContent = "Preencha todos os campos.";
+      return;
+    }
+
+    // Validação de e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailDoador)) {
+      msgModal.style.color = "red";
+      msgModal.textContent = "Digite um e-mail válido.";
+      return;
+    }
+
+    // Validação de senha
+    if (passwordDoador.length < 6) {
+      msgModal.style.color = "red";
+      msgModal.textContent = "A senha deve ter pelo menos 6 caracteres.";
+      return;
+    }
+
+    // Obtém o token do localStorage (ou de onde você estiver armazenando)
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      msgModal.style.color = "red";
+      msgModal.textContent = "Usuário não autenticado.";
       return;
     }
 
@@ -26,8 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
         },
-        body: JSON.stringify({ id, namedonor, emaildonor, passworddonor}),
+        body: JSON.stringify({ nameDoador, emailDoador, passwordDoador }),
       });
 
       const resultado = await res.json();
@@ -35,12 +61,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok) {
         msgModal.style.color = "green";
         msgModal.textContent = "Dados atualizados com sucesso!";
-        document.getElementById("nameDoador").textContent = namedonor;
-        document.getElementById("emailDoador").textContent = emaildonor;
+
+        const nomeExibido = document.getElementById("nameDoador");
+        const emailExibido = document.getElementById("emailDoador");
+
+        if (nomeExibido) nomeExibido.textContent = nameDoador;
+        if (emailExibido) emailExibido.textContent = emailDoador;
+
         document.getElementById("inputPassword").value = "";
 
         setTimeout(() => {
-          document.getElementById("modalEditar").classList.remove("active");
+          const modal = document.getElementById("modalEditar");
+          if (modal) modal.classList.remove("active");
+
           msgModal.textContent = "";
           msgModal.style.color = "";
         }, 2000);
