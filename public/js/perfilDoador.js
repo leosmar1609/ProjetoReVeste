@@ -77,7 +77,6 @@ if (!dados || Object.keys(dados).length === 0) {
     }
   } catch (erro) {
     console.error("Erro ao carregar perfil:", erro);
-    alert("Erro ao carregar os dados do perfil.");
   }
 });
 
