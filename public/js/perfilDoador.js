@@ -81,14 +81,17 @@ if (!dados || Object.keys(dados).length === 0) {
   }
 });
 
+
 document.getElementById('btnVoltar').addEventListener('click', () => {
   const id = new URLSearchParams(window.location.search).get('id');
   if (id) {
     window.location.href = `doador.html?id=${id}`;
-  } else {
+  }
+   else {
     alert("ID do usuário não encontrado na URL.");
   }
 });
+
 
 document.getElementById("btnSair").addEventListener("click", () => {
   localStorage.removeItem("token");
