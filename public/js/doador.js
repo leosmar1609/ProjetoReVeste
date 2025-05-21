@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const pessoaData = await resPessoa.json();
-                        console.log("Dados da pessoa:", pessoaData);
+                        // console.log("Dados da pessoa:", pessoaData);
 
                         if (Array.isArray(pessoaData) && pessoaData.length > 0 && pessoaData[0].namePer) {
                             nomeDoador = pessoaData[0].namePer;
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const instData = await resInst.json();
-                        console.log("Dados da instituição:", instData);
+                        // console.log("Dados da instituição:", instData);
 
                         if (Array.isArray(instData) && instData.length > 0 && instData[0].nameInc) {
                             nomeDoador = instData[0].nameInc;
@@ -289,7 +289,7 @@ const observer = new MutationObserver(() => {
     if (endereco) {
       setTimeout(() => {
           initMapWithEndereco(endereco);
-        }, 500); // Pequeno atraso para garantir que o DOM esteja pronto
+        }, 500); 
       }
     }
   });

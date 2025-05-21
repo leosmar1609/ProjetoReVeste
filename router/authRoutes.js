@@ -83,8 +83,8 @@ router.get('/instituicao', autenticarToken, (req, res) => {
             return res.status(404).json({ error: 'Instituição não encontrada' });
         }
 
-        console.log("ID recebido:", id);
-        console.log("Resultado:", results[0]);
+        // console.log("ID recebido:", id);
+        // console.log("Resultado:", results[0]);
         res.json(results[0]);
     });
 });
@@ -108,8 +108,8 @@ router.get('/pessoa', autenticarToken, (req, res) => {
             return res.status(404).json({ error: 'Pessoa não encontrada' });
         }
 
-        console.log("ID recebido:", id);
-        console.log("Resultado:", results[0]);
+        // console.log("ID recebido:", id);
+        // console.log("Resultado:", results[0]);
         res.json(results[0]);
     });
 });
@@ -319,8 +319,8 @@ router.get('/doador', (req, res) => {
             res.status(500).send('Erro no servidor');
         } else {
             res.json(results[0]);
-            console.log("ID recebido:", id);
-            console.log("Resultado:", results[0]);
+            // console.log("ID recebido:", id);
+            // console.log("Resultado:", results[0]);
         }
     });
 });
