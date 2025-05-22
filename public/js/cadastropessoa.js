@@ -14,7 +14,7 @@ document.getElementById('registerPForm').addEventListener('submit', async(e) => 
     });
 
     const data = await response.json();
-    const messageDiv = document.getElementById('message');
+    const messageDiv = document.getElementById('messagePessoa');
     messageDiv.textContent = data.message || data.error;
     messageDiv.style.color = response.ok ? 'green' : 'red';
 });
