@@ -13,7 +13,7 @@ function enviarEmailVerificacao(emailPer, namePer) {
     // Gerar token válido por 1 hora
     const token = jwt.sign({ email: emailPer }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    const linkVerificacao = `http://localhost:3000/auth/verificar-email?token=${token}`;
+    const linkVerificacao = `http://localhost:4000/auth/verificar-email?token=${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
