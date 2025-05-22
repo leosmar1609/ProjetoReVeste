@@ -6,24 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro ReVeste</title>
 
-    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="./css/cadastro.css" />
     <script defer src="/js/cadastro.js"></script>
     <script defer src="./js/cadastropessoa.js"></script>
     <script defer src="./js/cadastrodoador.js"></script>
-
 </head>
 
 <body>
-
-    <!-- carrossel  DOS 3 FORMULARIOS-->
     <div class="swiper">
         <div class="swiper-wrapper">
 
             <div class="swiper-slide">
                 <h2>Cadastro de Doador</h2>
-                <!-- FORMULARIO DE DOADOOOOOOOOR-->
                 <form id="registerFormDoador">
                     <label for="nomeDoador">Nome Completo</label>
                     <input type="text" id="namedonor" name="nomeDoador" />
@@ -37,8 +32,6 @@
                     <p id="messageDoador"></p>
 
                     <button type="submit">Cadastrar</button>
-                    
-
                 </form>
 
                 <footer>
@@ -46,7 +39,6 @@
                 </footer>
             </div>
 
-            <!-- FORMULARIO DE BENEFICIARIOOOOOO -->
             <div class="swiper-slide">
                 <h2>Cadastro de Beneficiário</h2>
                 <form id="registerPForm" method="POST">
@@ -66,13 +58,11 @@
                     <textarea id="historyPer" name="historiaPessoa" rows="3"></textarea>
 
                     <p id="messagePessoa"></p>
-                    <button type="submit">Cadastrar</button>
-                    
 
+                    <button type="submit">Cadastrar</button>
                 </form>
             </div>
 
-            <!-- FORMULARIO DE INSTITUIÇÃAAAAAAAAAAAAO CONFORME O BACK END CRIOU -->
             <div class="swiper-slide">
                 <h2>Cadastro de Instituição</h2>
                 <form id="registerForm">
@@ -97,22 +87,16 @@
                     <p id="messageInc"></p>
 
                     <button type="submit">Cadastrar</button>
-                    
-
                 </form>
             </div>
 
         </div>
 
-        <!-- LITERALMENTE SÓ MUDAR OS ID CONFORME O BACK END CRIOU  -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
 
-
-    <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
     <script>
         const swiper = new Swiper('.swiper', {
             effect: 'coverflow',
@@ -133,8 +117,6 @@
             loop: false,
         });
     </script>
-
-
 </body>
 
 </html>
