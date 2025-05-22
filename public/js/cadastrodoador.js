@@ -1,6 +1,8 @@
 document.getElementById('registerFormDoador').addEventListener('submit', async(e) => {
     e.preventDefault();
 
+    const messageElement = document.getElementById("messageDoador");
+
     const namedonor = document.getElementById('namedonor').value;
     const emaildonor = document.getElementById('emaildonor').value;
     const passworddonor = document.getElementById('passworddonor').value;
@@ -12,7 +14,11 @@ document.getElementById('registerFormDoador').addEventListener('submit', async(e
     });
 
     const data = await response.json();
-    const messageDiv = document.getElementById('messageDoador');
-    messageDiv.textContent = data.message || data.error;
-    messageDiv.style.color = response.ok ? 'green' : 'red';
+    if (!response.ok) {
+                messageElement.innerText = "❌ Cadastro não realizado.";
+                messageElement.style.color = "red";
+                return;
+            }
+            messageElement.innerText = "✅ Cadastro realizado com sucesso!";
+            messageElement.style.color = "green";
 });

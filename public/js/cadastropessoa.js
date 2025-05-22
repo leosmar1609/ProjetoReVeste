@@ -1,6 +1,8 @@
 document.getElementById('registerPForm').addEventListener('submit', async(e) => {
     e.preventDefault();
 
+    const messageElement = document.getElementById("messagePessoa");
+
     const namePer = document.getElementById('namePer').value;
     const emailPer = document.getElementById('emailPer').value;
     const passwordPer = document.getElementById('passwordPer').value;
@@ -14,7 +16,11 @@ document.getElementById('registerPForm').addEventListener('submit', async(e) => 
     });
 
     const data = await response.json();
-    const messageDiv = document.getElementById('messagePessoa');
-    messageDiv.textContent = data.message || data.error;
-    messageDiv.style.color = response.ok ? 'green' : 'red';
+    if (!response.ok) {
+                messageElement.innerText = "❌ Cadastro não realizado.";
+                messageElement.style.color = "red";
+                return;
+            }
+            messageElement.innerText = "✅ Cadastro realizado com sucesso!";
+            messageElement.style.color = "green";
 });
