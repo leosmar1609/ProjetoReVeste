@@ -15,5 +15,7 @@ document.getElementById('registerForm').addEventListener('submit', async(e) => {
     });
 
     const data = await response.json();
-    alert(data.message || data.error);
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = data.message || data.error;
+    messageDiv.style.color = response.ok ? 'green' : 'red';
 });
