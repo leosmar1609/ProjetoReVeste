@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 
 function autenticarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Pega o token após 'Bearer'
+    const token = authHeader && authHeader.split(' ')[3]; // Pega o token após 'Bearer'
 
     if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
 
