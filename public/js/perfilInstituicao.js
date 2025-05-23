@@ -89,3 +89,8 @@ document.getElementById('btnVoltar').addEventListener('click', () => {
   }
 }
 );
+document.getElementById("btnSair").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  sessionStorage.clear();
+  window.location.href = "login.html";
+});
