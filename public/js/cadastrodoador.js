@@ -30,10 +30,9 @@ document.getElementById('registerFormDoador').addEventListener('submit', async(e
         messageElement.innerText = messageText;
         messageElement.style.color = "green";
 
-        // Espera 3 segundos, depois redireciona
         setTimeout(() => {
-            window.location.href = '/login.html'; // ajuste o caminho se necessário
-        }, 3000);
+            window.location.href = './confirmar.html';
+        }, 1000);
 
     } catch (error) {
         console.error("Erro ao enviar o formulário:", error);

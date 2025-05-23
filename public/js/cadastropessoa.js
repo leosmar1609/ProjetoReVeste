@@ -31,11 +31,10 @@ document.getElementById('registerPForm').addEventListener('submit', async(e) => 
 
         messageElement.innerText = messageText;
         messageElement.style.color = "green";
-
-        // Espera 3 segundos e redireciona
+        
         setTimeout(() => {
-            window.location.href = './login.html'; // Altere para o caminho correto se necessário
-        }, 3000);
+            window.location.href = './confirmar.html';
+        }, 1000);
 
     } catch (error) {
         console.error("Erro ao enviar o formulário:", error);

@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
             messageElement.style.color = "green";
 
             setTimeout(() => {
-            window.location.href = '/login.html'; // ajuste o caminho se necessário
-        }, 3000);
+            window.location.href = './confirmar.html';
+        }, 1000);
 
         } catch (error) {
             console.error("Erro ao enviar o formulário:", error);
