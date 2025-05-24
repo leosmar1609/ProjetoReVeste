@@ -1,30 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DoeAgora</title>
+    <title>Página inicial</title>
     <link rel="stylesheet" href="./css/stylelogin.css" />
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
-
 <body>
-    <header>
-        <div class="logo">
-            <img src="./imgs/Logo.png" />
-        </div>
-        <div class="overlay">
-            <h1>Conectando quem precisa com quem pode ajudar.</h1>
-        </div>
-        <div class="btn-container">
-            <a href="login.html" class="btn-login">Entrar</a>
-            <a href="cadastro.html" class="btn-signup">Cadastrar</a>
-        </div>
-    </header>
-
+    <!-- NAVBAR -->
     <nav class="main-nav">
+        <img src='./imgs/LogoBranco.png' alt="Logo" class="logo-nav"/>
         <div class="menu-toggle" id="menu-toggle">&#9776;</div>
         <ul id="menu" class="menu">
             <li><a href="login.html">PEDIDOS DE DOAÇÃO</a></li>
@@ -32,39 +18,26 @@
             <li><a href="sobre.html">SOBRE</a></li>
             <li><a href="contato.html">CONTATO</a></li>
         </ul>
-
+        <div class="btn-container">
+            <a href="login.html" class="btn-login">Entrar</a>
+            <a href="cadastro.html" class="btn-signup">Cadastrar</a>
+        </div>
     </nav>
 
+    </nav>     
+    <!-- HEADER SEM CONTEÚDO -->
+    <header>
+        <img src='./imgs/Capa.png' alt="Capa" class="capa-nav"/>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
     <main>
-        <section class="intro">
-            <h2>Cadastre um pedido de doação ou ajude alguém</h2>
-            <p>
-                No Revest, qualquer pessoa ou instituição pode cadastrar um pedido e receber ajuda de doadores voluntários.
-            </p>
-            <a href="cadastro.html" class="btn">Criar pedido de doação</a>
-        </section>
-
-        <section class="categories">
-            <div class="category">
-                <img src="https://cdn-icons-png.flaticon.com/128/2331/2331970.png" alt="Roupas" />
-                <h3>Roupas</h3>
-            </div>
-            <div class="category">
-                <img src="https://cdn-icons-png.flaticon.com/128/2342/2342664.png" alt="Alimentos" />
-                <h3>Alimentos</h3>
-            </div>
-            <div class="category">
-                <img src="https://cdn-icons-png.flaticon.com/128/1532/1532630.png" alt="Brinquedos" />
-                <h3>Brinquedos</h3>
-            </div>
-        </section>
-
         <section class="how-it-works">
             <h2>Como funciona?</h2>
             <div class="steps">
                 <div class="step">
                     <span>1</span>
-                    <p>Cadastre um pedido de doação</p>
+                    <p>Cadastre ou solicite um pedido de doação</p>
                 </div>
                 <div class="step">
                     <span>2</span>
@@ -72,22 +45,84 @@
                 </div>
                 <div class="step">
                     <span>3</span>
-                    <p>Ajuda é entregue diretamente</p>
+                    <p>A doação é entregue diretamente</p>
                 </div>
             </div>
         </section>
+
+        
+        <section class="intro">
+            <h2>Quais os tipos de doação?</h2>
+        <section class="categories">
+            <div class="category">
+                <img src='./imgs/Roupa.png' alt="Roupas" />
+                <h3>Roupas</h3>
+            </div>
+            <div class="category">
+                <img src='./imgs/Alimento.png' alt="Alimentos" />
+                <h3>Alimentos</h3>
+            </div>
+            <div class="category">
+                <img src='./imgs/Brinquedo.png' alt="Brinquedos" />
+                <h3>Brinquedos</h3>
+            </div>
+
+        <div class="separador"></div>
+
+
+        </section>
+            <!-- ✅ Botão correto com funcionalidade modal -->
+            <a href="#" class="btn" id="openModal"><b>Cadastrar ou solicitar doação</b></a>
+        </section>
+
     </main>
 
+    <!-- ✅ Modal: aparece ao clicar no botão -->
+    <div id="popup" class="modal">
+        <div class="modal-content">
+            <b>Você já possui cadastro?</b>
+            <div class="modal-buttons">
+                <button id="btnSim">Sim, fazer login</button>
+                <button id="btnNao">Não, cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Script do menu mobile -->
     <script>
         const toggle = document.getElementById('menu-toggle');
         const menu = document.getElementById('menu');
-
         toggle.addEventListener('click', () => {
             menu.classList.toggle('active');
         });
     </script>
 
+    <!-- ✅ Script do modal -->
+    <script>
+        const openModalBtn = document.getElementById('openModal');
+        const modal = document.getElementById('popup');
+        const btnSim = document.getElementById('btnSim');
+        const btnNao = document.getElementById('btnNao');
+
+        openModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'block';
+        });
+
+        btnSim.addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
+
+        btnNao.addEventListener('click', () => {
+            window.location.href = 'cadastro.html';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
-
 </html>

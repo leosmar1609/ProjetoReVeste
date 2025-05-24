@@ -6,29 +6,51 @@
     <style>
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e6f0ff;
+            background-color: #bfbcbc;
             color: #333;
             margin: 0;
             padding: 0;
         }
         header {
-            background-color: #0066cc;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 2em;
-            font-weight: bold;
+            background-color: #1c292e;
+            padding: 0px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+        .logo {
+            flex: 1;
+            text-align: center;
+        }
+        .logo img {
+            height: 100px;
+            margin-top: 10px;
+        }
+        .btn-voltar {
+            background-color: #ffffff;
+            color: #1c292e;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .btn-voltar:hover {
+            background: #131e23;
+            color: #ffffff;
+        }
+        
+
         .container {
             max-width: 800px;
             margin: 40px auto;
-            background-color: #ffffff;
+            background-color: #d6d2d2;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #0066cc;
+            color: #1c292e;
             text-align: center;
             margin-bottom: 30px;
         }
@@ -50,7 +72,8 @@
             padding: 12px;
             margin-top: 5px;
             border-radius: 6px;
-            border: 1px solid #ccc;
+            background: #c7c4c4;
+            border: 1px solid #1c292e;
             font-size: 1em;
             box-sizing: border-box;
         }
@@ -58,11 +81,11 @@
             resize: vertical;
             height: 120px;
         }
-        .btn {
+        form .btn {
             display: inline-block;
             margin-top: 25px;
             padding: 12px 24px;
-            background-color: #0066cc;
+            background-color: #104c60;
             color: white;
             text-decoration: none;
             font-weight: bold;
@@ -70,20 +93,24 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
+}
+
+/* Adicione este estilo */
+form .btn-container {
+    text-align: center;
+}   
         .btn:hover {
-            background-color: #0052a3;
-        }
-        .voltar {
-            margin-top: 30px;
-            display: block;
-            text-align: center;
+            background-color: #1c292e;
         }
     </style>
 </head>
 <body>
     <header>
-        ReVeste
+        <a href="index.html" class="btn-voltar">← Voltar ao Menu</a>
+        <div class="logo">
+            <img src="imgs/logoBranco.png" alt="Logo ReVeste">
+        </div>
+        <div style="width: 140px;"><!-- Espaço igual ao botão para alinhamento --></div>
     </header>
 
     <div class="container">
@@ -106,38 +133,39 @@
             <label for="mensagem">Mensagem</label>
             <textarea id="mensagem" name="mensagem" required></textarea>
 
+            <div class="btn-container">
             <button type="submit" class="btn">Enviar</button>
+            </div>
+
         </form>
-
-        <a href="index.html" class="btn voltar">← Voltar ao Menu</a>
     </div>
+
     <script>
-    const form = document.querySelector('form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        const nome = document.getElementById('nome').value;
-        const email = document.getElementById('email').value;
-        const mensagem = document.getElementById('mensagem').value;
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const mensagem = document.getElementById('mensagem').value;
 
-        try {
-            const resposta = await fetch('/api/enviar-formulario', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, mensagem })
-            });
+            try {
+                const resposta = await fetch('/api/enviar-formulario', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, mensagem })
+                });
 
-            const resultado = await resposta.json();
-            alert(resultado.message);
-            if (resposta.ok) {
-                form.reset();
+                const resultado = await resposta.json();
+                alert(resultado.message);
+                if (resposta.ok) {
+                    form.reset();
+                }
+            } catch (error) {
+                alert('Erro ao enviar mensagem.');
+                console.error(error);
             }
-        } catch (error) {
-            alert('Erro ao enviar mensagem.');
-            console.error(error);
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>

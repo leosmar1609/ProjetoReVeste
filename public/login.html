@@ -12,21 +12,23 @@
 <body>
 
     <div class="login-container">
+        <div class="hero-section">
+<div class="hero-section">
+  <img src="./imgs/Logo.png" alt="Logo Reveste" class="logo-reveste">
         <h2>Bem-vindo de volta</h2>
         <form method="POST" id="loginForm">
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" required />
-
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" required />
-
-            <label for="userType">Tipo de Usuário</label>
+            <label for="userType"><strong>Tipo de Usuário</strong></label>
             <select id="userType" name="userType" required>
+                <option value="pessoa">Pessoa física</option>
                 <option value="instituicao">Instituição</option>
-                <option value="pessoa">Pessoa</option>
                 <option value="doador">Doador</option>
             </select>
+            <label for="email"><strong>E-mail</strong></label>
+            <input type="email" id="email" name="email" required />
 
+            <label for="password"><strong>Senha</strong></label>
+            <input type="password" id="password" name="password" required />
+            
             <p id="message"></p>
 
             <button type="submit">Entrar</button>
