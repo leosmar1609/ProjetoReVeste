@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 function enviarEmailVerificacaoPessoa(emailPer, namePer) {
     const token = jwt.sign({ email: emailPer }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    const linkVerificacao = `./auth/verificar-email?token=${token}`;
+    const linkVerificacao = `/auth/verificar-email?token=${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -41,7 +41,7 @@ function enviarEmailVerificacaoPessoa(emailPer, namePer) {
 
 function enviarEmailVerificacaoInstituicao(emailInc, nameInc) {
     const token = jwt.sign({ email: emailInc }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    const linkVerificacao = `./auth/verificar-emailIB?token=${token}`;
+    const linkVerificacao = `/auth/verificar-emailIB?token=${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
