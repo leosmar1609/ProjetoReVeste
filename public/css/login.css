@@ -6,8 +6,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #121212;
-  color: #fff;
+  background: #1c292e;
+  color: #1c292e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,18 +15,25 @@ body {
 }
 
 .login-container {
-  background: linear-gradient(135deg, #1f1f1f, #292929);
-  padding: 40px 30px;
+  background: linear-gradient(135deg, #d6d2d2, #d6d2d2);
+  padding: 110px 70px;
   border-radius: 20px;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
 }
+.logo-reveste {
+  display: block;
+  margin: -80px auto -45px auto; /* centraliza e dá espaço abaixo */
+  margin-bottom: -15px;
+  width: 130px; /* ajuste conforme necessário */
+  height: auto; /* mantém proporção da imagem */
+}
 
 h2 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #00ffd5;
+  margin-bottom: 15px;
+  color: #104c60;
   font-size: 24px;
 }
 
@@ -38,34 +45,46 @@ form {
 
 label {
   font-size: 14px;
-  color: #ccc;
+    margin-bottom: -10px;
+  color: #104c60;
 }
 
 input {
   padding: 10px;
   border: none;
   border-radius: 8px;
-  background: #2c2c2c;
-  color: #fff;
+  margin-bottom: -15px;
+  background: #c7c4c4;
+  color: #104c60;
 }
 
 input:focus {
-  outline: 2px solid #00ffd5;
+  outline: 2px solid #104c60;
 }
+select {
+  background-color: #c7c4c4; /* Fundo */
+  color: #104c60; /* Cor do texto */
+  padding: 10px;
+  border-radius: 10px;
+  appearance: none; /* Remove o estilo padrão*/
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 
 button {
   padding: 12px;
-  background-color: #00ffd5;
-  color: #000;
+  background-color: #104c60;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s;
 }
-
+  
 button:hover {
-  background-color: #00bfae;
+  background-color: #1c292e;
 }
 
 footer {
@@ -75,7 +94,7 @@ footer {
 }
 
 footer a {
-  color: #00ffd5;
+  color: #006b96;
   text-decoration: none;
   font-weight: bold;
 }

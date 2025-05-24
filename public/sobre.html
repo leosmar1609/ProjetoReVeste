@@ -6,59 +6,97 @@
     <style>
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e6f0ff;
+            background-color: #bfbcbc;
             color: #333;
             margin: 0;
             padding: 0;
         }
+
         header {
-            background-color: #0066cc;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 2em;
-            font-weight: bold;
+            background-color: #1c292e;
+            padding: 35px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
         }
+
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .logo img {
+            height: 100px;
+            margin-top: 10px; /* Adiciona espaço acima da logo */
+}
+
+        .btn-nav {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #1c292e;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        .btn-nav:hover {
+            background: #131e23;
+            color: #ffffff;        }
+
         .container {
             max-width: 900px;
             margin: 40px auto;
-            background-color: #ffffff;
+            background-color: #d6d2d2;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
         h1 {
-            color: #0066cc;
+            color: #1c292e;
             font-size: 2.3em;
             margin-bottom: 20px;
             text-align: center;
         }
+
         p {
             font-size: 1.2em;
             line-height: 1.8;
             margin-bottom: 20px;
             text-align: justify;
         }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background-color: #0066cc;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: background-color 0.3s;
+
+        p[style] {
+            text-align: center;
         }
-        .btn:hover {
-            background-color: #0052a3;
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo {
+                position: static;
+                transform: none;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        ReVeste
+        <a href="index.html" class="btn-nav">← Voltar ao Menu</a>
+        <div class="logo">
+            <img src="imgs/logoBranco.png" alt="Logo ReVeste">
+        </div>
+        <span></span> <!-- Espaço para manter o layout simétrico -->
     </header>
+
     <div class="container">
         <h1>Sobre o ReVeste</h1>
 
@@ -81,8 +119,6 @@
         <p style="font-style: italic; color: #555;">
             “Vista solidariedade. Doe esperança.” 💙
         </p>
-
-        <a href="index.html" class="btn">← Voltar ao Menu</a>
     </div>
 </body>
 </html>
