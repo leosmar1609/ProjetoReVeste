@@ -43,7 +43,6 @@ if (!dados || Object.keys(dados).length === 0) {
 
     const instituicao = dados;
 
-    // Preenche informações visíveis
     document.getElementById("nameInc").textContent = instituicao.nameInc;
     document.getElementById("emailInc").textContent = instituicao.emailInc;
     document.getElementById("historyInc").textContent = instituicao.historyInc;
@@ -53,7 +52,6 @@ if (!dados || Object.keys(dados).length === 0) {
     if (idUsuarioLogado === String(instituicao.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
-      // Preenche campos do formulário
       document.getElementById("inputName").value = instituicao.nameInc || "";
       document.getElementById("inputEmail").value = instituicao.emailInc || "";
       document.getElementById("inputCNPJ").value = instituicao.cnpjInc || "";

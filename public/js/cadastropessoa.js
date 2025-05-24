@@ -22,7 +22,6 @@ document.getElementById('registerPForm').addEventListener('submit', async(e) => 
             return;
         }
 
-        // Mensagem personalizada se o backend enviar
         let messageText = "✅ Cadastro realizado com sucesso!";
         if (response.headers.get("content-type")?.includes("application/json")) {
             const data = await response.json();
@@ -31,7 +30,7 @@ document.getElementById('registerPForm').addEventListener('submit', async(e) => 
 
         messageElement.innerText = messageText;
         messageElement.style.color = "green";
-        
+
         setTimeout(() => {
             window.location.href = './confirmar.html';
         }, 1000);

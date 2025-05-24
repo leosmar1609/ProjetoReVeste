@@ -44,23 +44,19 @@ if (!dados || Object.keys(dados).length === 0) {
 
     const pessoa = dados;
 
-    // Preenche informações visíveis
     document.getElementById("namePer").textContent = pessoa.namePer;
     document.getElementById("emailPer").textContent = pessoa.emailPer;
     document.getElementById("historyPer").textContent = pessoa.historyPer;
 
-    // Se for o dono do perfil
     if (idUsuarioLogado === String(pessoa.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
-      // Preenche campos do formulário
       document.getElementById("inputName").value = pessoa.namePer || "";
       document.getElementById("inputEmail").value = pessoa.emailPer || "";
       document.getElementById("inputCpf").value = pessoa.cpfPer || "";
       document.getElementById("inputHistory").value = pessoa.historyPer || "";
       document.getElementById("inputPassword").value = pessoa.passwordPer || "";
 
-      // Abertura e fechamento do modal
       btnAlterar.addEventListener("click", () => {
         msgModal.textContent = "";
         msgModal.style.color = "";

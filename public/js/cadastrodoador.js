@@ -20,7 +20,6 @@ document.getElementById('registerFormDoador').addEventListener('submit', async(e
             return;
         }
 
-        // Tenta obter mensagem do backend se houver JSON
         let messageText = "✅ Cadastro realizado com sucesso!";
         if (response.headers.get("content-type")?.includes("application/json")) {
             const data = await response.json();
@@ -31,7 +30,7 @@ document.getElementById('registerFormDoador').addEventListener('submit', async(e
         messageElement.style.color = "green";
 
         setTimeout(() => {
-            window.location.href = './confirmar.html';
+            window.location.href = './login.html';
         }, 1000);
 
     } catch (error) {

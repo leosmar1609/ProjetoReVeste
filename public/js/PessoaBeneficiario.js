@@ -84,11 +84,9 @@ document.addEventListener('DOMContentLoaded', async() => {
     }
 });
 
-// Supondo que seus cards estejam dentro de #listaPedidos
 document.getElementById('listaPedidos').addEventListener('click', async function(event) {
     const btn = event.target;
 
-    // CONFIRMAR RECEBIMENTO
     if (btn.classList.contains('btn-confirmar')) {
         const pedidoId = btn.getAttribute('data-id');
         const confirmar = confirm("Tem certeza que deseja confirmar o recebimento deste item?");
@@ -119,7 +117,6 @@ document.getElementById('listaPedidos').addEventListener('click', async function
         }
     }
 
-    // CANCELAR PEDIDO
     if (btn.classList.contains('btn-cancelar')) {
         const pedidoId = btn.getAttribute('data-id');
         const confirmar = confirm("Você realmente deseja cancelar este pedido? Essa ação não poderá ser desfeita.");

@@ -99,7 +99,6 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             });
 
             if (resp.ok) {
-                // Atualiza o status
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
                     statusSpan.textContent = 'Fechado';
@@ -131,7 +130,6 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             });
 
             if (resp.ok) {
-                // Atualiza o status
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
                     statusSpan.textContent = 'Cancelado';
@@ -148,11 +146,9 @@ document.getElementById('listaPedidos').addEventListener('click', async function
     }
 });
 
-// 🟢 Envio do formulário de novo pedido
 document.getElementById('form').addEventListener('submit', async(e) => {
     e.preventDefault();
 
-    // Captura o ID da URL
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
@@ -182,7 +178,6 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const item = await response.json();
 
     console.log("Item cadastrado:", item);
-    // Se quiser recarregar a lista após cadastrar:
     window.location.reload();
 });
 
@@ -203,7 +198,7 @@ document.getElementById('search').addEventListener('input', function() {
 function formatarData(dataISO) {
     const data = new Date(dataISO);
     const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0'); // Janeiro = 0
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
     const ano = data.getFullYear();
     const hora = String(data.getHours()).padStart(2, '0');
     const minutos = String(data.getMinutes()).padStart(2, '0');

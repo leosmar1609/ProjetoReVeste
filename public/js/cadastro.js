@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Só tenta fazer o .json() se houver conteúdo
             let messageText = "✅ Cadastro realizado com sucesso!";
             if (response.headers.get("content-type")?.includes("application/json")) {
                 const data = await response.json();

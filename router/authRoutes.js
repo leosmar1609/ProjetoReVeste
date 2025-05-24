@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET; 
 
 const router = express.Router();
-const { enviarEmailVerificacao } = require('../emailService');
+const { enviarEmailVerificacaoInstituicao, enviarEmailVerificacaoPessoa } = require('../emailService');
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -18,32 +18,34 @@ const db = mysql.createConnection({
 
 function autenticarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Pega o token após 'Bearer'
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
 
     jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
         if (err) return res.status(403).json({ message: 'Token inválido.' });
-        req.usuario = usuario; // Armazena os dados decodificados no request
-        next(); // Permite continuar
+        req.usuario = usuario; 
+        next();
     });
 }
 
 router.post('/registerIB', (req, res) => {
-    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada } = req.body;
+    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
 
     if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !historyInc) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
     const sql = `INSERT INTO instituicao_beneficiaria (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada) 
-               VALUES (?, ?, ?, ?, ?, ?, 0)`;
-    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada], (err, results) => {
+                 VALUES (?, ?, ?, ?, ?, ?, 0)`;
+
+    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc], (err, results) => {
         if (err) {
             console.error('Erro ao criar instituição:', err);
+            return res.status(500).json({ error: 'Erro ao cadastrar instituição.' });
         } else {
-            enviarEmailVerificacao(emailInc, nameInc);
-            res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
+            enviarEmailVerificacaoInstituicao(emailInc, nameInc);
+            return res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
         }
     });
 });
@@ -115,21 +117,21 @@ router.get('/pessoa', autenticarToken, (req, res) => {
 
 
 router.post('/registerPB', (req, res) => {
-    const { namePer, emailPer, passwordPer, cpfPer, historyPer, verificado } = req.body;
+    const { namePer, emailPer, passwordPer, cpfPer, historyPer } = req.body;
 
     if (!namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
     const sql = `INSERT INTO Pessoa_Beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer, verificado) 
-               VALUES (?, ?, ?, ?, ?, 0)`;
-    db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer, verificado], (err, results) => {
+                 VALUES (?, ?, ?, ?, ?, 0)`;
+    db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer], (err, results) => {
         if (err) {
             console.error('Erro ao criar pessoa:', err);
+            return res.status(500).json({ error: 'Erro ao cadastrar usuário.' });
         } else {
-            enviarEmailVerificacao(emailPer, namePer);
-
-            res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
+            enviarEmailVerificacaoPessoa(emailPer, namePer);
+            return res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
         }
     });
 });

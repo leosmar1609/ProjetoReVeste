@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const pessoaData = await resPessoa.json();
-                        // console.log("Dados da pessoa:", pessoaData);
 
                         if (Array.isArray(pessoaData) && pessoaData.length > 0 && pessoaData[0].namePer) {
                             nomeDoador = pessoaData[0].namePer;
@@ -87,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const instData = await resInst.json();
-                        // console.log("Dados da instituição:", instData);
 
                         if (Array.isArray(instData) && instData.length > 0 && instData[0].nameInc) {
                             nomeDoador = instData[0].nameInc;
@@ -99,7 +97,6 @@ document.addEventListener('DOMContentLoaded', async() => {
                     console.warn("Erro ao buscar nome do doador:", err);
                 }
 
-                // Preenchendo o conteúdo do card
                  card.innerHTML = `
     <head>
         <link rel="stylesheet" href="../css/Doador.css">
@@ -167,7 +164,6 @@ listaPedidos.appendChild(card);
     }
 });
 
-// Formatação da data
 function formatarData(dataISO) {
     const data = new Date(dataISO);
     const dia = String(data.getDate()).padStart(2, '0');
@@ -215,8 +211,7 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
 
         if (response.ok) {
             alert('Doação confirmada! O recebimento será confirmado em breve.');
-            // Atualiza a página ou o card (opcional)
-            location.reload(); // ou atualize o card manualmente
+            location.reload(); 
         } else {
             const resData = await response.json();
             alert(`Erro ao atualizar o pedido: ${resData.mensagem || response.statusText}`);

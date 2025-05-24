@@ -14,11 +14,9 @@ const transporter = nodemailer.createTransport({
     debug: true
 });
 
-function enviarEmailVerificacao(emailPer, namePer) {
-    // Gerar token válido por 1 hora
+function enviarEmailVerificacaoPessoa(emailPer, namePer) {
     const token = jwt.sign({ email: emailPer }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    const linkVerificacao = `https://reveste.onrender.com/auth/verificar-email?token=${token}`;
+    const linkVerificacao = `./auth/verificar-email?token=${token}`;
 
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -34,11 +32,36 @@ function enviarEmailVerificacao(emailPer, namePer) {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.error('Erro ao enviar e-mail de verificação:', error);
+            console.error('Erro ao enviar e-mail de verificação (Pessoa):', error);
         } else {
-            console.log('E-mail de verificação enviado: ' + info.response);
+            console.log('E-mail de verificação enviado para pessoa: ' + info.response);
         }
     });
 }
 
-module.exports = { enviarEmailVerificacao };
+function enviarEmailVerificacaoInstituicao(emailInc, nameInc) {
+    const token = jwt.sign({ email: emailInc }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const linkVerificacao = `./auth/verificar-emailIB?token=${token}`;
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: emailInc,
+        subject: 'Verifique seu e-mail',
+        html: `
+            <h2>Olá, ${nameInc}!</h2>
+            <p>Obrigado por se cadastrar. Clique no link abaixo para verificar seu e-mail:</p>
+            <a href="${linkVerificacao}">Verificar e-mail</a>
+            <p>Este link expira em 1 hora.</p>
+        `
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Erro ao enviar e-mail de verificação (Instituição):', error);
+        } else {
+            console.log('E-mail de verificação enviado para instituição: ' + info.response);
+        }
+    });
+}
+
+module.exports = { enviarEmailVerificacaoPessoa, enviarEmailVerificacaoInstituicao };
