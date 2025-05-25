@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET; 
 
 const router = express.Router();
-const { enviarEmailVerificacaoInstituicao, enviarEmailVerificacaoPessoa } = require('../emailService');
+const { enviarEmailVerificacaoInstituicao, enviarEmailVerificacaoPessoa } = require('./emailService');
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -30,25 +30,49 @@ function autenticarToken(req, res, next) {
 }
 
 router.post('/registerIB', (req, res) => {
-    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
+    let { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc } = req.body;
 
     if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !historyInc) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    const sql = `INSERT INTO instituicao_beneficiaria (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada) 
-                 VALUES (?, ?, ?, ?, ?, ?, 0)`;
+    // Sanitiza o CNPJ (remove pontos, traços e barras)
+    cnpjInc = cnpjInc.replace(/\D/g, '');
 
-    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc], (err, results) => {
-        if (err) {
-            console.error('Erro ao criar instituição:', err);
-            return res.status(500).json({ error: 'Erro ao cadastrar instituição.' });
-        } else {
-            enviarEmailVerificacaoInstituicao(emailInc, nameInc);
-            return res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
+    // Verifica se o e-mail ou CNPJ já estão cadastrados
+    const checkSql = `SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? OR cnpjInc = ?`;
+    db.query(checkSql, [emailInc, cnpjInc], (checkErr, checkResults) => {
+        if (checkErr) {
+            console.error('Erro ao verificar duplicidade:', checkErr);
+            return res.status(500).json({ error: 'Erro ao verificar duplicidade.' });
         }
+
+        if (checkResults.length > 0) {
+            const jaExiste = checkResults[0];
+            if (jaExiste.emailInc === emailInc) {
+                return res.status(409).json({ error: '❌ E-mail já cadastrado.' });
+            } else if (jaExiste.cnpjInc === cnpjInc) {
+                return res.status(409).json({ error: '❌ CNPJ já cadastrado.' });
+            }
+        }
+
+        // Cadastra a instituição
+        const insertSql = `INSERT INTO instituicao_beneficiaria 
+            (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada) 
+            VALUES (?, ?, ?, ?, ?, ?, 0)`;
+
+        db.query(insertSql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc], (err, results) => {
+            if (err) {
+                console.error('Erro ao criar instituição:', err);
+                return res.status(500).json({ error: 'Erro ao cadastrar instituição.' });
+            } else {
+                enviarEmailVerificacaoInstituicao(emailInc, nameInc);
+                return res.status(201).json({ message: '✅ Cadastro realizado! Verifique seu e-mail.' });
+            }
+        });
     });
 });
+
 
 router.post('/registerdonor', (req, res) => {
     const { namedonor, emaildonor, passworddonor } = req.body;
@@ -70,27 +94,58 @@ router.post('/registerdonor', (req, res) => {
 });
 
 router.get('/instituicao', autenticarToken, (req, res) => {
-    const id = req.query.id;
+    const { id, email, cnpj } = req.query;
 
-    if (!id) {
-        return res.status(400).json({ error: 'ID não fornecido' });
+    // Caso venha o ID → busca por ID
+    if (id) {
+        const sql = 'SELECT * FROM instituicao_Beneficiaria WHERE id = ?';
+        db.query(sql, [id], (err, results) => {
+            if (err) {
+                console.error('Erro ao buscar instituição por ID:', err);
+                return res.status(500).send('Erro no servidor');
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Instituição não encontrada' });
+            }
+
+            return res.json(results[0]);
+        });
     }
 
-    const sql = 'SELECT * FROM instituicao_Beneficiaria WHERE id = ?';
-    db.query(sql, [id], (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar instituição:', err);
-            return res.status(500).send('Erro no servidor');
-        }
+    // Caso venha email ou cnpj → valida se já existem
+    else if (email || cnpj) {
+        const cleanCnpj = cnpj ? cnpj.replace(/\D/g, '') : null;
 
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Instituição não encontrada' });
-        }
+        const sql = `
+            SELECT * FROM instituicao_Beneficiaria
+            WHERE email = ? OR cnpj = ?
+        `;
 
-        res.json(results[0]);
-    });
+        db.query(sql, [email || null, cleanCnpj || null], (err, results) => {
+            if (err) {
+                console.error('Erro ao verificar e-mail/CNPJ:', err);
+                return res.status(500).send('Erro no servidor');
+            }
+
+            if (results.length > 0) {
+                const match = results[0];
+                const msg = match.email === email
+                    ? '❌ E-mail já cadastrado.'
+                    : '❌ CNPJ já cadastrado.';
+
+                return res.status(200).json({ exists: true, message: msg });
+            }
+
+            return res.status(200).json({ exists: false });
+        });
+    }
+
+    // Nenhum parâmetro fornecido
+    else {
+        return res.status(400).json({ error: 'Parâmetro inválido. Forneça id, email ou cnpj.' });
+    }
 });
-
 
 router.get('/pessoa', autenticarToken, (req, res) => {
     const id = req.query.id;
@@ -123,18 +178,38 @@ router.post('/registerPB', (req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    const sql = `INSERT INTO Pessoa_Beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer, verificado) 
-                 VALUES (?, ?, ?, ?, ?, 0)`;
-    db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer], (err, results) => {
+    // Remove qualquer caractere que não seja número (por segurança)
+    const cpfLimpo = cpfPer.replace(/\D/g, '');
+
+    // Verifica se o CPF ou Email já existem
+    const checkSql = 'SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? OR cpfPer = ?';
+    db.query(checkSql, [emailPer, cpfLimpo], (err, results) => {
         if (err) {
-            console.error('Erro ao criar pessoa:', err);
-            return res.status(500).json({ error: 'Erro ao cadastrar usuário.' });
-        } else {
-            enviarEmailVerificacaoPessoa(emailPer, namePer);
-            return res.status(201).send('Cadastro realizado! Verifique seu e-mail.');
+            console.error('Erro ao verificar CPF/email:', err);
+            return res.status(500).json({ error: 'Erro ao verificar dados.' });
         }
+
+        if (results.length > 0) {
+            const conflictField = results[0].emailPer === emailPer ? 'E-mail' : 'CPF';
+            return res.status(409).json({ error: `${conflictField} já cadastrado.` });
+        }
+
+        // Insere novo registro
+        const insertSql = `INSERT INTO pessoa_beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer, verificado)
+                           VALUES (?, ?, ?, ?, ?, 0)`;
+
+        db.query(insertSql, [namePer, emailPer, passwordPer, cpfLimpo, historyPer], (err, results) => {
+            if (err) {
+                console.error('Erro ao cadastrar pessoa:', err);
+                return res.status(500).json({ error: 'Erro ao cadastrar pessoa.' });
+            }
+
+            enviarEmailVerificacaoPessoa(emailPer, namePer); // Se tiver função de verificação
+            return res.status(201).json({ message: 'Cadastro realizado! Verifique seu e-mail.' });
+        });
     });
 });
+
 
 router.get('/verificar-email', (req, res) => {
     const token = req.query.token;
@@ -152,7 +227,69 @@ router.get('/verificar-email', (req, res) => {
                 console.error('Erro ao verificar e-mail:', erro);
                 return res.status(500).send('Erro interno.');
             }
-            res.send(`<h2>E-mail verificado com sucesso!</h2><p>Você já pode acessar sua conta!</p>`);
+            res.send(`
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>E-mail Verificado</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+          }
+
+          .container {
+              background-color: white;
+              padding: 30px 40px;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              text-align: center;
+              max-width: 400px;
+              width: 90%;
+          }
+
+          h2 {
+              color: #2e7d32;
+              margin-bottom: 10px;
+          }
+
+          p {
+              color: #555;
+              margin-bottom: 20px;
+              font-size: 16px;
+          }
+
+          a.button {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #2e7d32;
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              transition: background-color 0.3s ease;
+          }
+
+          a.button:hover {
+              background-color: #1b5e20;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h2>E-mail verificado com sucesso!</h2>
+          <p>Você já pode acessar sua conta.</p>
+          <a class="button" href="/login.html">Clique aqui para fazer login</a>
+      </div>
+  </body>
+  </html>
+`);
         });
     });
 });
@@ -173,7 +310,69 @@ router.get('/verificar-emailIB', (req, res) => {
                 console.error('Erro ao verificar e-mail:', erro);
                 return res.status(500).send('Erro interno.');
             }
-            res.send(`<h2>E-mail verificado com sucesso!</h2><p>Você já pode acessar sua conta!</p>`);
+            res.send(`
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>E-mail Verificado</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+          }
+
+          .container {
+              background-color: white;
+              padding: 30px 40px;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              text-align: center;
+              max-width: 400px;
+              width: 90%;
+          }
+
+          h2 {
+              color: #2e7d32;
+              margin-bottom: 10px;
+          }
+
+          p {
+              color: #555;
+              margin-bottom: 20px;
+              font-size: 16px;
+          }
+
+          a.button {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #2e7d32;
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              transition: background-color 0.3s ease;
+          }
+
+          a.button:hover {
+              background-color: #1b5e20;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h2>E-mail verificado com sucesso!</h2>
+          <p>Você já pode acessar sua conta.</p>
+          <a class="button" href="/login.html">Clique aqui para fazer login</a>
+      </div>
+  </body>
+  </html>
+`);
         });
     });
 });
@@ -182,7 +381,7 @@ router.get('/verificar-emailIB', (req, res) => {
 router.post('/login', (req, res) => {
     const { email, password, userType } = req.body;
 
-    const handleLogin = (table, emailCol, passwordCol, type, result, res) => {
+    const handleLogin = (emailCol, type, result, res) => {
         if (result.length > 0) {
             const user = result[0];
 
@@ -196,23 +395,23 @@ router.post('/login', (req, res) => {
 
             return res.json({ tipo: type, id: user.id || user[emailCol], token: token });
         }
-        return res.status(401).json({ error: `Usuário ou senha inválidos para ${type}` });
+        return res.status(401).json({ error: `Usuário ou senha inválidos ou não verificado para ${type}` });
     };
 
     if (userType === "instituicao") {
-        db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [email, password], (err, result1) => {
+        db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ? AND verificada = 1', [email, password], (err, result1) => {
             if (err) return res.status(500).json({ error: "Erro no servidor" });
-            handleLogin('instituicao_beneficiaria', 'emailInc', 'passwordInc', 'instituicao', result1, res);
+            handleLogin('emailInc', 'instituicao', result1, res);
         });
     } else if (userType === "pessoa") {
-        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [email, password], (err, result2) => {
+        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ? AND verificado = 1', [email, password], (err, result2) => {
             if (err) return res.status(500).json({ error: "Erro no servidor" });
-            handleLogin('pessoa_beneficiaria', 'emailPer', 'passwordPer', 'pessoa', result2, res);
+            handleLogin('emailPer', 'pessoa', result2, res);
         });
     } else if (userType === "doador") {
         db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
             if (err) return res.status(500).json({ error: "Erro no servidor" });
-            handleLogin('doador', 'emaildonor', 'passworddonor', 'doador', result3, res);
+            handleLogin('emaildonor', 'doador', result3, res);
         });
     } else {
         return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
@@ -227,12 +426,17 @@ router.post('/cadastrar-itemP', async(req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
+    const idInt = parseInt(id);
+    if (isNaN(idInt)) {
+        return res.status(400).json({ error: 'ID inválido!' });
+    }
+
     const sql = `
         INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, pessoa_beneficiaria_id)
         VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?)
     `;
 
-    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, id], (err, results) => {
+    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, idInt], (err, results) => {
         if (err) {
             console.error('Erro ao criar pedido:', err);
             res.status(500).json({ error: 'Erro interno ao criar o pedido.' });
@@ -249,12 +453,17 @@ router.post('/cadastrar-itemI', async(req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
+    const idInt = parseInt(id);
+    if (isNaN(idInt)) {
+        return res.status(400).json({ error: 'ID inválido!' });
+    }
+
     const sql = `
         INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, instituicao_id)
         VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?)
     `;
 
-    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, id], (err, results) => {
+    db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, idInt], (err, results) => {
         if (err) {
             console.error('Erro ao criar pedido:', err);
             res.status(500).json({ error: 'Erro interno ao criar o pedido.' });
@@ -325,7 +534,7 @@ router.get('/doador', (req, res) => {
 });
 });
 
-router.delete('/deletedoador', (req, res) => {
+router.delete('/deletedoador', autenticarToken, (req, res) => {
     const id = req.query.id;
 
     if (!id) {
@@ -349,52 +558,65 @@ router.delete('/deletedoador', (req, res) => {
 });
 
 
-router.delete('/deleteinstituicao', (req, res) => {
+router.delete('/deleteinstituicao', autenticarToken, (req, res) => {
     const id = req.query.id;
 
     if (!id) {
-        return res.status(400).json({ mensagem: 'ID da instituião é obrigatório' });
+        return res.status(400).json({ mensagem: 'ID da instituição é obrigatório' });
     }
 
-    const sql = 'DELETE FROM instituicao_beneficiaria WHERE id = ?';
-
-    db.query(sql, [id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao deletar instituição:', err);
-            return res.status(500).send('Erro no servidor');
+    const sql1 = 'DELETE FROM Pedidos WHERE instituicao_id = ?';
+    db.query(sql1, [id], (err1) => {
+        if (err1) {
+            console.error('Erro ao deletar pedidos da instituição:', err1);
+            return res.status(500).send('Erro ao excluir pedidos da instituição');
         }
 
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Instituição não encontrada' });
-        }
+        const sql2 = 'DELETE FROM instituicao_beneficiaria WHERE id = ?';
+        db.query(sql2, [id], (err2, resultado) => {
+            if (err2) {
+                console.error('Erro ao deletar instituição:', err2);
+                return res.status(500).send('Erro ao excluir instituição');
+            }
 
-        res.status(200).json({ mensagem: 'Instituição deletada com sucesso' });
+            if (resultado.affectedRows === 0) {
+                return res.status(404).json({ mensagem: 'Instituição não encontrada' });
+            }
+
+            res.status(200).json({ mensagem: 'Instituição deletada com sucesso' });
+        });
     });
 });
 
-router.delete('/deletepessoa', (req, res) => {
+router.delete('/deletepessoa', autenticarToken, (req, res) => {
     const id = req.query.id;
 
     if (!id) {
         return res.status(400).json({ mensagem: 'ID da pessoa é obrigatório' });
     }
 
-    const sql = 'DELETE FROM pessoa_beneficiaria WHERE id = ?';
-
-    db.query(sql, [id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao deletar pessoa:', err);
-            return res.status(500).send('Erro no servidor');
+    const sql1 = 'DELETE FROM Pedidos WHERE pessoa_beneficiaria_id = ?';
+    db.query(sql1, [id], (err1) => {
+        if (err1) {
+            console.error('Erro ao deletar pedidos do usuário:', err1);
+            return res.status(500).send('Erro ao excluir pedidos do usuário');
         }
 
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
-        }
+        const sql2 = 'DELETE FROM pessoa_beneficiaria WHERE id = ?';
+        db.query(sql2, [id], (err2, resultado) => {
+            if (err2) {
+                console.error('Erro ao deletar usuário:', err2);
+                return res.status(500).send('Erro ao excluir usuário');
+            }
 
-        res.status(200).json({ mensagem: 'Pessoa deletada com sucesso' });
+            if (resultado.affectedRows === 0) {
+                return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+            }
+
+            res.status(200).json({ mensagem: 'Usuário deletado com sucesso' });
     });
 });
-
+});
 
 router.delete('/deletepedido', (req, res) => {
     const id = req.query.id;

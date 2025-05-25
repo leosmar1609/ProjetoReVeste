@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const authRoutes = require('./router/authRoutes');
 app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 
 const emailRoutes = require('./router/emailRoutes');
 app.use('/api', emailRoutes);

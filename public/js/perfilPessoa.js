@@ -93,3 +93,37 @@ document.getElementById("btnSair").addEventListener("click", () => {
   sessionStorage.clear();
   window.location.href = "login.html";
 });
+
+document.getElementById("btnExcluir").addEventListener("click", async () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Você precisa estar logado para acessar essa página.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (confirm("Tem certeza que deseja excluir sua conta?")) {
+    try {
+      const response = await fetch(`./auth/deletepessoa?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert("Conta excluída com sucesso.");
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      } else {
+        alert("Erro ao excluir conta.");
+      }
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      alert("Erro ao conectar ao servidor.");
+    }
+  }
+});

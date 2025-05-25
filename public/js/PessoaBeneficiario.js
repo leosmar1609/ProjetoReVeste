@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async() => {
                 const item = document.createElement("div");
                 item.classList.add("card-pedido");
                 item.innerHTML = `
-                <head><link rel="stylesheet" href="../css/Beneficiario.css"></head>
                     <h3>${pedido.name_item}</h3>
                     <p><strong>Descrição:</strong> ${pedido.description}</p>
                     <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
