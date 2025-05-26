@@ -11,6 +11,7 @@
     <script defer src="/js/cadastro.js"></script>
     <script defer src="./js/cadastropessoa.js"></script>
     <script defer src="./js/cadastrodoador.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
 </head>
 
 <body>
@@ -119,6 +120,20 @@
         loop: false,
     });
 </script>
+<script>
+    window.initAutocomplete = function () {
+      const input = document.getElementById("locationInc");
+      const autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ["geocode"],
+        componentRestrictions: { country: "br" }
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        console.log("Endereço selecionado:", place.formatted_address);
+      });
+    };
+  </script>
 </body>
 
 </html>

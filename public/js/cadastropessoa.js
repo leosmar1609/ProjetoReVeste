@@ -42,10 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Remove pontuação para envio ao backend
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
-
+        const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
         const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
+        
         if (!senhaRegex.test(passwordPer)) {
             messageElement.innerText = "❌ A senha deve ter no mínimo 6 caracteres, incluindo letra maiúscula, minúscula e caractere especial.";
+            messageElement.style.color = "red";
+            return;
+        }
+        if (!emailRegex.test(emailPer)) {
+            messageElement.innerText = "❌ E-mail inválido.";
             messageElement.style.color = "red";
             return;
         }

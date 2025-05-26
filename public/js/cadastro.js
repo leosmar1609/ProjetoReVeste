@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
     const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
+    const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -41,6 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validação senha
         if (!senhaRegex.test(passwordInc)) {
             messageElement.innerText = "❌ A senha deve conter ao menos 6 caracteres, incluindo maiúscula, minúscula e símbolo.";
+            messageElement.style.color = "red";
+            return;
+        }
+
+        if (!emailRegex.test(emailInc)) {
+            messageElement.innerText = "❌ E-mail inválido.";
             messageElement.style.color = "red";
             return;
         }

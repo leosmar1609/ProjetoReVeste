@@ -6,6 +6,7 @@ const secretKey = process.env.JWT_SECRET;
 
 const router = express.Router();
 const { enviarEmailVerificacaoInstituicao, enviarEmailVerificacaoPessoa } = require('./emailService');
+const e = require('express');
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -401,11 +402,19 @@ router.post('/login', (req, res) => {
     if (userType === "instituicao") {
         db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ? AND verificada = 1', [email, password], (err, result1) => {
             if (err) return res.status(500).json({ error: "Erro no servidor" });
+            const ver = result1[0] ? result1[0].verificada : 0;
+            if (ver === 0) {
+                enviarEmailVerificacaoInstituicao(email);
+            }
             handleLogin('emailInc', 'instituicao', result1, res);
         });
     } else if (userType === "pessoa") {
         db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ? AND verificado = 1', [email, password], (err, result2) => {
             if (err) return res.status(500).json({ error: "Erro no servidor" });
+            const ver = result2[0] ? result2[0].verificado : 0;
+            if (ver === 0) {
+                enviarEmailVerificacaoPessoa(email);
+            }
             handleLogin('emailPer', 'pessoa', result2, res);
         });
     } else if (userType === "doador") {
