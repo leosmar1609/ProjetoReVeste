@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- NAVBAR -->
     <nav class="main-nav">
         <img src='./imgs/LogoBranco.png' alt="Logo" class="logo-nav"/>
         <div class="menu-toggle" id="menu-toggle">&#9776;</div>
@@ -25,12 +24,11 @@
     </nav>
 
     </nav>     
-    <!-- HEADER SEM CONTEÚDO -->
+
     <header>
         <img src='./imgs/Capa.png' alt="Capa" class="capa-nav"/>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main>
         <section class="how-it-works">
             <h2>Como funciona?</h2>
@@ -71,13 +69,11 @@
 
 
         </section>
-            <!-- ✅ Botão correto com funcionalidade modal -->
             <a href="#" class="btn" id="openModal"><b>Cadastrar ou solicitar doação</b></a>
         </section>
 
     </main>
 
-    <!-- ✅ Modal: aparece ao clicar no botão -->
     <div id="popup" class="modal">
         <div class="modal-content">
             <b>Você já possui cadastro?</b>
@@ -88,7 +84,6 @@
         </div>
     </div>
 
-    <!-- ✅ Script do menu mobile -->
     <script>
         const toggle = document.getElementById('menu-toggle');
         const menu = document.getElementById('menu');
@@ -97,7 +92,6 @@
         });
     </script>
 
-    <!-- ✅ Script do modal -->
     <script>
         const openModalBtn = document.getElementById('openModal');
         const modal = document.getElementById('popup');

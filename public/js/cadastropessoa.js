@@ -1,14 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cpfInput = document.getElementById('cpfPer');
 
-    // Aplica a máscara ao digitar
     cpfInput.addEventListener('input', () => {
-        let value = cpfInput.value.replace(/\D/g, ''); // Remove não numéricos
+        let value = cpfInput.value.replace(/\D/g, ''); 
 
-        // Limita a 11 dígitos
         if (value.length > 11) value = value.slice(0, 11);
 
-        // Aplica formatação de CPF
         if (value.length > 9) {
             cpfInput.value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
         } else if (value.length > 6) {
@@ -20,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lida com envio do formulário
     document.getElementById('registerPForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -32,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const cpfRaw = document.getElementById('cpfPer').value;
         const historyPer = document.getElementById('historyPer').value;
 
-        // Validação do CPF com pontos e traço
         const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
         if (!cpfRegex.test(cpfRaw)) {
             messageElement.innerText = "❌ CPF inválido. Use o formato 000.000.000-00.";
@@ -40,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Remove pontuação para envio ao backend
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
         const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
         const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;

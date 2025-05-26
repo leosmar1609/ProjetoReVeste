@@ -1,4 +1,3 @@
-/* Reset básico e box-sizing */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,7 +12,6 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Centraliza o conteúdo */
 body {
     display: flex;
     align-items: center;
@@ -21,7 +19,6 @@ body {
     padding: 40px 0;
 }
 
-/* Container do Swiper */
 .swiper {
     width: 90%;
     max-width: 1000px;
@@ -29,7 +26,6 @@ body {
     padding: 60px 0;
 }
 
-/* Logo (se houver) */
 .logo-reveste {
     display: block;
     margin: -30px auto -8px auto;
@@ -37,7 +33,6 @@ body {
     height: auto;
 }
 
-/* Slides do Swiper */
 .swiper-slide {
     background: linear-gradient(135deg, #d6d2d2, #d6d2d2);
     border-radius: 20px;
@@ -78,7 +73,6 @@ body {
     border: 2px solid #d6d2d2;
 }
 
-/* Título */
 h2 {
     text-align: center;
     margin-bottom: 25px;
@@ -86,7 +80,6 @@ h2 {
     font-size: 24px;
 }
 
-/* Formulários */
 form {
     display: flex;
     flex-direction: column;
@@ -122,7 +115,6 @@ select:focus {
     outline: 2px solid #104c60;
 }
 
-/* Botão */
 button {
     padding: 14px;
     background-color: #104c60;
@@ -139,7 +131,6 @@ button:hover {
     background-color: #1c292e;
 }
 
-/* Mensagens de erro */
 p#messageDoador,
 p#messagePessoa,
 p#messageInc {
@@ -148,7 +139,6 @@ p#messageInc {
     margin-top: 10px;
 }
 
-/* Navegação Swiper */
 .swiper-button-prev,
 .swiper-button-next {
     color: #ffffff;
@@ -166,12 +156,10 @@ p#messageInc {
     right: 10px;
 }
 
-/* Elementos ocultos */
 .hidden {
     display: none;
 }
 
-/* Rodapé */
 footer {
     margin-top: auto;
     text-align: center;
@@ -194,7 +182,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .swiper {
         width: 95%;

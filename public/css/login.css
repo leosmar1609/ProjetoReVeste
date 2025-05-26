@@ -24,10 +24,10 @@ body {
 }
 .logo-reveste {
   display: block;
-  margin: -80px auto -45px auto; /* centraliza e dá espaço abaixo */
+  margin: -80px auto -45px auto;
   margin-bottom: -15px;
-  width: 130px; /* ajuste conforme necessário */
-  height: auto; /* mantém proporção da imagem */
+  width: 130px; 
+  height: auto; 
 }
 
 h2 {
@@ -62,11 +62,11 @@ input:focus {
   outline: 2px solid #104c60;
 }
 select {
-  background-color: #c7c4c4; /* Fundo */
-  color: #104c60; /* Cor do texto */
+  background-color: #c7c4c4; 
+  color: #104c60; 
   padding: 10px;
   border-radius: 10px;
-  appearance: none; /* Remove o estilo padrão*/
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 }

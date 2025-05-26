@@ -37,10 +37,8 @@ router.post('/registerIB', (req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    // Sanitiza o CNPJ (remove pontos, traços e barras)
     cnpjInc = cnpjInc.replace(/\D/g, '');
 
-    // Verifica se o e-mail ou CNPJ já estão cadastrados
     const checkSql = `SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? OR cnpjInc = ?`;
     db.query(checkSql, [emailInc, cnpjInc], (checkErr, checkResults) => {
         if (checkErr) {
@@ -57,7 +55,6 @@ router.post('/registerIB', (req, res) => {
             }
         }
 
-        // Cadastra a instituição
         const insertSql = `INSERT INTO instituicao_beneficiaria 
             (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada) 
             VALUES (?, ?, ?, ?, ?, ?, 0)`;
@@ -97,7 +94,6 @@ router.post('/registerdonor', (req, res) => {
 router.get('/instituicao', autenticarToken, (req, res) => {
     const { id, email, cnpj } = req.query;
 
-    // Caso venha o ID → busca por ID
     if (id) {
         const sql = 'SELECT * FROM instituicao_Beneficiaria WHERE id = ?';
         db.query(sql, [id], (err, results) => {
@@ -114,7 +110,6 @@ router.get('/instituicao', autenticarToken, (req, res) => {
         });
     }
 
-    // Caso venha email ou cnpj → valida se já existem
     else if (email || cnpj) {
         const cleanCnpj = cnpj ? cnpj.replace(/\D/g, '') : null;
 
@@ -142,7 +137,6 @@ router.get('/instituicao', autenticarToken, (req, res) => {
         });
     }
 
-    // Nenhum parâmetro fornecido
     else {
         return res.status(400).json({ error: 'Parâmetro inválido. Forneça id, email ou cnpj.' });
     }
@@ -179,10 +173,8 @@ router.post('/registerPB', (req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    // Remove qualquer caractere que não seja número (por segurança)
     const cpfLimpo = cpfPer.replace(/\D/g, '');
 
-    // Verifica se o CPF ou Email já existem
     const checkSql = 'SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? OR cpfPer = ?';
     db.query(checkSql, [emailPer, cpfLimpo], (err, results) => {
         if (err) {
@@ -195,7 +187,6 @@ router.post('/registerPB', (req, res) => {
             return res.status(409).json({ error: `${conflictField} já cadastrado.` });
         }
 
-        // Insere novo registro
         const insertSql = `INSERT INTO pessoa_beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer, verificado)
                            VALUES (?, ?, ?, ?, ?, 0)`;
 
@@ -205,7 +196,7 @@ router.post('/registerPB', (req, res) => {
                 return res.status(500).json({ error: 'Erro ao cadastrar pessoa.' });
             }
 
-            enviarEmailVerificacaoPessoa(emailPer, namePer); // Se tiver função de verificação
+            enviarEmailVerificacaoPessoa(emailPer, namePer); 
             return res.status(201).json({ message: 'Cadastro realizado! Verifique seu e-mail.' });
         });
     });
@@ -380,51 +371,52 @@ router.get('/verificar-emailIB', (req, res) => {
 
 
 router.post('/login', (req, res) => {
-    const { email, password, userType } = req.body;
+  const { email, password, userType } = req.body;
 
-    const handleLogin = (emailCol, type, result, res) => {
-        if (result.length > 0) {
-            const user = result[0];
+  const handleLogin = (emailCol, type, result, res) => {
+    if (result.length > 0) {
+      const user = result[0];
 
-            const payload = {
-                id: user.id || user[emailCol],
-                userType: type,
-                email: user[emailCol]
-            };
+      if ((type === "instituicao" && user.verificada === 0) || 
+          (type === "pessoa" && user.verificado === 0)) {
+        if (type === "instituicao") enviarEmailVerificacaoInstituicao(email);
+        else if (type === "pessoa") enviarEmailVerificacaoPessoa(email);
 
-            const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+        return res.status(401).json({ error: `Usuário ainda não verificado para ${type}` });
+      }
 
-            return res.json({ tipo: type, id: user.id || user[emailCol], token: token });
-        }
-        return res.status(401).json({ error: `Usuário ou senha inválidos ou não verificado para ${type}` });
-    };
+      const payload = {
+        id: user.id || user[emailCol],
+        userType: type,
+        email: user[emailCol]
+      };
 
-    if (userType === "instituicao") {
-        db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ? AND verificada = 1', [email, password], (err, result1) => {
-            if (err) return res.status(500).json({ error: "Erro no servidor" });
-            const ver = result1[0] ? result1[0].verificada : 0;
-            if (ver === 0) {
-                enviarEmailVerificacaoInstituicao(email);
-            }
-            handleLogin('emailInc', 'instituicao', result1, res);
-        });
-    } else if (userType === "pessoa") {
-        db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ? AND verificado = 1', [email, password], (err, result2) => {
-            if (err) return res.status(500).json({ error: "Erro no servidor" });
-            const ver = result2[0] ? result2[0].verificado : 0;
-            if (ver === 0) {
-                enviarEmailVerificacaoPessoa(email);
-            }
-            handleLogin('emailPer', 'pessoa', result2, res);
-        });
-    } else if (userType === "doador") {
-        db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
-            if (err) return res.status(500).json({ error: "Erro no servidor" });
-            handleLogin('emaildonor', 'doador', result3, res);
-        });
-    } else {
-        return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
+      const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+
+      return res.json({ tipo: type, id: user.id || user[emailCol], token: token });
     }
+
+    return res.status(401).json({ error: `Usuário ou senha inválidos para ${type}` });
+  };
+
+  if (userType === "instituicao") {
+    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [email, password], (err, result1) => {
+      if (err) return res.status(500).json({ error: "Erro no servidor" });
+      handleLogin('emailInc', 'instituicao', result1, res);
+    });
+  } else if (userType === "pessoa") {
+    db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [email, password], (err, result2) => {
+      if (err) return res.status(500).json({ error: "Erro no servidor" });
+      handleLogin('emailPer', 'pessoa', result2, res);
+    });
+  } else if (userType === "doador") {
+    db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
+      if (err) return res.status(500).json({ error: "Erro no servidor" });
+      handleLogin('emaildonor', 'doador', result3, res);
+    });
+  } else {
+    return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
+  }
 });
 
 
