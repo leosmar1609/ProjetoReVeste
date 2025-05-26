@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(`./auth/instituicao?id=${idPerfil}`, {
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     });
@@ -34,12 +35,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const dados = await response.json();
-console.log('Dados recebidos:', dados);
+    console.log('Dados recebidos:', dados);
 
-if (!dados || Object.keys(dados).length === 0) {
-  alert("Perfil não encontrado.");
-  return;
-}
+    if (!dados || Object.keys(dados).length === 0) {
+      alert("Perfil não encontrado.");
+      return;
+    }
 
     const instituicao = dados;
 
@@ -52,26 +53,26 @@ if (!dados || Object.keys(dados).length === 0) {
     if (idUsuarioLogado === String(instituicao.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
-      document.getElementById("inputName").value = instituicao.nameInc || "";
-      document.getElementById("inputEmail").value = instituicao.emailInc || "";
-      document.getElementById("inputCNPJ").value = instituicao.cnpjInc || "";
-      document.getElementById("inputHistory").value = instituicao.historyInc || "";
-      document.getElementById("inputPassword").value = instituicao.passwordInc || "";
-      document.getElementById("inputAddress").value = instituicao.locationInc || "";
-
       btnAlterar.addEventListener("click", () => {
+        document.getElementById("inputName").value = instituicao.nameInc;
+        document.getElementById("inputEmail").value = instituicao.emailInc;
+        document.getElementById("inputCNPJ").value = instituicao.cnpjInc;
+        document.getElementById("inputHistory").value = instituicao.historyInc;
+        document.getElementById("inputPassword").value = ""; 
+        document.getElementById("inputAddress").value = instituicao.locationInc;
+
         msgModal.textContent = "";
         msgModal.style.color = "";
-        modalEditar.classList.add("active");
+        modalEditar.style.display = "flex";
       });
 
       fecharModal.addEventListener("click", () => {
-        modalEditar.classList.remove("active");
+        modalEditar.style.display = "none";
       });
 
       window.addEventListener("click", (e) => {
         if (e.target === modalEditar) {
-          modalEditar.classList.remove("active");
+          modalEditar.style.display = "none";
         }
       });
     }
@@ -85,8 +86,8 @@ document.getElementById('btnVoltar').addEventListener('click', () => {
   if (id) {
     window.location.href = `instituicaoBeneficiaria.html?id=${id}`;
   }
-}
-);
+});
+
 document.getElementById("btnSair").addEventListener("click", () => {
   localStorage.removeItem("token");
   sessionStorage.clear();
