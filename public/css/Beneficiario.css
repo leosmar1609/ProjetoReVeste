@@ -1,4 +1,4 @@
-/* RESET & BASE */
+/* ===== Reset e fontes ===== */
 * {
   margin: 0;
   padding: 0;
@@ -6,14 +6,16 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  background-color: #e8d8c8;
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #bfbcbc;
 }
 
-/* HEADER */
+/* ===== Header ===== */
 .header {
-  background-color: #e8d8c8;
-  padding: 16px 32px;
+  background-color: #00151f;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,12 +23,13 @@ body {
   position: relative;
   top: 0;
   z-index: 10;
+  width: 100vw;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #2563eb;
+  height: 90px;
+  object-fit: contain;
 }
 
 /* SEARCH BAR */
@@ -41,7 +44,7 @@ body {
 .search-bar input {
   width: 100%;
   padding: 10px 20px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #b4b4b4;
   border-radius: 999px;
   font-size: 1rem;
   transition: border-color 0.3s;
@@ -49,10 +52,10 @@ body {
 
 .search-bar input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #ffffff;
 }
 
-/* USER MENU */
+/* ===== Menu do Usuário ===== */
 .user-menu {
   display: flex;
   align-items: center;
@@ -97,15 +100,15 @@ body {
 }
 
 #dropdownMenu button:hover {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 
-/* BUTTONS */
+/* ===== Botões principais ===== */
 .donate-button,
 .btn-confirmar,
 .btn-cancelar {
-  background-color: #2563eb;
-  color: white;
+  background-color: #ffffff;
+  color: #00151f;
   padding: 10px 20px;
   border: none;
   border-radius: 999px;
@@ -121,7 +124,7 @@ body {
   background-color: #1e40af;
 }
 
-/* MODAL */
+/* ===== Formulário ===== */
 #formContainer {
   display: none;
   position: fixed;
@@ -145,14 +148,8 @@ body {
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* CLOSE BUTTON */
@@ -229,14 +226,7 @@ form button[type="submit"]:hover {
   background-color: #007f63;
 }
 
-/* MEUS PEDIDOS */
-h2 {
-  text-align: center;
-  margin: 30px 0 10px;
-  font-size: 1.8rem;
-  color: #333;
-}
-
+/* ===== Cards dos Pedidos ===== */
 #listaPedidos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -244,7 +234,79 @@ h2 {
   padding: 20px 32px;
 }
 
-/* RESPONSIVO */
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Modal do Card Ampliado ===== */
+.card-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.card-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: zoomIn 0.3s ease;
+}
+
+.card-modal .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ===== Prioridade (badge) ===== */
+.pedido-titulo {
+  color: #104c60;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.badge.baixa   { background-color: #4caf50; }
+.badge.média   { background-color: #ff9800; }
+.badge.alta    { background-color: #f44336; }
+.badge.urgente { background-color: #b71c1c; }
+
+/* ===== Responsivo ===== */
 @media (max-width: 500px) {
   .header {
     flex-direction: column;
