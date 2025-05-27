@@ -21,6 +21,7 @@
       <p><strong>História:</strong> <span id="historyInc"></span></p>
       <p><strong>CNPJ:</strong> <span id="cnpjInc"></span></p>
         <p><strong>Endereço:</strong> <span id="locationInc"></span></p>
+        <p><strong>Telefone:</strong> <span id="telInc"></span></p>
     </div>
 
     <div class="botoes-acao" id="botoesApenasDono">
@@ -44,7 +45,10 @@
         <input type="password" id="inputPassword" name="inputPassword" required minlength="6" />
 
         <label for="inputCNPJ">CNPJ</label>
-        <input type="text" id="inputCNPJ" name="inputCNPJ" required pattern="\d{14}" title="CNPJ deve conter 14 números sem pontos ou traços" />
+        <input type="text" id="inputCNPJ" name="inputCNPJ" required />
+
+        <label for="inputTel">Telefone</label>
+        <input type="text" id="inputTel" name="inputTel" required pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (XX) XXXXX-XXXX" />
 
         <label for="inputHistory">História</label>
         <textarea id="inputHistory" name="inputHistory" rows="4" required></textarea>

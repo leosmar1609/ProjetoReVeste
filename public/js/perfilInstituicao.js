@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("historyInc").textContent = instituicao.historyInc;
     document.getElementById("locationInc").textContent = instituicao.locationInc;
     document.getElementById("cnpjInc").textContent = instituicao.cnpjInc;
+    document.getElementById("telInc").textContent = instituicao.telInc || "Não informado";
 
     if (idUsuarioLogado === String(instituicao.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";

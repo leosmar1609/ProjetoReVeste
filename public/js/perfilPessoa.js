@@ -47,6 +47,7 @@ if (!dados || Object.keys(dados).length === 0) {
     document.getElementById("namePer").textContent = pessoa.namePer;
     document.getElementById("emailPer").textContent = pessoa.emailPer;
     document.getElementById("historyPer").textContent = pessoa.historyPer;
+    document.getElementById("telPer").textContent = pessoa.telPer || "Não informado";
 
     if (idUsuarioLogado === String(pessoa.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
