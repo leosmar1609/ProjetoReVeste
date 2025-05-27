@@ -11,7 +11,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #bfbcbc;
+  background-color: #ffffff;
 }
 
 /* ===== Header (cabeçalho) ===== */
@@ -55,11 +55,19 @@ html, body {
 
 .search-bar input {
   width: 100%;
+<<<<<<< HEAD
   max-width: 500px;
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
   outline: none;
+=======
+  padding: 10px 20px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+>>>>>>> f12894497384329b384f0ce3c4e2aff1176d9d0c
 }
 
 .search-bar input:focus {
@@ -253,10 +261,17 @@ form button[type="submit"]:hover {
 
 /* ===== Cards dos Pedidos ===== */
 #listaPedidos {
+<<<<<<< HEAD
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 colunas */
   gap: 20px;
   padding: 20px 32px;
+=======
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+>>>>>>> f12894497384329b384f0ce3c4e2aff1176d9d0c
 }
 
 
