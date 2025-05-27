@@ -1,141 +1,143 @@
 * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #00151f;
-    color: #00151f;
-    overflow-x: hidden;
-}   
+  box-sizing: border-box;
+}
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #00151f;
+  color: #00151f;
+  overflow-x: hidden;
 
-  .swiper {
-    width: 100%;
-    max-width: 1000px;
-    padding: 40px 0;
-  }
-
-  .logo-reveste {
-  display: block;
-  margin: -30px auto -8px auto; /* centraliza e dá espaço abaixo */
-  width: 130px; /* ajuste conforme necessário */
-  height: auto; /* mantém proporção da imagem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .swiper {
-  overflow: visible !important; /* Garante que nada seja cortado */
-  padding: -20px 10px; /* Espaço nas laterais para os slides inclinados */
+  width: 100%;
+  max-width: 1000px;
+  padding: 40px 0;
+  overflow: visible !important; /* garante que nada seja cortado */
+  /* padding negativo removido */
 }
+
+.logo-reveste {
+  display: block;
+  margin: 8px auto 0px auto; /* centraliza e dá espaço abaixo */
+  width: 130px; /* ajuste conforme necessário */
+  height: auto; /* mantém proporção */
+}
+
 /* Slide padrão */
 .swiper-slide {
-    background: linear-gradient(135deg, #f1ecec, #f1ecec);
-    border-radius: 20px;
-    padding: 30px;
-    width: 100%;
-    max-width: 500px;
-    min-height: 100%;
-    height: auto;
-    max-height: 85vh;
+  background: linear-gradient(135deg, #f1ecec, #f1ecec);
+  border-radius: 20px;
+  padding: 14px;
+  width: 100%;
+  max-width: 400px;
+  min-height: 100%;
+  height: auto;
+  max-height: 105vh;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-    transition: transform 0.5s ease;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s ease;
+  text-align: center;
 
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
-    scrollbar-width: thin;
-    scrollbar-color: #104c60 #c7c4c4;
+  scrollbar-width: thin;
+  scrollbar-color: #104c60 #c7c4c4;
 }
 
 .swiper-slide::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .swiper-slide::-webkit-scrollbar-track {
-    background: #c7c4c4;
-    border-radius: 10px;
+  background: #c7c4c4;
+  border-radius: 10px;
 }
 
 .swiper-slide::-webkit-scrollbar-thumb {
-    background-color: #104c60;
-    border-radius: 10px;
-    border: 2px solid #d6d2d2;
+  background-color: #104c60;
+  border-radius: 10px;
+  border: 2px solid #d6d2d2;
 }
 
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #104c60;
-    font-size: 22px;
-  }
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #104c60;
+  font-size: 22px;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 11px;
+}
 
-  label {
-    font-size: 14px;
-    color: #1c292e;
-  }
+label {
+  font-size: 14px;
+  color: #1c292e;
+  text-align: justify;
+}
 
-  input, textarea, select {
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #c7c4c4;
-    color: #395c68;
-  }
 
-  input:focus, textarea:focus, select:focus {
-    outline: 2px solid #104c60;
-  }
+input, textarea, select {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  margin-top: -8px;
 
-  button {
-    padding: 12px;
-    background-color: #104c60;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+  background: #c7c4c4;
+  color: #395c68;
+  font-size: 16px;
+}
 
-  button:hover {
-    background-color: #1c292e;
-  }
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #104c60;
+}
+
+button {
+  padding: 12px;
+  background-color: #104c60;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #1c292e;
+}
 
 .swiper-button-prev {
   color: #ffffff;   /* Cor da seta */
-  left: -90px;      /* Distância da esquerda - aumente para afastar mais */
+  left: -90px;      /* Distância da esquerda */
 }
 
 .swiper-button-next {
   color: #ffffff;   /* Cor da seta */
-  right: -90px;     /* Distância da direita - aumente para afastar mais */
+  right: -90px;     /* Distância da direita */
 }
 
+.hidden {
+  display: none;
+}
 
-  .hidden {
-    display: none;
-  }
 footer {
   margin-top: 20px;
   text-align: center;
@@ -150,4 +152,84 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
+}
+
+/* RESPONSIVO */
+
+/* Tablets e dispositivos até 768px */
+@media (max-width: 768px) {
+  .swiper {
+    padding: 20px 0;
+    height: 610px; /* ajuste conforme necessário */
+  }
+
+  .swiper-slide {
+    max-width: 280px;
+    padding: 15px 20px;
+  }
+
+  form {
+    gap: 17px;
+  }
+
+  input, textarea, select {
+    padding: 8px;
+    font-size: 14px;
+    margin-top: -2px;
+  }
+
+  textarea {
+    height: 60px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .swiper-button-prev {
+    left: -50px;
+    color: #ffffffcc;
+  }
+
+  .swiper-button-next {
+    right: -50px;
+    color: #ffffffcc;
+  }
+}
+
+/* Celulares e dispositivos até 480px */
+@media (max-width: 480px) {
+  .swiper-slide {
+    max-width: 300px;
+    padding: 12px 15px;
+  }
+
+  form {
+    gap: 6px;
+  }
+
+  input, textarea, select {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  textarea {
+    height: 50px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .swiper-button-prev {
+    left: 5px;
+    color: #ffffff7f;
+  }
+
+  .swiper-button-next {
+    right: 5px;
+    color: #ffffff7f;
+  }
 }
