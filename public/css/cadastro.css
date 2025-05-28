@@ -279,3 +279,84 @@ footer a:hover {
         display: none;
     }
 }
+
+/* RESPONSIVO */
+
+/* Tablets e dispositivos até 768px */
+@media (max-width: 768px) {
+  .swiper {
+    padding: 20px 0;
+    height: 610px; /* ajuste conforme necessário */
+  }
+
+  .swiper-slide {
+    max-width: 280px;
+    padding: 15px 20px;
+  }
+
+  form {
+    gap: 17px;
+  }
+
+  input, textarea, select {
+    padding: 8px;
+    font-size: 14px;
+    margin-top: -2px;
+  }
+
+  textarea {
+    height: 60px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .swiper-button-prev {
+    left: -50px;
+    color: #ffffffcc;
+  }
+
+  .swiper-button-next {
+    right: -50px;
+    color: #ffffffcc;
+  }
+}
+
+/* Celulares e dispositivos até 480px */
+@media (max-width: 480px) {
+  .swiper-slide {
+    max-width: 300px;
+    padding: 12px 15px;
+    height: auto;
+  }
+
+  form {
+    gap: 6px;
+  }
+
+  input, textarea, select {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  textarea {
+    height: 50px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .swiper-button-prev {
+    left: 5px;
+    color: #ffffff7f;
+  }
+
+  .swiper-button-next {
+    right: 5px;
+    color: #ffffff7f;
+  }
+}

@@ -26,34 +26,65 @@ header .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+}
+
+header img.capa-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  /* Centralização */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex; /* Mostra e centraliza o modal */
 }
 
 .modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    width: 300px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-buttons {
+  margin-top: 15px;
 }
 
 .modal-buttons button {
-    margin: 5px;
-    padding: 5px 70px;
-    border: none;
-    border-radius: 7px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: #104c60;
-    color: white;
-    transition: background 0.3s;
+  margin: 5px;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 7px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #104c60;
+  color: white;
+  transition: background 0.3s;
 }
 
 .modal-buttons button:hover {
-    background-color: #1c292e;
+  background-color: #1c292e;
 }
 
 .sub-nav {
@@ -72,18 +103,13 @@ header .overlay {
     display: none;
 }
 
-header {
-    width: 100%;
-    height: 560px;
-    overflow: hidden;
-    position: relative;
+.logo {
+    display: none;
 }
 
-.capa-nav {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.logo img {
+    width: 140px;
+    height: auto;
 }
 
 header .overlay h1 {
@@ -138,12 +164,12 @@ header h1 {
 }
 
 .main-nav {
-    background: #1c292e;
+    background: #00151f;
     padding: 15px 30px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
 }
 
 .menu-toggle {
@@ -153,11 +179,16 @@ header h1 {
     color: white;
 }
 
+
 .menu {
-    list-style: none;
     display: flex;
+    justify-content: center;
     gap: 40px;
-    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.menu li {
+    list-style: none;
 }
 
 .menu li a {
@@ -179,28 +210,27 @@ header h1 {
 }
 
 main {
-    padding: -150px 0px;
+    padding: 0;
     text-align: center;
 }
+
+
 
 .intro {
     background-color: #ffffff;
     padding: 40px 20px;
-    border-radius: 0;
-    margin: 0;
     width: 100%;
-    box-shadow: none;
 }
 
 .intro h2 {
     font-size: 2em;
-    color: #1c292e;
+    color: #00151f;
     margin-bottom: 15px;
 }
 
 .intro p {
     font-size: 1.1em;
-    color: #1c292e;
+    color: #00151f;
     max-width: 700px;
     margin: 0 auto 20px;
 }
@@ -293,31 +323,66 @@ main {
 }
 
 @media (max-width: 768px) {
-    .main-nav {
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 11;
+    }
+
+    .logo-nav {
+        height: 60px;
+        margin: 0 auto;
+    }
+
+    .btn-container {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-end;
+        gap: 5px;
+        z-index: 11;
+    }
+
+    .btn-login,
+    .btn-signup {
+        padding: 6px 12px;
+        font-size: 0.85em;
+        background: white;
+        color: #00151f;
+        border-radius: 5px;
     }
 
     .menu {
         flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
+        align-items: center;
+        background-color: #00151f;
+        position: absolute;
+        top: 100%;
+        left: 0;
         width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 10;
     }
 
-    .btn-container {
-        flex-direction: row;
-        gap: 10px;
-        margin-top: 10px;
+    .menu.active {
+        max-height: 300px;
     }
 
-    header h1 {
-        font-size: 1.8em;
+    .menu li {
+        margin: 10px 0;
     }
 
-    .category img {
-        width: 60px;
-        height: 60px;
+    .menu li a {
+        color: white;
+        font-size: 1em;
     }
 
     .step {
@@ -336,7 +401,25 @@ main {
   background-color: #152328;
   padding: 1rem;
   width: 100%;
-  box-sizing: border-box;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 }
+

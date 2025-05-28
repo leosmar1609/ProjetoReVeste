@@ -83,13 +83,12 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const toggle = document.getElementById('menu-toggle');
-        const menu = document.getElementById('menu');
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('active');
-        });
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+    toggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+    });
     </script>
 
     <script>
@@ -98,25 +97,21 @@
         const btnSim = document.getElementById('btnSim');
         const btnNao = document.getElementById('btnNao');
 
-        openModalBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.style.display = 'block';
-        });
+    btnSim.addEventListener('click', () => {
+        window.location.href = 'login.html';
+    });
 
-        btnSim.addEventListener('click', () => {
-            window.location.href = 'login.html';
-        });
+    btnNao.addEventListener('click', () => {
+        window.location.href = 'cadastro.html';
+    });
 
-        btnNao.addEventListener('click', () => {
-            window.location.href = 'cadastro.html';
-        });
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.remove('show'); 
+        }
+    });
+</script>
 
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    </script>
 
 </body>
 </html>

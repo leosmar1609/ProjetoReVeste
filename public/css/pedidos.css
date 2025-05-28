@@ -85,7 +85,7 @@ h2 {
 
 /* === Botão de Confirmação da Doação === */
 #modalDoacao #confirmarDoacao {
-    background-color: #2563eb;
+    background-color: #104c60;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -97,7 +97,7 @@ h2 {
 }
 
 #modalDoacao #confirmarDoacao:hover {
-    background-color: #1e40af;
+    background-color: #1c292e;
 }
 
 /* === Menu do Usuário === */

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +10,6 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=SUA_CHAVE_API_AQUI&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
 
 </head>
-
 <body>
   <header class="header" id="mainHeader">
     <img src="./imgs/LogoBranco.png" alt="ReVeste Logo" class="logo" />
@@ -98,20 +96,27 @@
         header.style.display = 'flex';
       }
     });
-
+  </script>
+  <script>
     window.initAutocomplete = function () {
       const input = document.getElementById("locate");
       const autocomplete = new google.maps.places.Autocomplete(input, {
         types: ["geocode"],
         componentRestrictions: { country: "br" }
       });
+    }
 
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener("place_changed", function () {
         const place = autocomplete.getPlace();
-        console.log("Endereço selecionado:", place.formatted_address);
+        if (!place.geometry) {
+          // O usuário digitou um endereço que não foi encontrado
+          input.value = "";
+          return;
+        }
+        // Aqui você pode fazer algo com o local selecionado, como salvar as coordenadas
+        console.log("Local selecionado:", place.formatted_address);
       });
-    };
-  </script>
+</script>
+  
 </body>
-
 </html>

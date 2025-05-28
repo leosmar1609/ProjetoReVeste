@@ -6,16 +6,16 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #1c292e;
-  color: #1c292e;
-  display: flex;
+  background: #00151f;
+  color: #00151f;
+  display: flex;  
   align-items: center;
   justify-content: center;
   height: 100vh;
 }
 
 .login-container {
-  background: linear-gradient(135deg, #d6d2d2, #d6d2d2);
+  background: linear-gradient(135deg, #f1ecec, #f1ecec);
   padding: 110px 70px;
   border-radius: 20px;
   width: 100%;
