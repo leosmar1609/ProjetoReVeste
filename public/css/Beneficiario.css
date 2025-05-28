@@ -1,3 +1,5 @@
+/* ===== Reset e fontes ===== */
+/* Remove margens, preenchimentos e configura o box-sizing para todos os elementos */
 * {
   margin: 0;
   padding: 0;
@@ -9,26 +11,25 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #d6d2d2;
+  background-color: #ffffff;
 }
 
+/* ===== Header (cabeçalho) ===== */
 .header {
   background-color: #00151f;
   padding: 2px 20px;
   height: 150px;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  position: relative;
-  top: 0;
-  z-index: 10;
+  width: 100%;
 }
 
 .logo {
-  height: 100px;
-  margin-top: 1rem;
+  height: 90px;
+  margin-top: 25px;
   object-fit: contain; /* Mantém a proporção da logo */
 }
 
@@ -36,33 +37,36 @@ html, body {
   color: #ffffff;
   font-size: 2rem;
   margin-bottom: 5px;
-  margin-top: -170px;
+  margin-top: -150px;
   font-weight: bold;
-  color: #2563eb;
+  text-align: center;
+  flex: 1 1 100%; /* Faz quebrar pra linha sozinha */
 }
 
+
+/* ===== Barra de Pesquisa ===== */
 .search-bar {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
-  max-width: 700px; /* <-- Controle da largura máxima */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: -60px;
+  margin-left: 200px; /* Ajuste aqui o quanto quer deslocar */
 }
 
 .search-bar input {
   width: 100%;
-  padding: 10px 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 999px;
-  font-size: 1rem;
-  margin-top: 80px;
-  transition: border-color 0.3s;
+  max-width: 500px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
 }
 
 .search-bar input:focus {
   outline: none;
-  border-color: #ffffff;
+  border-color: #ffffff; /* Cor da borda ao focar */
 }
+
 
 /* ===== Menu do Usuário ===== */
 .user-menu {
@@ -70,21 +74,17 @@ html, body {
   align-items: center;
   gap: 16px;
   position: relative;
+  margin-top: -130px;
+
 }
 
 .user-menu img {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 50%; /* Foto de perfil redonda */
   margin-top: -5px;
   cursor: pointer;
-  transition: transform 0.2s ease; /* Suaviza a animação */
 }
-
-.user-menu img:hover {
-  transform: scale(1.2); /* Aumenta 10% */
-}
-
 
 /* Dropdown menu */
 #dropdownMenu {
@@ -103,7 +103,7 @@ html, body {
 }
 
 #dropdownMenu.hidden {
-  display: none;
+  display: none; /* Esconde o dropdown */
 }
 
 #dropdownMenu button {
@@ -117,14 +117,20 @@ html, body {
 }
 
 #dropdownMenu button:hover {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 
+.name_item {
+  color: #00151f;
+  
+}
+
+/* ===== Botões principais ===== */
 .donate-button,
 .btn-confirmar,
 .btn-cancelar {
-  background-color: #2563eb;
-  color: white;
+  background-color: #ffffff;
+  color: #00151f;
   padding: 10px 20px;
   border: none;
   border-radius: 999px;
@@ -137,14 +143,16 @@ html, body {
 .donate-button:hover,
 .btn-confirmar:hover,
 .btn-cancelar:hover {
-  background-color: #1e40af;
+  background-color: #131e23;
+  color: #ffffff;
 }
 
+/* ===== Formulário Modal ===== */
 #formContainer {
   display: none;
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -162,17 +170,13 @@ html, body {
   animation: fadeIn 0.3s ease;
 }
 
+/* Animação de entrada do formulário */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
+/* Botão de fechar o formulário */
 .close-btn {
   position: absolute;
   top: 12px;
@@ -189,6 +193,7 @@ html, body {
   color: red;
 }
 
+/* Estilo dos elementos do formulário */
 form h2 {
   margin-bottom: 20px;
   color: #333;
@@ -219,7 +224,7 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #1c292e;
+  border-color: #009578;
   outline: none;
 }
 
@@ -228,10 +233,11 @@ textarea {
   min-height: 80px;
 }
 
+/* Botão enviar do formulário */
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #104c60;
+  background-color: #009578;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -242,10 +248,17 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-  background-color: #1c292e;
+  background-color: #007f63;
 }
 
 /* ===== Cards dos Pedidos ===== */
+#listaPedidos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+  gap: 20px;
+  padding: 20px 32px;
+}
+
 
 .card {
   background-color: white;
@@ -326,7 +339,7 @@ form button[type="submit"]:hover {
 /* ===== Responsivo ===== */
 @media (max-width: 500px) {
   .header {
-    flex-direction: column;
+    flex-direction: column; /* Coloca o header em coluna */
     gap: 10px;
   }
 
