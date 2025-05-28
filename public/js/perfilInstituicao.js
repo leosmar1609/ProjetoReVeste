@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("nameInc").textContent = instituicao.nameInc;
     document.getElementById("emailInc").textContent = instituicao.emailInc;
-    document.getElementById("historyInc").textContent = instituicao.historyInc;
     document.getElementById("locationInc").textContent = instituicao.locationInc;
     document.getElementById("cnpjInc").textContent = instituicao.cnpjInc;
     document.getElementById("telInc").textContent = instituicao.telInc || "Não informado";
@@ -58,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("inputName").value = instituicao.nameInc;
         document.getElementById("inputEmail").value = instituicao.emailInc;
         document.getElementById("inputCNPJ").value = instituicao.cnpjInc;
-        document.getElementById("inputHistory").value = instituicao.historyInc;
         document.getElementById("inputPassword").value = ""; 
         document.getElementById("inputAddress").value = instituicao.locationInc;
 

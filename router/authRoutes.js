@@ -31,9 +31,9 @@ function autenticarToken(req, res, next) {
 }
 
 router.post('/registerIB', (req, res) => {
-    let { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, telInc } = req.body;
+    let { nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc } = req.body;
 
-    if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !historyInc || !telInc) {
+    if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !telInc) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
@@ -56,10 +56,10 @@ router.post('/registerIB', (req, res) => {
         }
 
         const insertSql = `INSERT INTO instituicao_beneficiaria 
-            (nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, verificada, telInc) 
-            VALUES (?, ?, ?, ?, ?, ?, 0, ?)`;
+            (nameInc, emailInc, passwordInc, cnpjInc, locationInc, verificada, telInc) 
+            VALUES (?, ?, ?, ?, ?, 0, ?)`;
 
-        db.query(insertSql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, telInc], (err, results) => {
+        db.query(insertSql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc], (err, results) => {
             if (err) {
                 console.error('Erro ao criar instituição:', err);
                 return res.status(500).json({ error: 'Erro ao cadastrar instituição.' });
@@ -167,9 +167,9 @@ router.get('/pessoa', autenticarToken, (req, res) => {
 
 
 router.post('/registerPB', (req, res) => {
-    const { namePer, emailPer, passwordPer, cpfPer, historyPer, telPer } = req.body;
+    const { namePer, emailPer, passwordPer, cpfPer, telPer } = req.body;
 
-    if (!namePer || !emailPer || !passwordPer || !cpfPer || !historyPer || !telPer) {
+    if (!namePer || !emailPer || !passwordPer || !cpfPer || !telPer) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
@@ -187,10 +187,10 @@ router.post('/registerPB', (req, res) => {
             return res.status(409).json({ error: `${conflictField} já cadastrado.` });
         }
 
-        const insertSql = `INSERT INTO pessoa_beneficiaria (namePer, emailPer, passwordPer, cpfPer, historyPer, verificado, telPer)
-                           VALUES (?, ?, ?, ?, ?, 0, ?)`;
+        const insertSql = `INSERT INTO pessoa_beneficiaria (namePer, emailPer, passwordPer, cpfPer, verificado, telPer)
+                           VALUES (?, ?, ?, ?, 0, ?)`;
 
-        db.query(insertSql, [namePer, emailPer, passwordPer, cpfLimpo, historyPer, telPer], (err, results) => {
+        db.query(insertSql, [namePer, emailPer, passwordPer, cpfLimpo, telPer], (err, results) => {
             if (err) {
                 console.error('Erro ao cadastrar pessoa:', err);
                 return res.status(500).json({ error: 'Erro ao cadastrar pessoa.' });
@@ -668,19 +668,19 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
 
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;
-  const { namePer, emailPer, passwordPer, cpfPer, historyPer, telPer } = req.body;
+  const { namePer, emailPer, passwordPer, cpfPer, telPer } = req.body;
 
-  if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !historyPer || !telPer) {
+  if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !telPer) {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
   const sql = `
     UPDATE pessoa_beneficiaria
-    SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, historyPer = ?, telPer = ?
+    SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, telPer = ?
     WHERE id = ?
   `;
 
-  db.query(sql, [namePer, emailPer, passwordPer, cpfPer, historyPer, telPer, id], (err, resultado) => {
+  db.query(sql, [namePer, emailPer, passwordPer, cpfPer, telPer, id], (err, resultado) => {
     if (err) {
       console.error('Erro ao atualizar pessoaup:', err);
       return res.status(500).send('Erro no servidor');
@@ -697,15 +697,15 @@ router.put('/pessoaup/:id', (req, res) => {
 
 router.put('/beneficiarioup/:id', (req, res) => {
     const id = req.params.id;
-    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, historyInc, telInc } = req.body;
+    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc } = req.body;
 
-    if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !historyInc || !locationInc || !telInc) {
+    if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !telInc) {
         return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
     }
 
-    const sql = 'UPDATE instituicao_beneficiaria SET nameInc = ?, emailInc = ?, passwordInc = ?, cnpjInc = ?, historyInc = ?, locationInc = ?, telInc = ? WHERE id = ?';
+    const sql = 'UPDATE instituicao_beneficiaria SET nameInc = ?, emailInc = ?, passwordInc = ?, cnpjInc = ?, locationInc = ?, telInc = ? WHERE id = ?';
 
-    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, historyInc, locationInc, telInc, id], (err, resultado) => {
+    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc, id], (err, resultado) => {
         if (err) {
             console.error('Erro ao atualizar beneficiário:', err);
             return res.status(500).send('Erro no servidor');

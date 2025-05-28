@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailPer = document.getElementById("inputEmail").value.trim();
     const passwordPer = document.getElementById("inputPassword").value.trim();
     const cpfRaw = document.getElementById("inputCpf").value.trim();
-    const historyPer = document.getElementById("inputHistory").value.trim();
     const telPer = document.getElementById("inputTel").value.trim();
     const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
 
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, namePer, emailPer, passwordPer, cpfPer, historyPer, telPer }),
+        body: JSON.stringify({ id, namePer, emailPer, passwordPer, cpfPer, telPer }),
       });
 
       const resultado = await res.json();
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         msgModal.textContent = "Dados atualizados com sucesso!";
         document.getElementById("namePer").textContent = namePer;
         document.getElementById("emailPer").textContent = emailPer;
-        document.getElementById("historyPer").textContent = historyPer;
         document.getElementById("telPer").textContent = telPer || "Não informado";
 
         document.getElementById("inputPassword").value = "";

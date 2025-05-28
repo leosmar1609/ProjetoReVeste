@@ -46,7 +46,6 @@ if (!dados || Object.keys(dados).length === 0) {
 
     document.getElementById("namePer").textContent = pessoa.namePer;
     document.getElementById("emailPer").textContent = pessoa.emailPer;
-    document.getElementById("historyPer").textContent = pessoa.historyPer;
     document.getElementById("telPer").textContent = pessoa.telPer || "Não informado";
 
     if (idUsuarioLogado === String(pessoa.id)) {
@@ -55,7 +54,6 @@ if (!dados || Object.keys(dados).length === 0) {
       document.getElementById("inputName").value = pessoa.namePer || "";
       document.getElementById("inputEmail").value = pessoa.emailPer || "";
       document.getElementById("inputCpf").value = pessoa.cpfPer || "";
-      document.getElementById("inputHistory").value = pessoa.historyPer || "";
       document.getElementById("inputPassword").value = pessoa.passwordPer || "";
 
       btnAlterar.addEventListener("click", () => {

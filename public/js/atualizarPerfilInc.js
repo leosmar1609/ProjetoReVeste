@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const passwordInc = document.getElementById("inputPassword").value.trim();
     const cnpjRaw = document.getElementById("inputCNPJ").value.trim();
     const telInc = document.getElementById("inputTel").value.trim();
-    const historyInc = document.getElementById("inputHistory").value.trim();
     const locationInc = document.getElementById("inputAddress").value.trim();
     const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
 
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const cnpjInc = cnpjRaw.replace(/\D/g, '');
-    if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !historyInc || !locationInc) {
+    if (!nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc) {
       msgModal.style.color = "red";
       msgModal.textContent = "Preencha todos os campos.";
       return;
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, nameInc, emailInc, passwordInc, cnpjInc, historyInc , locationInc, telInc }),
+        body: JSON.stringify({ id, nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc }),
       });
 
       const resultado = await res.json();
@@ -62,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
         msgModal.textContent = "Dados atualizados com sucesso!";
         document.getElementById("nameInc").textContent = nameInc;
         document.getElementById("emailInc").textContent = emailInc;
-        document.getElementById("historyInc").textContent = historyInc;
         document.getElementById("locationInc").textContent = locationInc;
         document.getElementById("cnpjInc").value = cnpjInc;
         document.getElementById("telInc").textContent = telInc;
