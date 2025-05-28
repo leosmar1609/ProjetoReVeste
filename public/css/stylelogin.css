@@ -220,6 +220,10 @@ main {
     background: #14510c;
 }
 
+.intro .category h3 {
+    color: #1c292e;
+}
+
 .categories {
     display: flex;
     justify-content: center;
