@@ -87,6 +87,11 @@ button:hover {
   background-color: #1c292e;
 }
 
+#ForgotPassword{
+  color: #00151f;
+}
+
+
 footer {
   margin-top: 20px;
   text-align: center;

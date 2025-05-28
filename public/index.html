@@ -9,7 +9,7 @@
 </head>
 <body>
     <nav class="main-nav">
-        <img src='./imgs/LogoBranco.png' alt="Logo" class="logo-nav"/>
+        <img src="./imgs/LogoBranco.png" alt="Logo" class="logo-nav"/>
         <div class="menu-toggle" id="menu-toggle">&#9776;</div>
         <ul id="menu" class="menu">
             <li><a href="login.html">PEDIDOS DE DOAÇÃO</a></li>
@@ -21,12 +21,10 @@
             <a href="login.html" class="btn-login">Entrar</a>
             <a href="cadastro.html" class="btn-signup">Cadastrar</a>
         </div>
-    </nav>
-
-    </nav>     
+    </nav> <!-- ✅ Fechamento correto -->
 
     <header>
-        <img src='./imgs/Capa.png' alt="Capa" class="capa-nav"/>
+        <img src="./imgs/Capa.png" alt="Capa" class="capa-nav"/>
     </header>
 
     <main>
@@ -48,32 +46,30 @@
             </div>
         </section>
 
-        
         <section class="intro">
             <h2>Quais os tipos de doação?</h2>
-        <section class="categories">
-            <div class="category">
-                <img src='./imgs/Roupa.png' alt="Roupas" />
-                <h3>Roupas</h3>
-            </div>
-            <div class="category">
-                <img src='./imgs/Alimento.png' alt="Alimentos" />
-                <h3>Alimentos</h3>
-            </div>
-            <div class="category">
-                <img src='./imgs/Brinquedo.png' alt="Brinquedos" />
-                <h3>Brinquedos</h3>
-            </div>
+            <section class="categories">
+                <div class="category">
+                    <img src="./imgs/Roupa.png" alt="Roupas" />
+                    <h3>Roupas</h3>
+                </div>
+                <div class="category">
+                    <img src="./imgs/Alimento.png" alt="Alimentos" />
+                    <h3>Alimentos</h3>
+                </div>
+                <div class="category">
+                    <img src="./imgs/Brinquedo.png" alt="Brinquedos" />
+                    <h3>Brinquedos</h3>
+                </div>
+            </section>
 
-        <div class="separador"></div>
+            <div class="separador"></div>
 
-
-        </section>
             <a href="#" class="btn" id="openModal"><b>Cadastrar ou solicitar doação</b></a>
         </section>
-
     </main>
 
+    <!-- Modal -->
     <div id="popup" class="modal">
         <div class="modal-content">
             <b>Você já possui cadastro?</b>
@@ -83,35 +79,38 @@
             </div>
         </div>
     </div>
-  <script>
-    const toggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
-    toggle.addEventListener('click', () => {
-        menu.classList.toggle('active');
-    });
-    </script>
 
+    <!-- Script -->
     <script>
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+
         const openModalBtn = document.getElementById('openModal');
         const modal = document.getElementById('popup');
         const btnSim = document.getElementById('btnSim');
         const btnNao = document.getElementById('btnNao');
 
-    btnSim.addEventListener('click', () => {
-        window.location.href = 'login.html';
-    });
+        openModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('show');
+        });
 
-    btnNao.addEventListener('click', () => {
-        window.location.href = 'cadastro.html';
-    });
+        btnSim.addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
 
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.remove('show'); 
-        }
-    });
-</script>
+        btnNao.addEventListener('click', () => {
+            window.location.href = 'cadastro.html';
+        });
 
-
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
