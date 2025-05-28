@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
 
-    if (!namePer || !emailPer || !passwordPer || !cpfPer || !historyPer) {
+    if (!namePer || !emailPer || !passwordPer || !cpfPer) {
       msgModal.style.color = "red";
       msgModal.textContent = "Preencha todos os campos.";
       return;

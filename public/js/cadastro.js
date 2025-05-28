@@ -48,7 +48,6 @@ telInput.addEventListener('input', () => {
         const cnpjMasked = cnpjInput.value;
         const cleanCnpj = cnpjMasked.replace(/\D/g, '');
         const locationInc = document.getElementById('locationInc').value;
-        const historyInc = document.getElementById('historyInc').value;
         const telInc = document.getElementById('telInc').value;
 
         if (!telRegex.test(telInc)) {
@@ -95,7 +94,6 @@ telInput.addEventListener('input', () => {
                     passwordInc,
                     cnpjInc: cleanCnpj,
                     locationInc,
-                    historyInc,
                     telInc
                 })
             });
