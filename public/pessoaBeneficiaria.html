@@ -1,114 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ReVeste - Criar Doação</title>
-    <link rel="stylesheet" href="./css/pedidos.css">
-    <link rel="stylesheet" href="../css/Beneficiario.css">
-    <script defer src="./js/PessoaBeneficiario.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil Doador</title>
+  <link rel="stylesheet" href="./css/perfil.css" />
 </head>
-
 <body>
-    <header class="header" id="mainHeader">
-        <h1 class="logo">ReVeste</h1>
+  <header>
+    <button id="btnVoltar">Voltar</button>
+    <img src="./imgs/LogoBranco.png" alt="ReVeste Logo" class="logoBranco" />
+    <button id="btnSair">Sair</button>
+  </header>
 
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar minhas doações" id="search" />
-        </div>
-
-        <div class="user-menu">
-            <button class="donate-button" id="openFormBtn">Pedir Doação</button>
-            <img src="./imgs/user-icon.png" alt="Usuário" id="userIcon" />
-            <div class="dropdown hidden" id="dropdownMenu">
-            <button id="btnPerfil">Meu Perfil</button>
-            <button id="btnLogout">Sair</button>
-            </div>
-          </div>
-    </header>
-
-    <h2>Meus Pedidos</h2>
-    <div id="listaPedidos"></div>
-
-    <div id="formContainer">
-        <form method="POST" id="form">
-            <button type="button" class="close-btn" id="closeFormBtn">×</button>
-
-            <h2>Cadastrar Item</h2>
-
-            <label for="name_item">Nome do Item:</label>
-            <input type="text" id="name_item" name="name_item" required>
-
-            <label for="description">Descrição:</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <label for="quantity_item">Quantidade:</label>
-            <input type="number" id="quantity_item" name="quantity_item" min="1" required>
-
-            <label for="category">Categoria:</label>
-            <select id="category" name="category" required>
-        <option value="roupas">Roupas</option>
-        <option value="alimentos">Alimentos</option>
-        <option value="móveis">Móveis</option>
-        <option value="eletrônicos">Eletrônicos</option>
-        <option value="brinquedos">Brinquedos</option>
-      </select>
-
-            <label for="urgencia_enum">Urgência:</label>
-            <select id="urgencia_enum" name="urgencia_enum" required>
-        <option value="Baixa">Baixa</option>
-        <option value="Média">Média</option>
-        <option value="Alta">Alta</option>
-        <option value="Urgente">Urgente</option>
-      </select>
-
-            <label for="locate">Localização:</label>
-            <input id="locate" type="text" placeholder="Digite seu endereço" required>
-
-            <button type="submit">Pedir Doação</button>
-        </form>
+  <main class="perfil-container">
+    <h2>Perfil</h2>
+    
+    <div class="info">
+      <p><strong>Nome:</strong> <span id="nameDoador"></span></p>
+      <p><strong>Email:</strong> <span id="emailDoador"></span></p>
     </div>
 
-    <script>
-        const openFormBtn = document.getElementById('openFormBtn');
-        const closeFormBtn = document.getElementById('closeFormBtn');
-        const formContainer = document.getElementById('formContainer');
-        const header = document.getElementById('mainHeader');
+    <div class="botoes-acao" id="botoesApenasDono">
+      <button id="btnAlterar">Alterar Dados</button>
+      <button id="btnExcluir">Excluir Conta</button>
+    </div>
+  </main>
 
-        openFormBtn.addEventListener('click', () => {
-            formContainer.style.display = 'flex';
-            header.style.display = 'none';
-        });
+  <!-- Modal para editar dados -->
+  <div id="modalEditar" class="modal">
+    <div class="modal-content">
+      <button id="fecharModal" title="Fechar" class="btn-fechar">&times;</button>
+      <h3>Alterar Dados</h3>
+      <form id="formAlterar" method="PUT">
+        <label for="inputName">Nome</label>
+        <input type="text" id="inputName" name="inputName" required />
 
-        closeFormBtn.addEventListener('click', () => {
-            formContainer.style.display = 'none';
-            header.style.display = 'flex';
-        });
+        <label for="inputEmail">Email</label>
+        <input type="email" id="inputEmail" name="inputEmail" required />
 
-        formContainer.addEventListener('click', (e) => {
-            if (e.target === formContainer) {
-                formContainer.style.display = 'none';
-                header.style.display = 'flex';
-            }
-        });
-    </script>
-    <script>
-    window.initAutocomplete = function () {
-      const input = document.getElementById("locate");
-      const autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ["geocode"],
-        componentRestrictions: { country: "br" }
-      });
+        <label for="inputPassword">Senha</label>
+        <input type="password" id="inputPassword" name="inputPassword" required minlength="6" />
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        console.log("Endereço selecionado:", place.formatted_address);
-      });
-    };
+        <button type="submit" id="salvarAlteracoes">Salvar Alterações</button>
+      </form>
+      <p id="msgModal"></p>
+    </div>
+  </div>
+
+  <script>
+    const btnAbrir = document.getElementById('btnAlterar');
+    const modal = document.getElementById('modalEditar');
+    const btnFechar = document.getElementById('fecharModal');
+
+    btnAbrir.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    btnFechar.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
   </script>
-</body>
 
+  <script src="./js/perfilDoador.js"></script>
+  <script src="./js/atualizarPerfilDoador.js"></script>
+</body>
 </html>

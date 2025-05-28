@@ -11,135 +11,148 @@
     <script defer src="/js/cadastro.js"></script>
     <script defer src="./js/cadastropessoa.js"></script>
     <script defer src="./js/cadastrodoador.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
+
+    <style>
+        body {
+            background-image: url('./imgs/image.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* 🔥 Impede o swiper enquanto interage nos inputs */
+        input,
+        textarea,
+        select,
+        button {
+            touch-action: manipulation;
+            user-select: text;
+            -webkit-user-select: text;
+            -ms-user-select: text;
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- Carrossel dos 3 formulários -->
     <div class="swiper">
         <div class="swiper-wrapper">
 
-            <div class="swiper-slide">
-                <h2>Cadastro de Doador</h2>
-                <form id="registerFormDoador">
-                    <label for="nomeDoador">Nome Completo</label>
-                    <input type="text" id="namedonor" name="nomeDoador" />
-
-                    <label for="emailDoador">E-mail</label>
-                    <input type="email" id="emaildonor" name="emailDoador" />
-
-                    <label for="senhaDoador">Senha</label>
-                    <input type="password" id="passworddonor" name="senhaDoador" />
-
-                    <p id="messageDoador"></p>
-
-                    <button type="submit">Cadastrar</button>
-                </form>
-
-                <footer>
-                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-                </footer>
-            </div>
-
+            <!-- Formulário de Beneficiário -->
             <div class="swiper-slide">
                 <h2>Cadastro de Beneficiário</h2>
                 <form id="registerPForm" method="POST">
-                    <label for="nomePessoa"><strong>Nome Completo</strong></label>
+                    <label for="namePer"><strong>Nome Completo</strong></label>
                     <input type="text" id="namePer" name="nomePessoa" />
 
-                    <label for="cpfPessoa"><strong>CPF</strong></label>
-                    <input type="text" id="cpfPer" placeholder="000.000.000-00" maxlength="14" required>
+                    <label for="cpfPer"><strong>CPF</strong></label>
+                    <input type="text" id="cpfPer" name="cpfPessoa" />
 
-                    <label for="emailPessoa"><strong>E-mail</strong></label>
+                    <label for="emailPer"><strong>E-mail</strong></label>
                     <input type="email" id="emailPer" name="emailPessoa" />
 
-                    <label for="senhaPessoa"><strong>Senha</strong></label>
+                    <label for="passwordPer"><strong>Senha</strong></label>
                     <input type="password" id="passwordPer" name="senhaPessoa" />
 
-                    <label for="telPer"><strong>Telefone</strong></label>
-                    <input type="text" id="telPer" placeholder="(00) 00000-0000" maxlength="15" required>
-
-                    <label for="historiaPessoa"><strong>História</strong></label>
+                    <label for="historyPer"><strong>História</strong></label>
                     <textarea id="historyPer" name="historiaPessoa" rows="3"></textarea>
 
                     <p id="messagePessoa"></p>
 
                     <button type="submit">Cadastrar</button>
-
                 </form>
             </div>
 
+            <!-- Formulário de Doador -->
+            <div class="swiper-slide">
+                <img src="./imgs/Logo.png" alt="Logo Reveste" class="logo-reveste">
+                <h2>Cadastro de Doador</h2>
+                <form id="registerFormDoador">
+                    <label for="namedonor"><strong>Nome Completo</strong></label>
+                    <input type="text" id="namedonor" name="nomeDoador" />
+
+                    <label for="emaildonor"><strong>E-mail</strong></label>
+                    <input type="email" id="emaildonor" name="emailDoador" />
+
+                    <label for="passworddonor"><strong>Senha</strong></label>
+                    <input type="password" id="passworddonor" name="senhaDoador" />
+
+                    <button type="submit">Cadastrar</button>
+                </form>
+
+                <footer>
+                    <p>Já tem uma conta? <a href="login.html">Faça o login</a></p>
+                </footer>
+            </div>
+
+            <!-- Formulário de Instituição -->
             <div class="swiper-slide">
                 <h2>Cadastro de Instituição</h2>
                 <form id="registerForm">
-                    <label for="nomeInst"><strong>Nome da Instituição</strong></label>
+                    <label for="nameInc"><strong>Nome da Instituição</strong></label>
                     <input type="text" id="nameInc" name="nomeInst" />
 
-                    <label for="cnpjInst"><strong>CNPJ</strong></label>
-                    <input type="text" id="cnpjInc" placeholder="00.000.000/0000-00" maxlength="18" required />
+                    <label for="cnpjInc"><strong>CNPJ</strong></label>
+                    <input type="text" id="cnpjInc" name="cnpjInst" />
 
-                    <label for="emailInst"><strong>E-mail</strong></label>
+                    <label for="emailInc"><strong>E-mail</strong></label>
                     <input type="email" id="emailInc" name="emailInst" />
 
-                    <label for="senhaInst"><strong>Senha</strong></label>
+                    <label for="passwordInc"><strong>Senha</strong></label>
                     <input type="password" id="passwordInc" name="senhaInst" />
 
-                    <label for="telInst"><strong>Telefone</strong></label>
-                    <input type="text" id="telInc" placeholder="(00) 00000-0000" maxlength="15" required />
-
-                    <label for="historiaInst"><strong>História</strong></label>
+                    <label for="historyInc"><strong>História</strong></label>
                     <textarea id="historyInc" name="historiaInst" rows="3"></textarea>
 
-                    <label for="location"><strong>Localização</strong></label>
+                    <label for="locationInc"><strong>Localização</strong></label>
                     <input type="text" id="locationInc" name="location" />
 
                     <p id="messageInc"></p>
 
                     <button type="submit">Cadastrar</button>
-
                 </form>
             </div>
 
         </div>
 
+        <!-- Botões de navegação -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script>
-    const swiper = new Swiper('.swiper', {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        coverflowEffect: {
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        loop: false,
-    });
-</script>
-<script>
-    window.initAutocomplete = function () {
-      const input = document.getElementById("locationInc");
-      const autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ["geocode"],
-        componentRestrictions: { country: "br" }
-      });
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        console.log("Endereço selecionado:", place.formatted_address);
-      });
-    };
-  </script>
+    <script>
+        const swiper = new Swiper('.swiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            initialSlide: 1, // Começa no slide do meio
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: false,
+
+            // 🔥 Adiciona essa configuração para travar swipe nos inputs
+            noSwiping: true,
+            noSwipingSelector: 'input, textarea, button, select',
+            touchStartPreventDefault: false,
+            touchReleaseOnEdges: true,
+        });
+    </script>
+
 </body>
 
 </html>

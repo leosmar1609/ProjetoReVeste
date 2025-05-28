@@ -3,8 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>Contato - ReVeste</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/contato.css">
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #bfbcbc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #00151f;
+            padding: 0px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            flex: 1;
+            text-align: center;
+        }
+        .logo img {
+            height: 100px;
+            margin-top: 10px;
+        }
+        .btn-voltar {
+            background-color: #564c1c;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .btn-voltar:hover {
+            background: #383212;
+            color: #ffffff;
+        }
+        
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #f1ecec;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1c292e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        form {
+            margin-top: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 6px;
+            background: #c7c4c4;
+            border: 1px solid #1c292e;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+        form .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 24px;
+            background-color: #104c60;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+}
+
+/* Adicione este estilo */
+form .btn-container {
+    text-align: center;
+}   
+        .btn:hover {
+            background-color: #1c292e;
+        }
+    </style>
 </head>
 <body>
     <header>

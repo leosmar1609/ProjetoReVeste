@@ -5,13 +5,18 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  background-color: #e8d8c8;
+/* Define o fundo da página */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #d6d2d2;
 }
 
 .header {
-  background-color: #e8d8c8;
-  padding: 16px 32px;
+  background-color: #00151f;
+  padding: 2px 20px;
+  height: 150px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,7 +27,16 @@ body {
 }
 
 .logo {
-  font-size: 1.8rem;
+  height: 100px;
+  margin-top: 1rem;
+  object-fit: contain; /* Mantém a proporção da logo */
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 5px;
+  margin-top: -170px;
   font-weight: bold;
   color: #2563eb;
 }
@@ -31,8 +45,8 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
+  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
+  max-width: 700px; /* <-- Controle da largura máxima */
 }
 
 .search-bar input {
@@ -41,14 +55,16 @@ body {
   border: 2px solid #e2e8f0;
   border-radius: 999px;
   font-size: 1rem;
+  margin-top: 80px;
   transition: border-color 0.3s;
 }
 
 .search-bar input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #ffffff;
 }
 
+/* ===== Menu do Usuário ===== */
 .user-menu {
   display: flex;
   align-items: center;
@@ -60,9 +76,17 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  margin-top: -5px;
   cursor: pointer;
+  transition: transform 0.2s ease; /* Suaviza a animação */
 }
 
+.user-menu img:hover {
+  transform: scale(1.2); /* Aumenta 10% */
+}
+
+
+/* Dropdown menu */
 #dropdownMenu {
   position: absolute;
   top: 50px;
@@ -195,7 +219,7 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #009578;
+  border-color: #1c292e;
   outline: none;
 }
 
@@ -207,7 +231,7 @@ textarea {
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #009578;
+  background-color: #104c60;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -218,23 +242,88 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-  background-color: #007f63;
+  background-color: #1c292e;
 }
 
-h2 {
-  text-align: center;
-  margin: 30px 0 10px;
-  font-size: 1.8rem;
+/* ===== Cards dos Pedidos ===== */
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Modal do Card Ampliado ===== */
+.card-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.card-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: zoomIn 0.3s ease;
+}
+
+/* Botão fechar dentro do card modal */
+.card-modal .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
   color: #333;
+  cursor: pointer;
 }
 
-#listaPedidos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 20px 32px;
+/* Animação do modal */
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
+/* ===== Prioridade (badge colorida) ===== */
+.pedido-titulo {
+  color: #104c60;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+/* Estilo das tags de prioridade */
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* Cores conforme prioridade */
+.badge.baixa   { background-color: #4caf50; }
+.badge.média   { background-color: #ff9800; }
+.badge.alta    { background-color: #f44336; }
+.badge.urgente { background-color: #b71c1c; }
+
+/* ===== Responsivo ===== */
 @media (max-width: 500px) {
   .header {
     flex-direction: column;

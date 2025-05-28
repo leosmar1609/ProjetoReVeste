@@ -120,8 +120,8 @@ header h1 {
 
 .btn-login,
 .btn-signup {
-    background: #ffffff;
-    color: #1c292e;
+    background: #564c1c;
+    color: #ffffff;
     padding: 8px 15px;
     border-radius: 5px;
     text-decoration: none;
@@ -132,7 +132,7 @@ header h1 {
 
 .btn-login:hover,
 .btn-signup:hover {
-    background: #131e23;
+    background: #383212;
     color: #ffffff;
 
 }
@@ -168,8 +168,14 @@ header h1 {
     transition: color 0.3s ease-in-out;
 }
 
+.menu li a {
+    display: inline-block; /* Necessário para o transform funcionar */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
 .menu li a:hover {
-    color: #c0a790;
+    color: #e7cebf;
+    transform: scale(1.4); /* Aumenta 10% */
 }
 
 main {
@@ -200,7 +206,7 @@ main {
 }
 
 .intro .btn {
-    background: #104c60;
+    background: #289b19;
     color: #ffffff;
     padding: 5px 30px;
     border-radius: 5px;
@@ -211,7 +217,7 @@ main {
 }
 
 .intro .btn:hover {
-    background: #1c292e;
+    background: #14510c;
 }
 
 .categories {
