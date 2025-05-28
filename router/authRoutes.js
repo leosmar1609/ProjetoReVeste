@@ -79,6 +79,20 @@ router.post('/registerdonor', (req, res) => {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
+    const checkSql = `SELECT * FROM doador WHERE emaildonor = ?`;
+    db.query(checkSql, [emaildonor], (checkErr, checkResults) => {
+        if (checkErr) {
+            console.error('Erro ao verificar duplicidade:', checkErr);
+            return res.status(500).json({ error: 'Erro ao verificar duplicidade.' });
+        }
+
+        if (checkResults.length > 0) {
+            const jaExiste = checkResults[0];
+            if (jaExiste.emaildonor === emaildonor) {
+                return res.status(409).json({ error: '❌ E-mail já cadastrado.' });
+            }
+        }
+
     const sql = `INSERT INTO doador (namedonor, emaildonor, passworddonor) 
                VALUES (?, ?, ?)`;
     db.query(sql, [namedonor, emaildonor, passworddonor], (err, results) => {
@@ -89,6 +103,7 @@ router.post('/registerdonor', (req, res) => {
             res.status(201).send('Cadastro realizado!');
         }
     });
+});
 });
 
 router.get('/instituicao', autenticarToken, (req, res) => {
