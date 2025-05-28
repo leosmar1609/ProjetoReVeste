@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', async() => {
                 card.classList.add("card-pedido");
 
                 let nomeDoador = "Desconhecido";
+                let telefoneDoador = "Não informado";
+                let emailDoador = "";
 
                 try {
                     if (pedido.pessoa_beneficiaria_id) {
@@ -73,12 +75,15 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const pessoaData = await resPessoa.json();
-                        // console.log("Dados da pessoa:", pessoaData);
 
-                        if (Array.isArray(pessoaData) && pessoaData.length > 0 && pessoaData[0].namePer) {
+                       if (Array.isArray(pessoaData) && pessoaData.length > 0 && pessoaData[0].namePer) {
                             nomeDoador = pessoaData[0].namePer;
+                            telefoneDoador = pessoaData[0].telPer || "";
+                            emailDoador = pessoaData[0].emailPer || "";
                         } else if (pessoaData.namePer) {
                             nomeDoador = pessoaData.namePer;
+                            telefoneDoador = pessoaData.telPer || "";
+                            emailDoador = pessoaData.emailPer || "";
                         }
                     } else if (pedido.instituicao_id) {
                         const resInst = await fetch(`./auth/instituicao?id=${pedido.instituicao_id}`, {
@@ -87,25 +92,29 @@ document.addEventListener('DOMContentLoaded', async() => {
                             }
                         });
                         const instData = await resInst.json();
-                        // console.log("Dados da instituição:", instData);
 
                         if (Array.isArray(instData) && instData.length > 0 && instData[0].nameInc) {
                             nomeDoador = instData[0].nameInc;
+                            telefoneDoador = instData[0].telInc || "";
+                            emailDoador = instData[0].emailInc || "";
                         } else if (instData.nameInc) {
                             nomeDoador = instData.nameInc;
+                            telefoneDoador = instData.telInc || "";
+                            emailDoador = instData.emailInc || "";
                         }
                     }
                 } catch (err) {
                     console.warn("Erro ao buscar nome do doador:", err);
                 }
 
-                // Preenchendo o conteúdo do card
                  card.innerHTML = `
     <head>
         <link rel="stylesheet" href="../css/Doador.css">
     </head>
     <h3>${pedido.name_item}</h3>
     <p><strong>Feito por:</strong> ${nomeDoador}</p>
+    <p><strong>Telefone:</strong> ${telefoneDoador || "Não informado"}</p>
+    <p><strong>E-mail:</strong> ${emailDoador || "Não informado"}</p>
     <p><strong>Descrição:</strong> ${pedido.description}</p>
     <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
     <p><strong>Categoria:</strong> ${pedido.category}</p>
@@ -120,6 +129,8 @@ document.addEventListener('DOMContentLoaded', async() => {
                 data-nome="${pedido.name_item}"
                 data-desc="${pedido.description}"
                 data-doador="${nomeDoador}"
+                data-telefone="${telefoneDoador || "Não informado"}"
+                data-email="${emailDoador || ""}"
                 data-quant="${pedido.quantity_item}"
                 data-cat="${pedido.category}"
                 data-urg="${pedido.urgencia_enum}"
@@ -148,6 +159,8 @@ listaPedidos.appendChild(card);
                         <p><strong>Item:</strong> ${button.dataset.nome}</p>
                         <p><strong>Descrição:</strong> ${button.dataset.desc}</p>
                         <p><strong>Feito por:</strong> ${button.dataset.doador}</p>
+                        <p><strong>Telefone:</strong> ${button.dataset.telefone}</p>
+                        <p><strong>E-mail:</strong> ${button.dataset.email || ""}</p>
                         <p><strong>Quantidade:</strong> ${button.dataset.quant}</p>
                         <p><strong>Categoria:</strong> ${button.dataset.cat}</p>
                         <p><strong>Urgência:</strong> ${button.dataset.urg}</p>
@@ -167,7 +180,6 @@ listaPedidos.appendChild(card);
     }
 });
 
-// Formatação da data
 function formatarData(dataISO) {
     const data = new Date(dataISO);
     const dia = String(data.getDate()).padStart(2, '0');
@@ -215,8 +227,7 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
 
         if (response.ok) {
             alert('Doação confirmada! O recebimento será confirmado em breve.');
-            // Atualiza a página ou o card (opcional)
-            location.reload(); // ou atualize o card manualmente
+            location.reload(); 
         } else {
             const resData = await response.json();
             alert(`Erro ao atualizar o pedido: ${resData.mensagem || response.statusText}`);

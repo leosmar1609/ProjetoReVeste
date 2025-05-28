@@ -7,7 +7,7 @@
         }
 
         header {
-            background-color: #00151f;
+            background-color: #1c292e;
             padding: 35px 30px;
             display: flex;
             align-items: center;
@@ -26,7 +26,7 @@
             margin-top: 10px;
 }
 
-        .btn-nav {
+        .btn-back {
             padding: 10px 20px;
             background-color: #ffffff;
             color: #1c292e;
@@ -37,22 +37,22 @@
             font-size: 1em;
         }
 
-        .btn-nav:hover {
-            background: #131e23;
+        .btn-back:hover {
+            background: #2a561c;
             color: #ffffff;
         }
 
         .container {
             max-width: 900px;
             margin: 40px auto;
-            background-color: #f1ecec;
+            background-color: #d6d2d2;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h1 {
-            color: #00151f;
+            color: #1c292e;
             font-size: 2.3em;
             margin-bottom: 20px;
             text-align: center;

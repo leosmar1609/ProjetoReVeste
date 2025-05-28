@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Resposta da API de login:", data);
 
             if (!response.ok || !data || !data.id || !data.token) {
-                messageElement.innerText = "❌ Login inválido ou dados incompletos da API.";
+                messageElement.innerText = "❌ Dados inválidos ou email não verificado. Verifique seu e-mail";
                 messageElement.style.color = "red";
                 return;
             }

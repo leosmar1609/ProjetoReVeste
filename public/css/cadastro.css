@@ -24,6 +24,29 @@ body {
   /* padding negativo removido */
 }
 
+.swiper-slide {
+    pointer-events: none; /* Desativa clique, digitação, etc. */
+    opacity: 0.5; /* Opcional: deixa mais apagado para indicar que está desabilitado */
+}
+
+.swiper-slide.swiper-slide-active {
+    pointer-events: auto; /* Ativa apenas no slide atual */
+    opacity: 1; /* Volta a opacidade normal */
+}
+
+.swiper-slide {
+    pointer-events: none;
+    filter: blur(2px) brightness(0.8);
+    opacity: 0.6;
+}
+
+.swiper-slide.swiper-slide-active {
+    pointer-events: auto;
+    filter: none;
+    opacity: 1;
+}
+
+
 .logo-reveste {
   display: block;
   margin: 8px auto 0px auto; /* centraliza e dá espaço abaixo */
@@ -71,6 +94,15 @@ body {
   border-radius: 10px;
   border: 2px solid #d6d2d2;
 }
+
+/* Impede que o swiper capture eventos dentro dos inputs */
+input, textarea, select, button {
+    touch-action: manipulation;
+    user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+}
+
 
 h2 {
   text-align: center;

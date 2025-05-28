@@ -44,23 +44,20 @@ if (!dados || Object.keys(dados).length === 0) {
 
     const pessoa = dados;
 
-    // Preenche informações visíveis
     document.getElementById("namePer").textContent = pessoa.namePer;
     document.getElementById("emailPer").textContent = pessoa.emailPer;
     document.getElementById("historyPer").textContent = pessoa.historyPer;
+    document.getElementById("telPer").textContent = pessoa.telPer || "Não informado";
 
-    // Se for o dono do perfil
     if (idUsuarioLogado === String(pessoa.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
 
-      // Preenche campos do formulário
       document.getElementById("inputName").value = pessoa.namePer || "";
       document.getElementById("inputEmail").value = pessoa.emailPer || "";
       document.getElementById("inputCpf").value = pessoa.cpfPer || "";
       document.getElementById("inputHistory").value = pessoa.historyPer || "";
       document.getElementById("inputPassword").value = pessoa.passwordPer || "";
 
-      // Abertura e fechamento do modal
       btnAlterar.addEventListener("click", () => {
         msgModal.textContent = "";
         msgModal.style.color = "";
@@ -96,4 +93,38 @@ document.getElementById("btnSair").addEventListener("click", () => {
   localStorage.removeItem("token");
   sessionStorage.clear();
   window.location.href = "login.html";
+});
+
+document.getElementById("btnExcluir").addEventListener("click", async () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Você precisa estar logado para acessar essa página.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (confirm("Tem certeza que deseja excluir sua conta?")) {
+    try {
+      const response = await fetch(`./auth/deletepessoa?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert("Conta excluída com sucesso.");
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      } else {
+        alert("Erro ao excluir conta.");
+      }
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      alert("Erro ao conectar ao servidor.");
+    }
+  }
 });

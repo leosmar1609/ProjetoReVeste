@@ -1,5 +1,3 @@
-/* ===== Reset e fontes ===== */
-/* Remove margens, preenchimentos e configura o box-sizing para todos os elementos */
 * {
   margin: 0;
   padding: 0;
@@ -11,25 +9,26 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #d6d2d2;
 }
 
-/* ===== Header (cabeçalho) ===== */
 .header {
   background-color: #00151f;
   padding: 2px 20px;
   height: 150px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  width: 100%;
+  position: relative;
+  top: 0;
+  z-index: 10;
 }
 
 .logo {
-  height: 90px;
-  margin-top: 25px;
+  height: 100px;
+  margin-top: 1rem;
   object-fit: contain; /* Mantém a proporção da logo */
 }
 
@@ -37,44 +36,33 @@ html, body {
   color: #ffffff;
   font-size: 2rem;
   margin-bottom: 5px;
-  margin-top: -150px;
+  margin-top: -170px;
   font-weight: bold;
-  text-align: center;
-  flex: 1 1 100%; /* Faz quebrar pra linha sozinha */
+  color: #2563eb;
 }
 
-
-/* ===== Barra de Pesquisa ===== */
 .search-bar {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-top: -60px;
-  margin-left: 200px; /* Ajuste aqui o quanto quer deslocar */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
+  max-width: 700px; /* <-- Controle da largura máxima */
 }
 
 .search-bar input {
   width: 100%;
-<<<<<<< HEAD
-  max-width: 500px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-=======
   padding: 10px 20px;
-  border: 2px solid #ffffff;
+  border: 2px solid #e2e8f0;
   border-radius: 999px;
   font-size: 1rem;
+  margin-top: 80px;
   transition: border-color 0.3s;
->>>>>>> f12894497384329b384f0ce3c4e2aff1176d9d0c
 }
 
 .search-bar input:focus {
   outline: none;
-  border-color: #ffffff; /* Cor da borda ao focar */
+  border-color: #ffffff;
 }
-
 
 /* ===== Menu do Usuário ===== */
 .user-menu {
@@ -82,17 +70,21 @@ html, body {
   align-items: center;
   gap: 16px;
   position: relative;
-  margin-top: -130px;
-
 }
 
 .user-menu img {
   width: 40px;
   height: 40px;
-  border-radius: 50%; /* Foto de perfil redonda */
+  border-radius: 50%;
   margin-top: -5px;
   cursor: pointer;
+  transition: transform 0.2s ease; /* Suaviza a animação */
 }
+
+.user-menu img:hover {
+  transform: scale(1.2); /* Aumenta 10% */
+}
+
 
 /* Dropdown menu */
 #dropdownMenu {
@@ -111,7 +103,7 @@ html, body {
 }
 
 #dropdownMenu.hidden {
-  display: none; /* Esconde o dropdown */
+  display: none;
 }
 
 #dropdownMenu button {
@@ -125,20 +117,14 @@ html, body {
 }
 
 #dropdownMenu button:hover {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
 }
 
-.name_item {
-  color: #00151f;
-  
-}
-
-/* ===== Botões principais ===== */
 .donate-button,
 .btn-confirmar,
 .btn-cancelar {
-  background-color: #ffffff;
-  color: #00151f;
+  background-color: #2563eb;
+  color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 999px;
@@ -151,16 +137,14 @@ html, body {
 .donate-button:hover,
 .btn-confirmar:hover,
 .btn-cancelar:hover {
-  background-color: #131e23;
-  color: #ffffff;
+  background-color: #1e40af;
 }
 
-/* ===== Formulário Modal ===== */
 #formContainer {
   display: none;
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -178,13 +162,17 @@ html, body {
   animation: fadeIn 0.3s ease;
 }
 
-/* Animação de entrada do formulário */
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* Botão de fechar o formulário */
 .close-btn {
   position: absolute;
   top: 12px;
@@ -201,7 +189,6 @@ html, body {
   color: red;
 }
 
-/* Estilo dos elementos do formulário */
 form h2 {
   margin-bottom: 20px;
   color: #333;
@@ -232,7 +219,7 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #009578;
+  border-color: #1c292e;
   outline: none;
 }
 
@@ -241,11 +228,10 @@ textarea {
   min-height: 80px;
 }
 
-/* Botão enviar do formulário */
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #009578;
+  background-color: #104c60;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -256,24 +242,10 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-  background-color: #007f63;
+  background-color: #1c292e;
 }
 
 /* ===== Cards dos Pedidos ===== */
-#listaPedidos {
-<<<<<<< HEAD
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-  gap: 20px;
-  padding: 20px 32px;
-=======
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
->>>>>>> f12894497384329b384f0ce3c4e2aff1176d9d0c
-}
-
 
 .card {
   background-color: white;
@@ -354,7 +326,7 @@ form button[type="submit"]:hover {
 /* ===== Responsivo ===== */
 @media (max-width: 500px) {
   .header {
-    flex-direction: column; /* Coloca o header em coluna */
+    flex-direction: column;
     gap: 10px;
   }
 

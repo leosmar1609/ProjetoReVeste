@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const formAlterar = document.getElementById("formAlterar");
   const msgModal = document.getElementById("msgModal");
 
-  // Verifica se há ID e se o formulário existe
   if (!idPerfil || !formAlterar) return;
 
   formAlterar.addEventListener("submit", async (e) => {
@@ -15,14 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailDoador = document.getElementById("inputEmail")?.value.trim();
     const passwordDoador = document.getElementById("inputPassword")?.value.trim();
 
-    // Verifica se todos os campos foram preenchidos
     if (!nameDoador || !emailDoador || !passwordDoador) {
       msgModal.style.color = "red";
       msgModal.textContent = "Preencha todos os campos.";
       return;
     }
 
-    // Validação de e-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailDoador)) {
       msgModal.style.color = "red";
@@ -30,14 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Validação de senha
     if (passwordDoador.length < 6) {
       msgModal.style.color = "red";
       msgModal.textContent = "A senha deve ter pelo menos 6 caracteres.";
       return;
     }
 
-    // Obtém o token do localStorage (ou de onde você estiver armazenando)
     const token = localStorage.getItem("token");
 
     if (!token) {

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro ReVeste</title>
 
-    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="./css/cadastro.css" />
     <script defer src="/js/cadastro.js"></script>
@@ -22,55 +21,66 @@
             height: 100vh;
             margin: 0;
         }
+
+        /* 🔥 Impede o swiper enquanto interage nos inputs */
+        input,
+        textarea,
+        select,
+        button {
+            touch-action: manipulation;
+            user-select: text;
+            -webkit-user-select: text;
+            -ms-user-select: text;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- carrossel  DOS 3 FORMULARIOS-->
+    <!-- Carrossel dos 3 formulários -->
     <div class="swiper">
         <div class="swiper-wrapper">
 
-            <!-- FORMULARIO DE BENEFICIARIOOOOOO -->
+            <!-- Formulário de Beneficiário -->
             <div class="swiper-slide">
                 <h2>Cadastro de Beneficiário</h2>
                 <form id="registerPForm" method="POST">
-                    <label for="nomePessoa"><strong>Nome Completo</strong></label>
+                    <label for="namePer"><strong>Nome Completo</strong></label>
                     <input type="text" id="namePer" name="nomePessoa" />
 
-                    <label for="cpfPessoa"><strong>CPF</strong></label>
+                    <label for="cpfPer"><strong>CPF</strong></label>
                     <input type="text" id="cpfPer" name="cpfPessoa" />
 
-                    <label for="emailPessoa"><strong>E-mail</strong></label>
+                    <label for="emailPer"><strong>E-mail</strong></label>
                     <input type="email" id="emailPer" name="emailPessoa" />
 
-                    <label for="senhaPessoa"><strong>Senha</strong></label>
+                    <label for="passwordPer"><strong>Senha</strong></label>
                     <input type="password" id="passwordPer" name="senhaPessoa" />
 
-                    <label for="historiaPessoa"><strong>História</strong></label>
+                    <label for="historyPer"><strong>História</strong></label>
                     <textarea id="historyPer" name="historiaPessoa" rows="3"></textarea>
 
-                    <button type="submit">Cadastrar</button>
+                    <p id="messagePessoa"></p>
 
+                    <button type="submit">Cadastrar</button>
                 </form>
             </div>
 
-                        <div class="swiper-slide">
-                  <img src="./imgs/Logo.png" alt="Logo Reveste" class="logo-reveste">
+            <!-- Formulário de Doador -->
+            <div class="swiper-slide">
+                <img src="./imgs/Logo.png" alt="Logo Reveste" class="logo-reveste">
                 <h2>Cadastro de Doador</h2>
-                <!-- FORMULARIO DE DOADOOOOOOOOR-->
                 <form id="registerFormDoador">
-                    <label for="nomeDoador"><strong>Nome Completo</strong></label>
+                    <label for="namedonor"><strong>Nome Completo</strong></label>
                     <input type="text" id="namedonor" name="nomeDoador" />
 
-                    <label for="emailDoador"><strong>E-mail</strong></label>
+                    <label for="emaildonor"><strong>E-mail</strong></label>
                     <input type="email" id="emaildonor" name="emailDoador" />
 
-                    <label for="senhaDoador"><strong>Senha</strong></label>
+                    <label for="passworddonor"><strong>Senha</strong></label>
                     <input type="password" id="passworddonor" name="senhaDoador" />
 
                     <button type="submit">Cadastrar</button>
-
                 </form>
 
                 <footer>
@@ -78,65 +88,70 @@
                 </footer>
             </div>
 
-            <!-- FORMULARIO DE INSTITUIÇÃAAAAAAAAAAAAO CONFORME O BACK END CRIOU -->
+            <!-- Formulário de Instituição -->
             <div class="swiper-slide">
                 <h2>Cadastro de Instituição</h2>
                 <form id="registerForm">
-                    <label for="nomeInst"><strong>Nome da Instituição</strong></label>
+                    <label for="nameInc"><strong>Nome da Instituição</strong></label>
                     <input type="text" id="nameInc" name="nomeInst" />
 
-                    <label for="cnpjInst"><strong>CNPJ</strong></label>
+                    <label for="cnpjInc"><strong>CNPJ</strong></label>
                     <input type="text" id="cnpjInc" name="cnpjInst" />
 
-                    <label for="emailInst"><strong>E-mail</strong></label>
+                    <label for="emailInc"><strong>E-mail</strong></label>
                     <input type="email" id="emailInc" name="emailInst" />
 
-                    <label for="senhaInst"><strong>Senha</strong></label>
+                    <label for="passwordInc"><strong>Senha</strong></label>
                     <input type="password" id="passwordInc" name="senhaInst" />
 
-                    <label for="historiaInst"><strong>História</strong></label>
+                    <label for="historyInc"><strong>História</strong></label>
                     <textarea id="historyInc" name="historiaInst" rows="3"></textarea>
 
-                    <label for="location"><strong>Localização</strong></label>
+                    <label for="locationInc"><strong>Localização</strong></label>
                     <input type="text" id="locationInc" name="location" />
 
-                    <button type="submit">Cadastrar</button>
+                    <p id="messageInc"></p>
 
+                    <button type="submit">Cadastrar</button>
                 </form>
             </div>
 
         </div>
 
-        <!-- LITERALMENTE SÓ MUDAR OS ID CONFORME O BACK END CRIOU  -->
+        <!-- Botões de navegação -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
 
-    <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
-<script>
-    const swiper = new Swiper('.swiper', {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        initialSlide: 1, // Começa no slide do meio
-        coverflowEffect: {
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        loop: false,
-    });
-</script>
+    <script>
+        const swiper = new Swiper('.swiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            initialSlide: 1, // Começa no slide do meio
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: false,
 
+            // 🔥 Adiciona essa configuração para travar swipe nos inputs
+            noSwiping: true,
+            noSwipingSelector: 'input, textarea, button, select',
+            touchStartPreventDefault: false,
+            touchReleaseOnEdges: true,
+        });
+    </script>
 
 </body>
 

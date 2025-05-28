@@ -1,7 +1,8 @@
 body {
   font-family: Arial, sans-serif;
-  background: #1c292e;
-  margin: 0; padding: 0;
+  background: #d6d2d2;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -13,39 +14,50 @@ body {
   box-sizing: border-box;
 }
 
-
-header.header {
-  background: #104c60;
+header {
+  background: #00151f;
   color: white;
   width: 100%;
-  padding: 15px 20px;
+  padding: 70px 40px;
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  gap: 10px; /* adiciona espaço entre os itens */
+  position: relative;
 }
 
-header .logo {
-  margin-left: auto;
-  font-size: 1.5rem;
+.logoBranco {
+  height: 130px;
+  object-fit: contain;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-header button#btnSair,
-header button#btnVoltar {
-  background: white;
+header button {
+  background: #564c1c;
   border: none;
-  color: black;
-  padding: 8px 14px;
+  color: rgb(255, 255, 255);
+  padding: 15px 44px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
 }
+
+header button:hover {
+    background: #383212;
+    color: #ffffff;
+}
+
 header button#btnSair {
-  background: #ef4444;
+  background: #bc1f1f;
   color: white;
 }
 
+header button#btnSair:hover {
+  background: #751e1e;
+  color: white;
+}
 
 main.perfil-container {
   background: #c7c4c4;
@@ -56,25 +68,30 @@ main.perfil-container {
   border-radius: 12px;
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.1);
 }
+
 main h2 {
   margin-top: 0;
   color: #104c60;
   text-align: center;
 }
+
 .info p {
   font-size: 1.1rem;
   margin: 15px 0;
   color: #444;
 }
+
 .info strong {
   color: #111;
 }
+
 .botoes-acao {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 25px;
 }
+
 .botoes-acao button {
   background: #104c60;
   color: white;
@@ -85,21 +102,29 @@ main h2 {
   font-weight: bold;
   transition: background-color 0.3s;
 }
+
 .botoes-acao button:hover {
-  background: #1d4ed8;
+  background: #00151f;
 }
+
+/* Modal */
 #modalEditar {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0,0,0,0.5);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
+
 #modalEditar.active {
   display: flex;
 }
+
 #modalEditar > div {
   background: #c7c4c4;
   border-radius: 12px;
@@ -109,19 +134,23 @@ main h2 {
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
   position: relative;
 }
+
 #modalEditar h3 {
   margin-top: 0;
   color: #104c60;
   text-align: center;
   margin-bottom: 20px;
 }
+
 #modalEditar label {
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
   color: #333;
 }
-#modalEditar input, #modalEditar textarea {
+
+#modalEditar input, 
+#modalEditar textarea {
   width: 100%;
   padding: 10px 14px;
   margin-bottom: 15px;
@@ -131,11 +160,14 @@ main h2 {
   transition: border-color 0.3s;
   resize: vertical;
 }
-#modalEditar input:focus, #modalEditar textarea:focus {
+
+#modalEditar input:focus, 
+#modalEditar textarea:focus {
   border-color: #104c60;
   outline: none;
   background-color: #f0f8ff;
 }
+
 #modalEditar button#salvarAlteracoes {
   background: #104c60;
   color: white;
@@ -149,9 +181,11 @@ main h2 {
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
   transition: background-color 0.3s ease;
 }
+
 #modalEditar button#salvarAlteracoes:hover {
-  background-color: #1d4ed8;
+  background-color: #00151f;
 }
+
 #modalEditar button#fecharModal {
   position: absolute;
   top: 15px;
@@ -162,17 +196,21 @@ main h2 {
   cursor: pointer;
   color: #999;
 }
+
 #modalEditar button#fecharModal:hover {
   color: #333;
 }
+
 #msgModal {
   text-align: center;
   margin-top: 10px;
   font-weight: 600;
 }
+
 #msgModal.error {
   color: #dc2626;
 }
+
 #msgModal.success {
   color: #16a34a;
 }

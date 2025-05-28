@@ -46,7 +46,7 @@ header img.capa-nav {
 }
 
 .modal {
-  display: none; /* Escondido por padrão */
+  display: none;
   position: fixed;
   z-index: 1000;
   top: 0;
@@ -55,14 +55,13 @@ header img.capa-nav {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
 
-  /* Flex para centralizar conteúdo */
+  /* Centralização */
   justify-content: center;
   align-items: center;
 }
 
-/* Esta classe será adicionada via JavaScript para exibir o modal */
 .modal.show {
-  display: flex;
+  display: flex; /* Mostra e centraliza o modal */
 }
 
 .modal-content {
@@ -94,7 +93,6 @@ header img.capa-nav {
 .modal-buttons button:hover {
   background-color: #1c292e;
 }
-
 
 .sub-nav {
     background-color: #f4e7db;
@@ -146,8 +144,8 @@ header h1 {
 
 .btn-login,
 .btn-signup {
-    background: #ffffff;
-    color: #1c292e;
+    background: #564c1c;
+    color: #ffffff;
     padding: 8px 15px;
     border-radius: 5px;
     text-decoration: none;
@@ -158,7 +156,7 @@ header h1 {
 
 .btn-login:hover,
 .btn-signup:hover {
-    background: #131e23;
+    background: #383212;
     color: #ffffff;
 
 }
@@ -202,8 +200,14 @@ header h1 {
     transition: color 0.3s ease-in-out;
 }
 
+.menu li a {
+    display: inline-block; /* Necessário para o transform funcionar */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
 .menu li a:hover {
-    color: #c0a790;
+    color: #e7cebf;
+    transform: scale(1.4); /* Aumenta 10% */
 }
 
 /* ----------------------------------------
@@ -236,7 +240,7 @@ main {
 }
 
 .intro .btn {
-    background: #104c60;
+    background: #289b19;
     color: #ffffff;
     padding: 5px 30px;
     border-radius: 5px;
@@ -247,7 +251,7 @@ main {
 }
 
 .intro .btn:hover {
-    background: #1c292e;
+    background: #14510c;
 }
 
 .intro .category h3 {

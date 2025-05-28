@@ -5,9 +5,8 @@ body {
             margin: 0;
             padding: 0;
         }
-        
         header {
-            background-color: #00151f;
+            background-color: #1c292e;
             padding: 0px 30px;
             display: flex;
             align-items: center;
@@ -22,8 +21,8 @@ body {
             margin-top: 10px;
         }
         .btn-voltar {
-            background-color: #ffffff;
-            color: #00151f;
+            background-color: #564c1c;
+            color: #ffffff;
             font-weight: bold;
             padding: 10px 20px;
             border-radius: 8px;
@@ -31,7 +30,7 @@ body {
             transition: background-color 0.3s;
         }
         .btn-voltar:hover {
-            background: #131e23;
+            background: #383212;
             color: #ffffff;
         }
         
@@ -39,7 +38,7 @@ body {
         .container {
             max-width: 800px;
             margin: 40px auto;
-            background-color: #f1ecec;
+            background-color: #d6d2d2;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
