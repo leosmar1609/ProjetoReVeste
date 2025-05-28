@@ -11,7 +11,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #d6d2d2;
 }
 
 /* ===== Header (cabeçalho) ===== */
@@ -19,6 +19,7 @@ html, body {
   background-color: #00151f;
   padding: 2px 20px;
   height: 150px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,8 +29,8 @@ html, body {
 }
 
 .logo {
-  height: 90px;
-  margin-top: 25px;
+  height: 100px;
+  margin-top: 1rem;
   object-fit: contain; /* Mantém a proporção da logo */
 }
 
@@ -37,7 +38,7 @@ html, body {
   color: #ffffff;
   font-size: 2rem;
   margin-bottom: 5px;
-  margin-top: -150px;
+  margin-top: -170px;
   font-weight: bold;
   text-align: center;
   flex: 1 1 100%; /* Faz quebrar pra linha sozinha */
@@ -46,27 +47,27 @@ html, body {
 
 /* ===== Barra de Pesquisa ===== */
 .search-bar {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-top: -60px;
-  margin-left: 200px; /* Ajuste aqui o quanto quer deslocar */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
+  max-width: 700px; /* <-- Controle da largura máxima */
 }
 
 .search-bar input {
   width: 100%;
-  max-width: 500px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
+  padding: 10px 20px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  font-size: 1rem;
+  margin-top: 80px;
+  transition: border-color 0.3s;
 }
 
 .search-bar input:focus {
   outline: none;
-  border-color: #ffffff; /* Cor da borda ao focar */
+  border-color: #ffffff;
 }
-
 
 /* ===== Menu do Usuário ===== */
 .user-menu {
@@ -81,10 +82,16 @@ html, body {
 .user-menu img {
   width: 40px;
   height: 40px;
-  border-radius: 50%; /* Foto de perfil redonda */
+  border-radius: 50%;
   margin-top: -5px;
   cursor: pointer;
+  transition: transform 0.2s ease; /* Suaviza a animação */
 }
+
+.user-menu img:hover {
+  transform: scale(1.2); /* Aumenta 10% */
+}
+
 
 /* Dropdown menu */
 #dropdownMenu {
@@ -224,7 +231,7 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #009578;
+  border-color: #1c292e;
   outline: none;
 }
 
@@ -237,7 +244,7 @@ textarea {
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #009578;
+  background-color: #104c60;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -248,17 +255,10 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-  background-color: #007f63;
+  background-color: #1c292e;
 }
 
 /* ===== Cards dos Pedidos ===== */
-#listaPedidos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-  gap: 20px;
-  padding: 20px 32px;
-}
-
 
 .card {
   background-color: white;
