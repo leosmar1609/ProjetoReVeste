@@ -1,16 +1,16 @@
-body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #bfbcbc;
-            color: #333;
-            margin: 0;
-            padding: 0;
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #bfbcbc;
+        color: #333;
+        margin: 0;
+        padding: 0;
         }
-        header {
-            background-color: #1c292e;
-            padding: 0px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    header {
+        background-color: #00151f;
+        padding: 0px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         }
         .logo {
             flex: 1;
@@ -38,7 +38,7 @@ body {
         .container {
             max-width: 800px;
             margin: 40px auto;
-            background-color: #d6d2d2;
+            background-color: #f1ecec;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -89,6 +89,7 @@ body {
             transition: background-color 0.3s;
 }
 
+/* Adicione este estilo */
 form .btn-container {
     text-align: center;
 }   

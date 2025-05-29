@@ -136,8 +136,9 @@ html, body {
 .donate-button,
 .btn-confirmar,
 .btn-cancelar {
-  background-color: #ffffff;
-  color: #00151f;
+  background-color: #564c1c;
+  color: #ffffff;
+  font-weight: bold;
   padding: 10px 20px;
   border: none;
   border-radius: 999px;
@@ -147,7 +148,10 @@ html, body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.donate-button:hover,
+.donate-button:hover{
+  background-color: #383212;
+  color: #ffffff;
+}
 .btn-confirmar:hover,
 .btn-cancelar:hover {
   background-color: #131e23;

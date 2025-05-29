@@ -1,59 +1,63 @@
+/* Reset básico e configurações globais */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
-  color: #e8d8c8;
+  font-family: Arial, sans-serif;
+  background: #d6d2d2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
 }
 
+/* Header */
 .header {
-  background-color: #ffffff;
-  padding: 16px 32px;
+  background-color: #00151f;
+  padding: 2px 20px;
+  height: 150px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  position: relative;
-  z-index: 10;
+  width: 100%;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #2563eb;
+.logoBranco {
+  height: 100px;
+  margin-top: 1rem; /* Aumenta o quanto sobe */
+  object-fit: contain;
 }
 
-.search-bar {
+#search {
   position: absolute;
-  left: 50%;
+  top: 5rem; /* distancia do topo */
+  left: 50%; /* centraliza horizontalmente */
   transform: translateX(-50%);
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 10px 20px;
-  border: 2px solid #e2e8f0;
-  border-radius: 999px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+.section-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  padding-top: 0rem;
 }
 
-.search-bar input:focus {
-  outline: none;
-  border-color: #2563eb;
-}
 
 .user-menu {
   display: flex;
   align-items: center;
   gap: 16px;
-  position: relative;
 }
 
 .user-menu img {
@@ -63,10 +67,25 @@ body {
   cursor: pointer;
 }
 
-#dropdownMenu {
+#openFormBtn {
+  background-color: #564c1c;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+#openFormBtn:hover {
+  background: #383212;
+}
+
+/* Dropdown menu */
+.dropdown {
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: 90px;
+  right: 40px;
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -78,11 +97,11 @@ body {
   z-index: 20;
 }
 
-#dropdownMenu.hidden {
+.dropdown.hidden {
   display: none;
 }
 
-#dropdownMenu button {
+.dropdown button {
   background: none;
   border: none;
   padding: 8px 12px;
@@ -92,30 +111,11 @@ body {
   color: #333;
 }
 
-#dropdownMenu button:hover {
+.dropdown button:hover {
   background-color: #f0f0f0;
 }
 
-.donate-button,
-.btn-confirmar,
-.btn-cancelar {
-  background-color: #2563eb;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 999px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.donate-button:hover,
-.btn-confirmar:hover,
-.btn-cancelar:hover {
-  background-color: #1e40af;
-}
-
+/* Modal Formulário */
 #formContainer {
   display: none;
   position: fixed;
@@ -124,11 +124,10 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  transition: all 0.3s ease;
 }
 
 #formContainer form {
-  background-color: #fff;
+  background-color: #c7c4c4;
   padding: 30px 40px;
   border-radius: 12px;
   max-width: 600px;
@@ -167,7 +166,7 @@ body {
 
 form h2 {
   margin-bottom: 20px;
-  color: #333;
+  color: #104c60;
   text-align: center;
 }
 
@@ -175,7 +174,7 @@ label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #444;
+  color: #333;
 }
 
 input[type="text"],
@@ -185,7 +184,7 @@ select {
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 18px;
-  border: 1px solid #ccc;
+  border: 1.5px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
   background-color: #fafafa;
@@ -195,8 +194,9 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #009578;
+  border-color: #104c60;
   outline: none;
+  background-color: #f0f8ff;
 }
 
 textarea {
@@ -207,42 +207,48 @@ textarea {
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #009578;
+  background-color: #104c60;
   color: white;
   font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 9999px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
 }
 
 form button[type="submit"]:hover {
-  background-color: #007f63;
+  background-color: #00151f;
 }
 
-h2 {
-  text-align: center;
-  margin: 30px 0 10px;
-  font-size: 1.8rem;
-  color: #333;
-}
-
+/* Lista de pedidos */
 #listaPedidos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
   padding: 20px 32px;
+  width: 100%;
 }
 
+/* Responsividade */
 @media (max-width: 500px) {
-  .header {
+  header {
     flex-direction: column;
     gap: 10px;
+    align-items: center;
   }
 
   .search-bar {
-    margin: 0;
     width: 100%;
+    margin-top: 10px;
+  }
+
+  .user-menu {
+    flex-direction: column;
+  }
+
+  .logoBranco {
+    height: 80px;
   }
 }

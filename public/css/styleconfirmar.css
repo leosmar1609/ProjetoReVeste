@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #bfbcbc;
+  background-color: #00151f;
   color: #333;
   margin: 0;
   display: flex;
@@ -8,16 +8,9 @@ body {
   align-items: center;
 }
 
-header {
-  background-color: #00151f;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 7px 0;
-}
-
 .logo img {
-  height: 100px;
+  height: 200px;
+  object-fit: contain;
 }
 
 main {
@@ -31,7 +24,8 @@ main {
 
 .container {
   background-color: #fff;
-  padding: 40px;
+  padding: 35px;
+  margin-top: -18rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   text-align: center;
@@ -64,7 +58,7 @@ p {
 .btn {
   margin-top: 20px;
   padding: 12px 24px;
-  background-color: #104c60;
+  background-color: #564c1c;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -74,6 +68,6 @@ p {
 }
 
 .btn:hover {
-  background-color: #1c292e;
+  background-color: #383212;
   transform: scale(1.05);
 }

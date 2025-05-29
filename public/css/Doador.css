@@ -33,10 +33,11 @@
 }
 
 .user-menu img {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   margin-top: 2rem;
+  margin-right: 1rem;
   cursor: pointer;
   transition: transform 0.2s ease; /* Suaviza a animação */
 }
@@ -47,6 +48,14 @@
   object-fit: contain;
 }
 
+
+.search-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
+  max-width: 700px; /* <-- Controle da largura máxima */
+}
 
   .filter-select {
     padding: 10px 16px;
@@ -60,7 +69,7 @@
   }
 
   .filter-select:focus {
-    border-color: #2563eb;
+    border-color: #1c292e;
   }
 
   main{
