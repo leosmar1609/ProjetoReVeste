@@ -4,7 +4,7 @@ document.getElementById('formRecuperarSenha').addEventListener('submit', async f
   const novaSenha = document.getElementById('novaSenha').value;
   const confirmarSenha = document.getElementById('confirmarSenha').value;
   const msgErro = document.getElementById('mensagemErro');
-  msgErro.textContent = ''; // Limpar mensagens anteriores
+  msgErro.textContent = '';
 
   const regexSenha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
 
@@ -18,7 +18,6 @@ document.getElementById('formRecuperarSenha').addEventListener('submit', async f
     return;
   }
 
-  // Obter email e tipo da URL
   const params = new URLSearchParams(window.location.search);
   const email = params.get('email');
   const tipo = params.get('tipo');

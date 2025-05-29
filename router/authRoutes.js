@@ -936,8 +936,7 @@ router.post('/enviar-recuperacao', async (req, res) => {
     });
 
     const linkVerificacao = `${baseUrl}/recuperarsenha.html?email=${encodeURIComponent(email)}&tipo=${encodeURIComponent(tipo)}`;
-    const li = linkVerificacao.replace(/\/$/, ''); // Remove trailing slash if exists
-    // Corpo do e-mail
+    const li = linkVerificacao.replace(/\/$/, ''); 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -959,7 +958,6 @@ router.post('/enviar-recuperacao', async (req, res) => {
   }
 });
 
-// backend - rota para atualizar apenas a senha
 router.put('/atualizar-senha', async (req, res) => {
   const { email, tipo, novaSenha } = req.body;
 
