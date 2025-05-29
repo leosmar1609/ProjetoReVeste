@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
 
     if (!cnpjRegex.test(cnpjRaw)) {
-            messageElement.innerText = "❌ CNPJ inválido. Use o formato 00.000.000/0000-00";
-            messageElement.style.color = "red";
+            msgModal.innerText = "❌ CNPJ inválido. Use o formato 00.000.000/0000-00";
+            msgModal.style.color = "red";
             return;
         }
 
@@ -72,7 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
           msgModal.textContent = "";
           msgModal.style.color = "";
         }, 2000);
-      } else {
+      } else if (res.status === 401) {
+        msgModal.style.color = "red";
+      msgModal.textContent = "❌ Senha incorreta. Tente novamente.";
+    } else {
         msgModal.style.color = "red";
         msgModal.textContent = resultado.mensagem || "Erro ao atualizar dados.";
       }

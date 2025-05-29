@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const dados = await response.json();
-console.log('Dados recebidos:', dados);
 
 if (!dados || Object.keys(dados).length === 0) {
   alert("Perfil não encontrado.");
@@ -44,17 +43,14 @@ if (!dados || Object.keys(dados).length === 0) {
 
     const pessoa = dados;
 
+    carregarDadosDoDoador(pessoa.id);
+
     document.getElementById("namePer").textContent = pessoa.namePer;
     document.getElementById("emailPer").textContent = pessoa.emailPer;
     document.getElementById("telPer").textContent = pessoa.telPer || "Não informado";
 
     if (idUsuarioLogado === String(pessoa.id)) {
       document.getElementById("botoesApenasDono").style.display = "block";
-
-      document.getElementById("inputName").value = pessoa.namePer || "";
-      document.getElementById("inputEmail").value = pessoa.emailPer || "";
-      document.getElementById("inputCpf").value = pessoa.cpfPer || "";
-      document.getElementById("inputPassword").value = pessoa.passwordPer || "";
 
       btnAlterar.addEventListener("click", () => {
         msgModal.textContent = "";
@@ -126,3 +122,44 @@ document.getElementById("btnExcluir").addEventListener("click", async () => {
     }
   }
 });
+
+function formatarCPF(cpf) {
+  cpf = cpf.replace(/\D/g, '');
+  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
+async function carregarDadosDoDoador(id) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const resposta = await fetch(`/pessoa?id=${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!resposta.ok) {
+      const erroTexto = await resposta.text();
+      throw new Error(`Erro ${resposta.status}: ${erroTexto}`);
+    }
+
+    const texto = await resposta.text();
+    if (!texto) throw new Error('Resposta vazia do servidor');
+
+    const dados = JSON.parse(texto);
+
+    document.getElementById('inputName').value = dados.namePer;
+    document.getElementById('inputEmail').value = dados.emailPer;
+    document.getElementById('inputCpf').value = formatarCPF(dados.cpfPer);
+    document.getElementById('inputTel').value = dados.telPer || '';
+
+    document.getElementById('inputPassword').value = '';
+    document.getElementById('msgModal').textContent = '';
+
+  } catch (erro) {
+    console.error('Erro ao carregar dados:', erro.message);
+    document.getElementById('msgModal').textContent = 'Erro ao carregar os dados.';
+  }
+}

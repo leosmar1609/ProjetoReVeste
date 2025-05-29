@@ -109,10 +109,8 @@
       autocomplete.addListener("place_changed", function () {
         const place = autocomplete.getPlace();
         if (!place.geometry) {
-          // O usuário digitou um endereço que não foi encontrado
           input.value = "";
         }
-        // Aqui você pode fazer algo com o local selecionado, como salvar as coordenadas
         console.log("Local selecionado:", place.formatted_address);
       });
 </script>

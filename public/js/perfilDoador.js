@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const dados = await response.json();
-console.log('Dados recebidos:', dados);
 
 if (!dados || Object.keys(dados).length === 0) {
   alert("Perfil não encontrado.");
@@ -44,7 +43,7 @@ if (!dados || Object.keys(dados).length === 0) {
 
     const doador = dados;
 
-
+    carregarDadosDoDoador(doador.id);
     document.getElementById("nameDoador").textContent = doador.namedonor;
     document.getElementById("emailDoador").textContent = doador.emaildonor;
 
@@ -131,3 +130,38 @@ document.getElementById("btnExcluir").addEventListener("click", async () => {
     }
   }
 });
+
+async function carregarDadosDoDoador(idDoador) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const resposta = await fetch(`/doador?id=${idDoador}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!resposta.ok) {
+      const erroTexto = await resposta.text();
+      throw new Error(`Erro ${resposta.status}: ${erroTexto}`);
+    }
+
+    const texto = await resposta.text();
+    if (!texto) throw new Error('Resposta vazia do servidor');
+
+    const dados = JSON.parse(texto);
+
+    if (!dados || !dados.namedonor || !dados.emaildonor) {
+      throw new Error('Dados incompletos ou inválidos');
+    }
+
+    document.getElementById('inputName').value = dados.namedonor;
+    document.getElementById('inputEmail').value = dados.emaildonor;
+
+  } catch (erro) {
+    console.error('Erro ao carregar dados:', erro.message);
+    document.getElementById('msgModal').textContent = 'Erro ao carregar os dados.';
+  }
+}

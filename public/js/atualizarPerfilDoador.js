@@ -72,7 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
           msgModal.textContent = "";
           msgModal.style.color = "";
         }, 2000);
-      } else {
+      } else if (res.status === 401) {
+        msgModal.style.color = "red";
+      msgModal.textContent = "❌ Senha incorreta. Tente novamente.";
+    } else {
         msgModal.style.color = "red";
         msgModal.textContent = resultado.mensagem || "Erro ao atualizar dados.";
       }

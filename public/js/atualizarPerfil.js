@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
 
     if (!cpfRegex.test(cpfRaw)) {
-            messageElement.innerText = "❌ CPF inválido. Use o formato 000.000.000-00.";
-            messageElement.style.color = "red";
+            msgModal.innerText = "❌ CPF inválido. Use o formato 000.000.000-00.";
+            msgModal.style.color = "red";
             return;
         }
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
@@ -72,7 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
           msgModal.textContent = "";
           msgModal.style.color = "";
         }, 2000);
-      } else {
+        
+      } else if (res.status === 403) {
+        msgModal.style.color = "red";
+      msgModal.textContent = "❌ Senha incorreta. Tente novamente.";
+    } else {
         msgModal.style.color = "red";
         msgModal.textContent = resultado.mensagem || "Erro ao atualizar dados.";
       }

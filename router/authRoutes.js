@@ -2,7 +2,9 @@ const express = require('express');
 const mysql = require('mysql2');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const secretKey = process.env.JWT_SECRET; 
+const baseUrl = process.env.BASE_URL;
 
 const router = express.Router();
 const { enviarEmailVerificacaoInstituicao, enviarEmailVerificacaoPessoa } = require('./emailService');
@@ -530,24 +532,30 @@ router.get('/pedidos', (req, res) => {
 });
 
 router.get('/doador', (req, res) => {
-     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-    if (!token) return res.sendStatus(401);
+  if (!token) return res.sendStatus(401);
 
-    jwt.verify(token, secretKey, (err, user) => {
-        if (err) return res.sendStatus(403);
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) return res.sendStatus(403);
+
     const id = req.query.id;
     const sql = 'SELECT * FROM doador WHERE id = ?';
+
     db.query(sql, [id], (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar doador:', err);
-            res.status(500).send('Erro no servidor');
-        } else {
-            res.json(results[0]);
-        }
+      if (err) {
+        console.error('Erro ao buscar doador:', err);
+        return res.status(500).json({ erro: 'Erro no servidor' });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ erro: 'Doador não encontrado' });
+      }
+
+      res.json(results[0]); // OK: retornando doador encontrado
     });
-});
+  });
 });
 
 router.delete('/deletedoador', autenticarToken, (req, res) => {
@@ -658,28 +666,52 @@ router.delete('/deletepedido', (req, res) => {
 });
 
 router.put('/doadorup/:id', autenticarToken, (req, res) => {
-    const id = req.params.id;
-    const { nameDoador, emailDoador, passwordDoador } = req.body;
+  const id = req.params.id;
+  const { nameDoador, emailDoador, passwordDoador } = req.body;
 
-    if (!nameDoador || !emailDoador || !passwordDoador) {
-        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  if (!nameDoador || !emailDoador || !passwordDoador) {
+    return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  }
+
+  const buscarSenhaSQL = 'SELECT passworddonor FROM doador WHERE id = ?';
+
+  db.query(buscarSenhaSQL, [id], (erroBusca, resultadosBusca) => {
+    if (erroBusca) {
+      console.error('Erro ao buscar senha do doador:', erroBusca);
+      return res.status(500).json({ mensagem: 'Erro no servidor ao verificar senha' });
     }
 
-    const sql = 'UPDATE doador SET namedonor = ?, emaildonor = ?, passworddonor = ? WHERE id = ?';
+    if (resultadosBusca.length === 0) {
+      return res.status(404).json({ mensagem: 'Doador não encontrado' });
+    }
 
-    db.query(sql, [nameDoador, emailDoador, passwordDoador, id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao atualizar doador:', err);
-            return res.status(500).send('Erro no servidor');
-        }
+    const senhaAtual = resultadosBusca[0].passworddonor;
 
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Doador não encontrado' });
-        }
+    if (passwordDoador !== senhaAtual) {
+      return res.status(401).json({ mensagem: '❌ A senha atual está incorreta. Tente novamente.' });
+    }
 
-        res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
+    const atualizarSQL = `
+      UPDATE doador
+      SET namedonor = ?, emaildonor = ?
+      WHERE id = ?
+    `;
+
+    db.query(atualizarSQL, [nameDoador, emailDoador, id], (errAtualizar, resultado) => {
+      if (errAtualizar) {
+        console.error('Erro ao atualizar doador:', errAtualizar);
+        return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar dados' });
+      }
+
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({ mensagem: 'Doador não encontrado' });
+      }
+
+      res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
     });
+  });
 });
+
 
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;
@@ -689,49 +721,91 @@ router.put('/pessoaup/:id', (req, res) => {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
-  const sql = `
-    UPDATE pessoa_beneficiaria
-    SET namePer = ?, emailPer = ?, passwordPer = ?, cpfPer = ?, telPer = ?
-    WHERE id = ?
-  `;
+  const sqlSelect = `SELECT passwordPer FROM pessoa_beneficiaria WHERE id = ?`;
 
-  db.query(sql, [namePer, emailPer, passwordPer, cpfPer, telPer, id], (err, resultado) => {
+  db.query(sqlSelect, [id], (err, results) => {
     if (err) {
-      console.error('Erro ao atualizar pessoaup:', err);
+      console.error('Erro ao buscar senha atual:', err);
       return res.status(500).send('Erro no servidor');
     }
 
-    if (resultado.affectedRows === 0) {
+    if (results.length === 0) {
       return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
     }
 
-    res.status(200).json({ mensagem: 'Pessoa atualizada com sucesso' });
+    const senhaCorreta = results[0].passwordPer;
+
+    if (passwordPer !== senhaCorreta) {
+      return res.status(403).json({ mensagem: 'Senha incorreta' });
+    }
+
+    const sqlUpdate = `
+      UPDATE pessoa_beneficiaria
+      SET namePer = ?, emailPer = ?, cpfPer = ?, telPer = ?
+      WHERE id = ?
+    `;
+
+    db.query(sqlUpdate, [namePer, emailPer, cpfPer, telPer, id], (err, resultado) => {
+      if (err) {
+        console.error('Erro ao atualizar pessoa:', err);
+        return res.status(500).send('Erro no servidor');
+      }
+
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
+      }
+
+      res.status(200).json({ mensagem: 'Pessoa atualizada com sucesso' });
+    });
   });
 });
 
 
 router.put('/beneficiarioup/:id', (req, res) => {
-    const id = req.params.id;
-    const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc } = req.body;
+  const id = req.params.id;
+  const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc } = req.body;
 
-    if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !telInc) {
-        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !telInc) {
+    return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
+  }
+
+  const buscarSenhaSQL = 'SELECT passwordInc FROM instituicao_beneficiaria WHERE id = ?';
+
+  db.query(buscarSenhaSQL, [id], (erroBusca, resultadosBusca) => {
+    if (erroBusca) {
+      console.error('Erro ao buscar senha da instituição:', erroBusca);
+      return res.status(500).json({ mensagem: 'Erro no servidor ao verificar senha' });
     }
 
-    const sql = 'UPDATE instituicao_beneficiaria SET nameInc = ?, emailInc = ?, passwordInc = ?, cnpjInc = ?, locationInc = ?, telInc = ? WHERE id = ?';
+    if (resultadosBusca.length === 0) {
+      return res.status(404).json({ mensagem: 'Instituição não encontrada' });
+    }
 
-    db.query(sql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc, id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao atualizar beneficiário:', err);
-            return res.status(500).send('Erro no servidor');
-        }
+    const senhaAtual = resultadosBusca[0].passwordInc;
 
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Instituição não encontrado' });
-        }
+    if (passwordInc !== senhaAtual) {
+      return res.status(401).json({ mensagem: '❌ A senha atual está incorreta. Tente novamente.' });
+    }
 
-        res.status(200).json({ mensagem: 'Instituição atualizada com sucesso' });
+    const atualizarSQL = `
+      UPDATE instituicao_beneficiaria
+      SET nameInc = ?, emailInc = ?, cnpjInc = ?, locationInc = ?, telInc = ?
+      WHERE id = ?
+    `;
+
+    db.query(atualizarSQL, [nameInc, emailInc, cnpjInc, locationInc, telInc, id], (errAtualizar, resultado) => {
+      if (errAtualizar) {
+        console.error('Erro ao atualizar instituição:', errAtualizar);
+        return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar dados' });
+      }
+
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({ mensagem: 'Instituição não encontrada' });
+      }
+
+      res.status(200).json({ mensagem: 'Instituição atualizada com sucesso' });
     });
+  });
 });
 
 
@@ -807,5 +881,124 @@ router.put('/cancelar-pedido', (req, res) => {
     });
 });
 
+router.get('/recuperaremail/:tipo/:email', (req, res) => {
+  const { tipo, email } = req.params;
+
+  let tabela, campoEmail;
+
+  switch (tipo) {
+    case 'instituicao':
+      tabela = 'instituicao_beneficiaria';
+      campoEmail = 'emailInc';
+      break;
+    case 'doador':
+      tabela = 'doador';
+      campoEmail = 'emaildonor';
+      break;
+    case 'pessoa':
+      tabela = 'pessoa_beneficiaria';
+      campoEmail = 'emailPer';
+      break;
+    default:
+      return res.status(400).json({ mensagem: 'Tipo de usuário inválido' });
+  }
+
+  const sql = `SELECT * FROM ${tabela} WHERE ${campoEmail} = ?`;
+
+  db.query(sql, [email], (err, resultado) => {
+    if (err) {
+      console.error('Erro ao buscar e-mail:', err);
+      return res.status(500).json({ mensagem: 'Erro no servidor' });
+    }
+
+    if (resultado.length === 0) {
+      return res.status(404).json({ mensagem: 'E-mail não encontrado' });
+    }
+
+    res.status(200).json({ mensagem: 'Usuário encontrado', dados: resultado[0] });
+  });
+});
+
+router.post('/enviar-recuperacao', async (req, res) => {
+  const { email, tipo } = req.body;
+
+  if (!email || !tipo) {
+    return res.status(400).json({ mensagem: 'Email e tipo são obrigatórios' });
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    const linkVerificacao = `${baseUrl}/recuperarsenha.html?email=${encodeURIComponent(email)}&tipo=${encodeURIComponent(tipo)}`;
+    const li = linkVerificacao.replace(/\/$/, ''); // Remove trailing slash if exists
+    // Corpo do e-mail
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Recuperação de Senha',
+      html: `
+        <p>Olá, recebemos uma solicitação de recuperação de senha.</p>
+        <p>Para continuar, clique no link abaixo:</p>
+        <a href="${li}">Redefinir Senha</a>
+        <p>Se você não solicitou isso, ignore este e-mail.</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ mensagem: 'E-mail de recuperação enviado com sucesso' });
+
+  } catch (erro) {
+    console.error('Erro ao enviar e-mail:', erro);
+    res.status(500).json({ mensagem: 'Erro ao enviar o e-mail de recuperação' });
+  }
+});
+
+// backend - rota para atualizar apenas a senha
+router.put('/atualizar-senha', async (req, res) => {
+  const { email, tipo, novaSenha } = req.body;
+
+  if (!email || !tipo || !novaSenha) {
+    return res.status(400).json({ mensagem: 'Email, tipo e nova senha são obrigatórios' });
+  }
+
+  let tabela, campoSenha, campoEmail;
+
+  if (tipo === 'instituicao') {
+    tabela = 'instituicao_beneficiaria';
+    campoSenha = 'passwordInc';
+    campoEmail = 'emailInc';
+  } else if (tipo === 'doador') {
+    tabela = 'doador';
+    campoSenha = 'passworddonor';
+    campoEmail = 'emaildonor';
+  }else if (tipo === 'pessoa') {
+    tabela = 'pessoa_beneficiaria';
+    campoSenha = 'passwordPer';
+    campoEmail = 'emailPer';
+  } else {
+    return res.status(400).json({ mensagem: 'Tipo de usuário inválido' });
+  }
+
+  const sql = `UPDATE ${tabela} SET ${campoSenha} = ? WHERE ${campoEmail} = ?`;
+
+  db.query(sql, [novaSenha, email], (err, resultado) => {
+    if (err) {
+      console.error('Erro ao atualizar a senha:', err);
+      return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar a senha' });
+    }
+
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+    }
+
+    res.status(200).json({ mensagem: 'Senha atualizada com sucesso' });
+  });
+});
 
 module.exports = router;

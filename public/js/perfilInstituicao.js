@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const dados = await response.json();
-    console.log('Dados recebidos:', dados);
 
     if (!dados || Object.keys(dados).length === 0) {
       alert("Perfil não encontrado.");
@@ -44,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const instituicao = dados;
 
+    carregarDadosDoDoador(instituicao.id);
     document.getElementById("nameInc").textContent = instituicao.nameInc;
     document.getElementById("emailInc").textContent = instituicao.emailInc;
     document.getElementById("locationInc").textContent = instituicao.locationInc;
@@ -54,11 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("botoesApenasDono").style.display = "block";
 
       btnAlterar.addEventListener("click", () => {
-        document.getElementById("inputName").value = instituicao.nameInc;
-        document.getElementById("inputEmail").value = instituicao.emailInc;
-        document.getElementById("inputCNPJ").value = instituicao.cnpjInc;
-        document.getElementById("inputPassword").value = ""; 
-        document.getElementById("inputAddress").value = instituicao.locationInc;
 
         msgModal.textContent = "";
         msgModal.style.color = "";
@@ -126,3 +121,43 @@ document.getElementById("btnExcluir").addEventListener("click", async () => {
     }
   }
 });
+
+function formatarCNPJ(cnpj) {
+  cnpj = cnpj.replace(/\D/g, '');
+
+  return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+}
+async function carregarDadosDoDoador(id) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const resposta = await fetch(`/instituicao?id=${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!resposta.ok) {
+      const erroTexto = await resposta.text();
+      throw new Error(`Erro ${resposta.status}: ${erroTexto}`);
+    }
+
+    const texto = await resposta.text();
+    if (!texto) throw new Error('Resposta vazia do servidor');
+
+    const dados = JSON.parse(texto);
+
+    document.getElementById('inputName').value = dados.nameInc;
+    document.getElementById('inputEmail').value = dados.emailInc;
+    document.getElementById('inputCNPJ').value = formatarCNPJ(dados.cnpjInc);
+    document.getElementById('inputAddress').value = dados.locationInc;
+    document.getElementById('inputPassword').value = ''; 
+    document.getElementById('inputTel').value = dados.telInc || ''; 
+
+  } catch (erro) {
+    console.error('Erro ao carregar dados:', erro.message);
+    document.getElementById('msgModal').textContent = 'Erro ao carregar os dados.';
+  }
+}
