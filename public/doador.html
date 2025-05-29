@@ -7,6 +7,8 @@
     <title>ReVeste - Criar Doação</title>
     <link rel="stylesheet" href="./css/Beneficiario.css" />
     <link rel="stylesheet" href="./css/pedidos.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&loading=async" async defer></script>
+
     </head>
 
 <body>
@@ -36,8 +38,47 @@
     <button id="confirmarDoacao">Confirmar Doação</button>
   </div>
 </div>
+<script>
+  function initMapWithEndereco(endereco) {
+    const geocoder = new google.maps.Geocoder();
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8" async defer></script>
+    geocoder.geocode({ address: endereco }, function(results, status) {
+        if (status === 'OK') {
+            const localizacao = results[0].geometry.location;
+
+            const mapa = new google.maps.Map(document.getElementById("mapaModal"), {
+                center: localizacao,
+                zoom: 15,
+            });
+
+            new google.maps.Marker({
+                position: localizacao,
+                map: mapa,
+                title: "Local da doação",
+            });
+        } else {
+            console.error("Erro ao geocodificar o endereço:", status);
+        }
+    });
+}
+</script>
+<script>
+    const mapaModal = document.getElementById("modalDoacao");
+
+const observer = new MutationObserver(() => {
+  if (!mapaModal.classList.contains("hidden")) {
+    const endereco = mapaModal.querySelector("p:nth-child(9)")?.textContent.split(":")[1]?.trim();
+    if (endereco) {
+      setTimeout(() => {
+        initMapWithEndereco(endereco);
+      }, 500);
+    }
+  }
+});
+
+observer.observe(mapaModal, { attributes: true, attributeFilter: ['class'] });
+
+</script>
     <script defer src="./js/doador.js"></script>
     <script  defer src="./js/perfilDoador.js"></script>
 </body>
