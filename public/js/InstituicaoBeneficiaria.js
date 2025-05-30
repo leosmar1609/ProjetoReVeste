@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
                     <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
                     <p><strong>Status:</strong> <span class="status">${pedido.status}</span></p>
-                    ${pedido.status !== "Fechado" && pedido.status !== "Cancelado" && pedido.status === "Pendente"
+                    ${pedido.status !== "Concluído" && pedido.status !== "Cancelado" && pedido.status === "Pendente"
                     ? `<button class="btn-confirmar" data-id="${pedido.id}">Confirmar recebimento</button>` 
                     : ""}
                     ${pedido.status === "Aberto" 
@@ -101,7 +101,7 @@ document.getElementById('listaPedidos').addEventListener('click', async function
             if (resp.ok) {
                 const statusSpan = btn.previousElementSibling.querySelector('.status');
                 if (statusSpan) {
-                    statusSpan.textContent = 'Fechado';
+                    statusSpan.textContent = 'Concluído';
                 }
                 btn.remove();
                 alert("Pedido confirmado com sucesso!");

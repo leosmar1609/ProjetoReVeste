@@ -841,7 +841,7 @@ router.put('/confirmar-recebimento', (req, res) => {
     }
 
     const sql = 'UPDATE pedidos SET status = ? WHERE id = ?';
-    const status = 'Fechado';
+    const status = 'Concluído';
 
     db.query(sql, [status, id], (err, resultado) => {
         if (err) {
