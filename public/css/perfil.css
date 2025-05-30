@@ -179,6 +179,7 @@ main h2 {
   font-size: 1.1rem;
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
   transition: background-color 0.3s ease;
+  margin-top: 15px;
 }
 
 #modalEditar button#salvarAlteracoes:hover {
@@ -198,6 +199,15 @@ main h2 {
 
 #modalEditar button#fecharModal:hover {
   color: #333;
+}
+
+#modalEditar #forgotPass {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #104c60;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 #msgModal {

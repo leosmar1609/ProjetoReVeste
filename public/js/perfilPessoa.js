@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const idPerfil = urlParams.get("id");
   const idUsuarioLogado = localStorage.getItem("idUsuarioLogado");
   const token = localStorage.getItem("token");
+  const tipoUsuario = sessionStorage.getItem("tipoUsuario");
 
   if (!token) {
     alert("Você precisa estar logado para acessar essa página.");
     window.location.href = "login.html";
     return;
   }
-
 
   if (!idPerfil) {
     alert("ID do perfil não informado.");
@@ -42,6 +42,9 @@ if (!dados || Object.keys(dados).length === 0) {
 }
 
     const pessoa = dados;
+
+    sessionStorage.setItem("emailPer", pessoa.emailPer);
+    sessionStorage.setItem("userType", tipoUsuario);
 
     carregarDadosDoDoador(pessoa.id);
 
@@ -163,3 +166,38 @@ async function carregarDadosDoDoador(id) {
     document.getElementById('msgModal').textContent = 'Erro ao carregar os dados.';
   }
 }
+
+document.getElementById("forgotPass").addEventListener("click", () => {
+  const email = document.getElementById("inputEmail").value;
+  const tipo = "pessoa";
+  const msgModal = document.getElementById("msgModal");
+
+  if (!email || !tipo) {
+    alert("Por favor, informe seu e-mail.");
+    return;
+  }
+  msgModal.textContent = "⏳ Enviando e-mail de recuperação...";
+  msgModal.style.color = "black";
+
+  fetch("./auth/enviar-recuperacao", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, tipo })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      msgModal.textContent = "Instruções de redefinição de senha enviadas para o seu e-mail.";
+      msgModal.style.color = "green";
+    } else {
+      msgModal.textContent = "Instruções de redefinição de senha enviadas para o seu e-mail.";
+      msgModal.style.color = "green";
+    }
+  })
+  .catch(error => {
+    console.error("Erro ao enviar e-mail:", error);
+    alert("Erro ao enviar e-mail. Tente novamente mais tarde.");
+  });
+});
