@@ -1,12 +1,5 @@
-/* ----------------------------------------
-   ✅ Fontes Google
------------------------------------------ */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&display=swap');
-
-/* ----------------------------------------
-   ✅ Reset básico
------------------------------------------ */
 * {
     margin: 0;
     padding: 0;
@@ -54,14 +47,12 @@ header img.capa-nav {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-
-  /* Centralização */
   justify-content: center;
   align-items: center;
 }
 
 .modal.show {
-  display: flex; /* Mostra e centraliza o modal */
+  display: flex;
 }
 
 .modal-content {
@@ -161,9 +152,6 @@ header h1 {
 
 }
 
-/* ----------------------------------------
-   ✅ Navegação
------------------------------------------ */
 .main-nav {
     background: #00151f;
     padding: 15px 30px;
@@ -201,18 +189,15 @@ header h1 {
 }
 
 .menu li a {
-    display: inline-block; /* Necessário para o transform funcionar */
+    display: inline-block;
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .menu li a:hover {
     color: #ffffff;
-    transform: scale(1.4); /* Aumenta 10% */
+    transform: scale(1.4);
 }
 
-/* ----------------------------------------
-   ✅ Seção Intro
------------------------------------------ */
 main {
     padding: 0;
     text-align: center;
@@ -281,10 +266,6 @@ main {
     color: #333;
 }
 
-
-/* ----------------------------------------
-   ✅ Seção Como Funciona
------------------------------------------ */
 .how-it-works {
     background: #d6d2d2;
     padding: 40px 20px;
@@ -330,7 +311,6 @@ main {
     color: #555;
 }
 
-/* RESPONSIVO */
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;

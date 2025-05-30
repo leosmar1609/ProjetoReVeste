@@ -111,7 +111,7 @@ footer a:hover {
 
 @media (max-width: 480px) {
   .login-container {
-    max-width: 370px; /* reduz a largura máxima */
-    padding: 10px 20px; /* reduz o padding para caber melhor */
+    max-width: 370px;
+    padding: 10px 20px;
   }
 }

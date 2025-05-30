@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tipo = document.getElementById('tipoUsuario').value;
     const email = document.getElementById('email').value;
+    const messageElement = document.getElementById("mensagem");
 
     try {
-      // Primeiro, verifica se o e-mail existe
       const resposta = await fetch(`./auth/recuperaremail/${tipo}/${email}`);
 
       if (!resposta.ok) {
@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const dados = await resposta.json();
       console.log('Resposta do banco:', dados);
 
-      // Agora, envia o e-mail de recuperação
+      messageElement.innerText = "⏳ Enviando dados...";
+      messageElement.style.color = "black";
+
       const enviarEmail = await fetch('./auth/enviar-recuperacao', {
         method: 'POST',
         headers: {
@@ -32,9 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const resultado = await enviarEmail.json();
 
       if (enviarEmail.ok) {
-        alert('Email de recuperação enviado com sucesso!');
+        messageElement.innerText = 'Email de recuperação enviado com sucesso!';
+        messageElement.style.color = "green";
       } else {
-        alert(`Erro ao enviar e-mail: ${resultado.mensagem}`);
+        messageElement.innerText = `Erro ao enviar e-mail: ${resultado.mensagem}`;
+        messageElement.style.color = "red";
       }
 
     } catch (erro) {

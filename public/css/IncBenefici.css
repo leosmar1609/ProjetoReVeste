@@ -1,4 +1,3 @@
-/* Reset básico e configurações globais */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,7 +14,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Header */
 .header {
   background-color: #00151f;
   padding: 2px 20px;
@@ -31,14 +29,14 @@ body {
 
 .logoBranco {
   height: 100px;
-  margin-top: 1rem; /* Aumenta o quanto sobe */
+  margin-top: 1rem;
   object-fit: contain;
 }
 
 #search {
   position: absolute;
-  top: 5rem; /* distancia do topo */
-  left: 50%; /* centraliza horizontalmente */
+  top: 5rem;
+  left: 50%; 
   transform: translateX(-50%);
   width: 100%;
   max-width: 700px;
@@ -81,7 +79,6 @@ body {
   background: #383212;
 }
 
-/* Dropdown menu */
 .dropdown {
   position: absolute;
   top: 90px;
@@ -115,7 +112,6 @@ body {
   background-color: #f0f0f0;
 }
 
-/* Modal Formulário */
 #formContainer {
   display: none;
   position: fixed;
@@ -222,7 +218,6 @@ form button[type="submit"]:hover {
   background-color: #00151f;
 }
 
-/* Lista de pedidos */
 #listaPedidos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -231,7 +226,6 @@ form button[type="submit"]:hover {
   width: 100%;
 }
 
-/* Responsividade */
 @media (max-width: 500px) {
   header {
     flex-direction: column;

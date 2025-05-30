@@ -1,5 +1,3 @@
-/* ===== Reset e fontes ===== */
-/* Remove margens, preenchimentos e configura o box-sizing para todos os elementos */
 * {
   margin: 0;
   padding: 0;
@@ -7,14 +5,12 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Define o fundo da página */
 html, body {
   margin: 0;
   padding: 0;
   background-color: #d6d2d2;
 }
 
-/* ===== Header (cabeçalho) ===== */
 .header {
   background-color: #00151f;
   padding: 2px 20px;
@@ -31,7 +27,7 @@ html, body {
 .logo {
   height: 100px;
   margin-top: 1rem;
-  object-fit: contain; /* Mantém a proporção da logo */
+  object-fit: contain;
 }
 
 .section-title {
@@ -41,17 +37,15 @@ html, body {
   margin-top: -170px;
   font-weight: bold;
   text-align: center;
-  flex: 1 1 100%; /* Faz quebrar pra linha sozinha */
+  flex: 1 1 100%;
 }
 
-
-/* ===== Barra de Pesquisa ===== */
 .search-bar {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
-  max-width: 700px; /* <-- Controle da largura máxima */
+  width: 100%;
+  max-width: 700px; 
 }
 
 .search-bar input {
@@ -69,7 +63,6 @@ html, body {
   border-color: #ffffff;
 }
 
-/* ===== Menu do Usuário ===== */
 .user-menu {
   display: flex;
   align-items: center;
@@ -85,15 +78,13 @@ html, body {
   border-radius: 50%;
   margin-top: -5px;
   cursor: pointer;
-  transition: transform 0.2s ease; /* Suaviza a animação */
+  transition: transform 0.2s ease;
 }
 
 .user-menu img:hover {
-  transform: scale(1.2); /* Aumenta 10% */
+  transform: scale(1.2); 
 }
 
-
-/* Dropdown menu */
 #dropdownMenu {
   position: absolute;
   top: 50px;
@@ -110,7 +101,7 @@ html, body {
 }
 
 #dropdownMenu.hidden {
-  display: none; /* Esconde o dropdown */
+  display: none; 
 }
 
 #dropdownMenu button {
@@ -132,7 +123,6 @@ html, body {
   
 }
 
-/* ===== Botões principais ===== */
 .donate-button,
 .btn-confirmar,
 .btn-cancelar {
@@ -158,12 +148,11 @@ html, body {
   color: #ffffff;
 }
 
-/* ===== Formulário Modal ===== */
 #formContainer {
   display: none;
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+  background-color: rgba(0, 0, 0, 0.5); 
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -181,13 +170,11 @@ html, body {
   animation: fadeIn 0.3s ease;
 }
 
-/* Animação de entrada do formulário */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* Botão de fechar o formulário */
 .close-btn {
   position: absolute;
   top: 12px;
@@ -204,7 +191,6 @@ html, body {
   color: red;
 }
 
-/* Estilo dos elementos do formulário */
 form h2 {
   margin-bottom: 20px;
   color: #333;
@@ -244,7 +230,6 @@ textarea {
   min-height: 80px;
 }
 
-/* Botão enviar do formulário */
 form button[type="submit"] {
   width: 100%;
   padding: 12px;
@@ -262,8 +247,6 @@ form button[type="submit"]:hover {
   background-color: #1c292e;
 }
 
-/* ===== Cards dos Pedidos ===== */
-
 .card {
   background-color: white;
   border-radius: 16px;
@@ -278,7 +261,6 @@ form button[type="submit"]:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== Modal do Card Ampliado ===== */
 .card-modal-overlay {
   position: fixed;
   inset: 0;
@@ -300,7 +282,6 @@ form button[type="submit"]:hover {
   animation: zoomIn 0.3s ease;
 }
 
-/* Botão fechar dentro do card modal */
 .card-modal .close-btn {
   position: absolute;
   top: 12px;
@@ -312,20 +293,17 @@ form button[type="submit"]:hover {
   cursor: pointer;
 }
 
-/* Animação do modal */
 @keyframes zoomIn {
   from { opacity: 0; transform: scale(0.9); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* ===== Prioridade (badge colorida) ===== */
 .pedido-titulo {
   color: #104c60;
   font-size: 1.2rem;
   margin-bottom: 8px;
 }
 
-/* Estilo das tags de prioridade */
 .badge {
   padding: 4px 8px;
   border-radius: 12px;
@@ -334,16 +312,14 @@ form button[type="submit"]:hover {
   font-size: 0.85rem;
 }
 
-/* Cores conforme prioridade */
 .badge.baixa   { background-color: #4caf50; }
 .badge.média   { background-color: #ff9800; }
 .badge.alta    { background-color: #f44336; }
 .badge.urgente { background-color: #b71c1c; }
 
-/* ===== Responsivo ===== */
 @media (max-width: 500px) {
   .header {
-    flex-direction: column; /* Coloca o header em coluna */
+    flex-direction: column;
     gap: 10px;
   }
 

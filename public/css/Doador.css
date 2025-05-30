@@ -29,7 +29,7 @@
   margin-top:0rem;
   font-weight: bold;
   text-align: center;
-  flex: 1 1 100%; /* Faz quebrar pra linha sozinha */
+  flex: 1 1 100%;
 }
 
 .user-menu img {
@@ -39,12 +39,12 @@
   margin-top: 2rem;
   margin-right: 1rem;
   cursor: pointer;
-  transition: transform 0.2s ease; /* Suaviza a animação */
+  transition: transform 0.2s ease;
 }
 
 .logoBranco {
   height: 100px;
-  margin-top: -6rem; /* Aumenta o quanto sobe */
+  margin-top: -6rem;
   object-fit: contain;
 }
 
@@ -53,8 +53,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%; /* <-- Faz a barra ocupar até o limite definido abaixo */
-  max-width: 700px; /* <-- Controle da largura máxima */
+  width: 100%;
+  max-width: 700px;
 }
 
   .filter-select {

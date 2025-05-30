@@ -24,7 +24,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -7rem; /* Ajuste aqui para subir tudo */
+  margin-top: -7rem;
 }
 
 .logo img {
@@ -41,7 +41,7 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 300px;
   text-align: center;
-  margin-top: 20px; /* Distância entre logo e container */
+  margin-top: 20px; 
 }
 
     h2 {
@@ -54,8 +54,8 @@ body {
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 5px;
-      box-sizing: border-box;  /* importante para o input respeitar o tamanho total */
-      display: block;           /* para garantir que o input ocupe a linha inteira */
+      box-sizing: border-box;
+      display: block;
 }
 
     button {

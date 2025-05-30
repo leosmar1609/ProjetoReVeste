@@ -20,18 +20,17 @@ body {
   width: 100%;
   max-width: 1000px;
   padding: 40px 0;
-  overflow: visible !important; /* garante que nada seja cortado */
-  /* padding negativo removido */
+  overflow: visible !important;
 }
 
 .swiper-slide {
-    pointer-events: none; /* Desativa clique, digitação, etc. */
-    opacity: 0.5; /* Opcional: deixa mais apagado para indicar que está desabilitado */
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .swiper-slide.swiper-slide-active {
-    pointer-events: auto; /* Ativa apenas no slide atual */
-    opacity: 1; /* Volta a opacidade normal */
+    pointer-events: auto;
+    opacity: 1;
 }
 
 .swiper-slide {
@@ -49,12 +48,11 @@ body {
 
 .logo-reveste {
   display: block;
-  margin: 8px auto 0px auto; /* centraliza e dá espaço abaixo */
-  width: 130px; /* ajuste conforme necessário */
-  height: auto; /* mantém proporção */
+  margin: 8px auto 0px auto;
+  width: 130px;
+  height: auto; 
 }
 
-/* Slide padrão */
 .swiper-slide {
   background: linear-gradient(135deg, #f1ecec, #f1ecec);
   border-radius: 20px;
@@ -95,7 +93,6 @@ body {
   border: 2px solid #d6d2d2;
 }
 
-/* Impede que o swiper capture eventos dentro dos inputs */
 input, textarea, select, button {
     touch-action: manipulation;
     user-select: text;
@@ -157,13 +154,13 @@ button:hover {
 }
 
 .swiper-button-prev {
-  color: #ffffff;   /* Cor da seta */
-  left: -90px;      /* Distância da esquerda */
+  color: #ffffff;
+  left: -90px;
 }
 
 .swiper-button-next {
-  color: #ffffff;   /* Cor da seta */
-  right: -90px;     /* Distância da direita */
+  color: #ffffff; 
+  right: -90px;    
 }
 
 .hidden {
@@ -186,13 +183,10 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* RESPONSIVO */
-
-/* Tablets e dispositivos até 768px */
 @media (max-width: 768px) {
   .swiper {
     padding: 20px 0;
-    height: 610px; /* ajuste conforme necessário */
+    height: 610px;
   }
 
   .swiper-slide {
@@ -230,7 +224,6 @@ footer a:hover {
   }
 }
 
-/* Celulares e dispositivos até 480px */
 @media (max-width: 480px) {
   .swiper-slide {
     max-width: 300px;
