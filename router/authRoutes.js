@@ -56,12 +56,12 @@ router.post('/registerIB', (req, res) => {
                 return res.status(409).json({ error: '❌ CNPJ já cadastrado.' });
             }
         }
-
+        const chave = process.env.JWT_SECRET;
         const insertSql = `INSERT INTO instituicao_beneficiaria 
             (nameInc, emailInc, passwordInc, cnpjInc, locationInc, verificada, telInc) 
-            VALUES (?, ?, ?, ?, ?, 0, ?)`;
+            VALUES (?, ?, AES_ENCRYPT(?, ?), ?, ?, 0, ?)`;
 
-        db.query(insertSql, [nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc], (err, results) => {
+        db.query(insertSql, [nameInc, emailInc, passwordInc,chave, cnpjInc, locationInc, telInc], (err, results) => {
             if (err) {
                 console.error('Erro ao criar instituição:', err);
                 return res.status(500).json({ error: 'Erro ao cadastrar instituição.' });
@@ -94,10 +94,10 @@ router.post('/registerdonor', (req, res) => {
                 return res.status(409).json({ error: '❌ E-mail já cadastrado.' });
             }
         }
-
+        const chave = process.env.JWT_SECRET;
     const sql = `INSERT INTO doador (namedonor, emaildonor, passworddonor) 
-               VALUES (?, ?, ?)`;
-    db.query(sql, [namedonor, emaildonor, passworddonor], (err, results) => {
+               VALUES (?, ?, AES_ENCRYPT(?, ?))`;
+    db.query(sql, [namedonor, emaildonor, passworddonor, chave], (err, results) => {
         if (err) {
             console.error('Erro ao criar a conta', err);
         } else {
@@ -161,13 +161,24 @@ router.get('/instituicao', autenticarToken, (req, res) => {
 
 router.get('/pessoa', autenticarToken, (req, res) => {
     const id = req.query.id;
+    const chave = process.env.JWT_SECRET;
 
     if (!id) {
         return res.status(400).json({ error: 'ID não fornecido' });
     }
 
-    const sql = 'SELECT * FROM Pessoa_Beneficiaria WHERE id = ?';
-    db.query(sql, [id], (err, results) => {
+    const sql = `
+        SELECT 
+            id,
+            namePer,
+            emailPer,
+            CONVERT(AES_DECRYPT(cpfPer, ?) USING utf8mb4) AS cpfPer,
+            telPer
+        FROM Pessoa_Beneficiaria
+        WHERE id = ?
+    `;
+
+    db.query(sql, [chave, id], (err, results) => {
         if (err) {
             console.error('Erro ao buscar pessoa:', err);
             return res.status(500).send('Erro no servidor');
@@ -177,7 +188,6 @@ router.get('/pessoa', autenticarToken, (req, res) => {
             return res.status(404).json({ error: 'Pessoa não encontrada' });
         }
 
-        
         res.json(results[0]);
     });
 });
@@ -191,9 +201,9 @@ router.post('/registerPB', (req, res) => {
     }
 
     const cpfLimpo = cpfPer.replace(/\D/g, '');
-
-    const checkSql = 'SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? OR cpfPer = ?';
-    db.query(checkSql, [emailPer, cpfLimpo], (err, results) => {
+    const chave = process.env.JWT_SECRET;
+    const checkSql = 'SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? OR cpfPer = AES_ENCRYPT(?, ?)';
+    db.query(checkSql, [emailPer, cpfLimpo, chave], (err, results) => {
         if (err) {
             console.error('Erro ao verificar CPF/email:', err);
             return res.status(500).json({ error: 'Erro ao verificar dados.' });
@@ -203,11 +213,11 @@ router.post('/registerPB', (req, res) => {
             const conflictField = results[0].emailPer === emailPer ? 'E-mail' : 'CPF';
             return res.status(409).json({ error: `${conflictField} já cadastrado.` });
         }
-
+        
         const insertSql = `INSERT INTO pessoa_beneficiaria (namePer, emailPer, passwordPer, cpfPer, verificado, telPer)
-                           VALUES (?, ?, ?, ?, 0, ?)`;
+                           VALUES (?, ?, AES_ENCRYPT(?, ?), AES_ENCRYPT(?, ?), 0, ?)`;
 
-        db.query(insertSql, [namePer, emailPer, passwordPer, cpfLimpo, telPer], (err, results) => {
+        db.query(insertSql, [namePer, emailPer, passwordPer, chave, cpfLimpo, chave, telPer], (err, results) => {
             if (err) {
                 console.error('Erro ao cadastrar pessoa:', err);
                 return res.status(500).json({ error: 'Erro ao cadastrar pessoa.' });
@@ -415,19 +425,19 @@ router.post('/login', (req, res) => {
 
     return res.status(401).json({ error: `Usuário ou senha inválidos para ${type}` });
   };
-
+  const chave = process.env.JWT_SECRET;
   if (userType === "instituicao") {
-    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = ?', [email, password], (err, result1) => {
+    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result1) => {
       if (err) return res.status(500).json({ error: "Erro no servidor" });
       handleLogin('emailInc', 'instituicao', result1, res);
     });
   } else if (userType === "pessoa") {
-    db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = ?', [email, password], (err, result2) => {
+    db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result2) => {
       if (err) return res.status(500).json({ error: "Erro no servidor" });
       handleLogin('emailPer', 'pessoa', result2, res);
     });
   } else if (userType === "doador") {
-    db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = ?', [email, password], (err, result3) => {
+    db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result3) => {
       if (err) return res.status(500).json({ error: "Erro no servidor" });
       handleLogin('emaildonor', 'doador', result3, res);
     });
@@ -668,14 +678,19 @@ router.delete('/deletepedido', (req, res) => {
 router.put('/doadorup/:id', autenticarToken, (req, res) => {
   const id = req.params.id;
   const { nameDoador, emailDoador, passwordDoador } = req.body;
+  const chave = process.env.JWT_SECRET;
 
   if (!nameDoador || !emailDoador || !passwordDoador) {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
-  const buscarSenhaSQL = 'SELECT passworddonor FROM doador WHERE id = ?';
+  const buscarSenhaSQL = `
+    SELECT CONVERT(AES_DECRYPT(passworddonor, ?) USING utf8mb4) AS senha
+    FROM pessoa_beneficiaria
+    WHERE id = ?
+  `;
 
-  db.query(buscarSenhaSQL, [id], (erroBusca, resultadosBusca) => {
+  db.query(buscarSenhaSQL, [chave, id], (erroBusca, resultadosBusca) => {
     if (erroBusca) {
       console.error('Erro ao buscar senha do doador:', erroBusca);
       return res.status(500).json({ mensagem: 'Erro no servidor ao verificar senha' });
@@ -685,7 +700,7 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
       return res.status(404).json({ mensagem: 'Doador não encontrado' });
     }
 
-    const senhaAtual = resultadosBusca[0].passworddonor;
+    const senhaAtual = resultadosBusca[0].senha;
 
     if (passwordDoador !== senhaAtual) {
       return res.status(401).json({ mensagem: '❌ A senha atual está incorreta. Tente novamente.' });
@@ -712,18 +727,22 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
   });
 });
 
-
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;
   const { namePer, emailPer, passwordPer, cpfPer, telPer } = req.body;
+  const chave = process.env.JWT_SECRET;
 
   if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !telPer) {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
-  const sqlSelect = `SELECT passwordPer FROM pessoa_beneficiaria WHERE id = ?`;
+  const sqlSelect = `
+    SELECT CONVERT(AES_DECRYPT(passwordPer, ?) USING utf8mb4) AS senha
+    FROM pessoa_beneficiaria
+    WHERE id = ?
+  `;
 
-  db.query(sqlSelect, [id], (err, results) => {
+  db.query(sqlSelect, [chave, id], (err, results) => {
     if (err) {
       console.error('Erro ao buscar senha atual:', err);
       return res.status(500).send('Erro no servidor');
@@ -733,7 +752,7 @@ router.put('/pessoaup/:id', (req, res) => {
       return res.status(404).json({ mensagem: 'Pessoa não encontrada' });
     }
 
-    const senhaCorreta = results[0].passwordPer;
+    const senhaCorreta = results[0].senha;
 
     if (passwordPer !== senhaCorreta) {
       return res.status(403).json({ mensagem: 'Senha incorreta' });
@@ -741,11 +760,11 @@ router.put('/pessoaup/:id', (req, res) => {
 
     const sqlUpdate = `
       UPDATE pessoa_beneficiaria
-      SET namePer = ?, emailPer = ?, cpfPer = ?, telPer = ?
+      SET namePer = ?, emailPer = ?, telPer = ?
       WHERE id = ?
     `;
 
-    db.query(sqlUpdate, [namePer, emailPer, cpfPer, telPer, id], (err, resultado) => {
+    db.query(sqlUpdate, [namePer, emailPer, telPer, id], (err, resultado) => {
       if (err) {
         console.error('Erro ao atualizar pessoa:', err);
         return res.status(500).send('Erro no servidor');
@@ -760,18 +779,22 @@ router.put('/pessoaup/:id', (req, res) => {
   });
 });
 
-
 router.put('/beneficiarioup/:id', (req, res) => {
   const id = req.params.id;
   const { nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc } = req.body;
+  const chave = process.env.JWT_SECRET;
 
   if (!id || !nameInc || !emailInc || !passwordInc || !cnpjInc || !locationInc || !telInc) {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
-  const buscarSenhaSQL = 'SELECT passwordInc FROM instituicao_beneficiaria WHERE id = ?';
+  const buscarSenhaSQL = `
+    SELECT CONVERT(AES_DECRYPT(passwordInc, ?) USING utf8mb4) AS senha
+    FROM instituicao_beneficiaria
+    WHERE id = ?
+  `;
 
-  db.query(buscarSenhaSQL, [id], (erroBusca, resultadosBusca) => {
+  db.query(buscarSenhaSQL, [chave, id], (erroBusca, resultadosBusca) => {
     if (erroBusca) {
       console.error('Erro ao buscar senha da instituição:', erroBusca);
       return res.status(500).json({ mensagem: 'Erro no servidor ao verificar senha' });
@@ -781,7 +804,7 @@ router.put('/beneficiarioup/:id', (req, res) => {
       return res.status(404).json({ mensagem: 'Instituição não encontrada' });
     }
 
-    const senhaAtual = resultadosBusca[0].passwordInc;
+    const senhaAtual = resultadosBusca[0].senha;
 
     if (passwordInc !== senhaAtual) {
       return res.status(401).json({ mensagem: '❌ A senha atual está incorreta. Tente novamente.' });
@@ -803,7 +826,7 @@ router.put('/beneficiarioup/:id', (req, res) => {
         return res.status(404).json({ mensagem: 'Instituição não encontrada' });
       }
 
-      res.status(200).json({ mensagem: 'Instituição atualizada com sucesso' });
+      res.status(200).json({ mensagem: '✅ Instituição atualizada com sucesso' });
     });
   });
 });
@@ -960,7 +983,7 @@ router.post('/enviar-recuperacao', async (req, res) => {
 
 router.put('/atualizar-senha', async (req, res) => {
   const { email, tipo, novaSenha } = req.body;
-
+  const chave = process.env.JWT_SECRET;
   if (!email || !tipo || !novaSenha) {
     return res.status(400).json({ mensagem: 'Email, tipo e nova senha são obrigatórios' });
   }
@@ -983,9 +1006,9 @@ router.put('/atualizar-senha', async (req, res) => {
     return res.status(400).json({ mensagem: 'Tipo de usuário inválido' });
   }
 
-  const sql = `UPDATE ${tabela} SET ${campoSenha} = ? WHERE ${campoEmail} = ?`;
+  const sql = `UPDATE ${tabela} SET ${campoSenha} = AES_ENCRYPT(?, ?) WHERE ${campoEmail} = ?`;
 
-  db.query(sql, [novaSenha, email], (err, resultado) => {
+  db.query(sql, [novaSenha, chave, email], (err, resultado) => {
     if (err) {
       console.error('Erro ao atualizar a senha:', err);
       return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar a senha' });
