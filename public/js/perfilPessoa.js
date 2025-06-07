@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const idPerfil = urlParams.get("id");
   const idUsuarioLogado = localStorage.getItem("idUsuarioLogado");
@@ -80,7 +80,7 @@ if (!dados || Object.keys(dados).length === 0) {
 document.getElementById('btnVoltar').addEventListener('click', () => {
   const id = new URLSearchParams(window.location.search).get('id');
   if (id) {
-    window.location.href = `pessoaBeneficiaria.html?id=${id}`;
+    window.location.href = `pb72516367fdgx765FG.html?id=${id}`;
   } else {
     alert("ID do usuário não encontrado na URL.");
   }
@@ -128,7 +128,10 @@ document.getElementById("btnExcluir").addEventListener("click", async () => {
 
 function formatarCPF(cpf) {
   cpf = cpf.replace(/\D/g, '');
-  return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+
+  if (cpf.length !== 11) return cpf;
+
+  return cpf.replace(/(\d{3})\d{3}\d{2}(\d{1})(\d{2})/, "$1.***.**$2-$3");
 }
 
 async function carregarDadosDoDoador(id) {

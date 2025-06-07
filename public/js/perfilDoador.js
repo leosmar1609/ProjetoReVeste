@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const idPerfil = urlParams.get("id");
   const idUsuarioLogado = localStorage.getItem("idUsuarioLogado");
@@ -86,7 +86,7 @@ if (!dados || Object.keys(dados).length === 0) {
 document.getElementById('btnVoltar').addEventListener('click', () => {
   const id = new URLSearchParams(window.location.search).get('id');
   if (id) {
-    window.location.href = `doador.html?id=${id}`;
+    window.location.href = `dd8372783hasd738WA.html?id=${id}`;
   }
    else {
     alert("ID do usuário não encontrado na URL.");

@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("modalEditar").classList.remove("active");
           msgModal.textContent = "";
           msgModal.style.color = "";
+          window.location.reload();
         }, 2000);
         
       } else if (res.status === 403) {

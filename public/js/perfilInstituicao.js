@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const idPerfil = urlParams.get("id");
   const idUsuarioLogado = localStorage.getItem("idUsuarioLogado");
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.getElementById('btnVoltar').addEventListener('click', () => {
   const id = new URLSearchParams(window.location.search).get('id');
   if (id) {
-    window.location.href = `instituicaoBeneficiaria.html?id=${id}`;
+    window.location.href = `ib87236487hsfdj738GF.html?id=${id}`;
   }
 });
 

@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           msgModal.textContent = "";
           msgModal.style.color = "";
+          window.location.reload();
         }, 2000);
       } else if (res.status === 401) {
         msgModal.style.color = "red";

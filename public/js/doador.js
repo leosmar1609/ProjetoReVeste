@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async() => {
+window.addEventListener('DOMContentLoaded', async() => {
    const token = localStorage.getItem('token');
 
     if (!token) {
@@ -250,7 +250,7 @@ userIcon.addEventListener("click", () => {
 document.getElementById('btnPerfil').addEventListener('click', () => {
   const id = new URLSearchParams(window.location.search).get('id');
   if (id) {
-    window.location.href = `perfilDoador.html?id=${id}`;
+    window.location.href = `pd4983988auhd736pd.html?id=${id}`;
   } else {
     alert("ID do usuário não encontrado na URL.");
   }

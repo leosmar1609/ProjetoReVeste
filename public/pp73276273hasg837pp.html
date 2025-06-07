@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Perfil Instituição</title>
+  <title>Meu perfil</title>
   <link rel="stylesheet" href="./css/perfil.css" />
   <link rel="icon" href="./imgs/LogoBranco.png" type="image/x-icon" />
 </head>
@@ -18,11 +18,9 @@
     <h2>Perfil</h2>
     
     <div class="info">
-      <p><strong>Nome:</strong> <span id="nameInc"></span></p>
-      <p><strong>Email:</strong> <span id="emailInc"></span></p>
-      <p><strong>CNPJ:</strong> <span id="cnpjInc"></span></p>
-        <p><strong>Endereço:</strong> <span id="locationInc"></span></p>
-        <p><strong>Telefone:</strong> <span id="telInc"></span></p>
+      <p><strong>Nome:</strong> <span id="namePer"></span></p>
+      <p><strong>Email:</strong> <span id="emailPer"></span></p>
+      <p><strong>Telefone:</strong> <span id="telPer"></span></p>
     </div>
 
     <div class="botoes-acao" id="botoesApenasDono">
@@ -43,16 +41,13 @@
         <input type="email" id="inputEmail" name="inputEmail" required />
 
         <label for="inputPassword">Senha</label>
-        <input type="password" id="inputPassword" name="inputPassword" required minlength="6" placeholder="Confirme sua senha para alterar seus dados" />
-
-        <label for="inputCNPJ">CNPJ</label>
-        <input type="text" id="inputCNPJ" name="inputCNPJ" required />
+        <input type="password" id="inputPassword" name="inputPassword" required minlength="6" placeholder="Confirme sua senha para alterar seus dados"/>
 
         <label for="inputTel">Telefone</label>
         <input type="text" id="inputTel" name="inputTel" required pattern="\(\d{2}\) \d{5}-\d{4}" title="Formato: (XX) XXXXX-XXXX" />
 
-        <label for="inputAddress">Endereço</label>
-        <input type="text" id="inputAddress" name="inputAddress" required />
+        <label for="inputCpf">CPF</label>
+        <input type="text" id="inputCpf" name="inputCpf" required pattern="{14}" title="CPF deve conter 14 números sem pontos ou traços" readonly/>
 
         <a href="#" id="forgotPass" class="link">Esqueci a senha</a>
 
@@ -81,23 +76,8 @@
       }
     });
   </script>
-  <script>
-    window.initAutocomplete = function () {
-      const input = document.getElementById("inputAddress");
-      const autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ["geocode"],
-        componentRestrictions: { country: "br" }
-      });
-
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        console.log("Endereço selecionado:", place.formatted_address);
-      });
-    };
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
-<script src="./js/atualizarPerfilInc.js"></script>
-  <script src="./js/perfilInstituicao.js"></script>
+  <script src="./js/perfilPessoa.js"></script>
+<script src="./js/atualizarPerfil.js"></script>
 
 </body>
 </html>

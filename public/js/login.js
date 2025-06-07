@@ -45,13 +45,13 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => {
                 switch (userType) {
                     case "pessoa":
-                        window.location.href = `pessoaBeneficiaria.html?id=${data.id}`;
+                        window.location.href = `pb72516367fdgx765FG.html?id=${data.id}`;
                         break;
                     case "instituicao":
-                        window.location.href = `instituicaoBeneficiaria.html?id=${data.id}`;
+                        window.location.href = `ib87236487hsfdj738GF.html?id=${data.id}`;
                         break;
                     case "doador":
-                        window.location.href = `doador.html?id=${data.id}`;
+                        window.location.href = `dd8372783hasd738WA.html?id=${data.id}`;
                         break;
                     default:
                         window.location.href = "login.html";
