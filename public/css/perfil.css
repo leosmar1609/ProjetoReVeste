@@ -223,3 +223,43 @@ main h2 {
 #msgModal.success {
   color: #16a34a;
 }
+
+@media (max-width: 600px) {
+  header {
+    height: 40px;
+  }
+
+  .logoBranco {
+    height: 100px;
+  }
+
+  main.perfil-container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  #modalEditar > div {
+    width: 90%;
+    padding: 20px;
+  }
+  #btnVoltar{
+    background: #104c60;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  #btnSair{
+    background: #bc1f1f;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+}

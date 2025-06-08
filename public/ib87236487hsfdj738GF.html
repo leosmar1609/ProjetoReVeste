@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pedidos</title>
-    <link rel="stylesheet" href="./css/IncBenefici.css" />
-    <link rel="stylesheet" href="./css/pedidos.css">
-    <link rel="icon" href="./imgs/LogoBranco.png" type="image/x-icon" />
-    <script defer src="./js/InstituicaoBeneficiaria.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedidos</title>
+  <link rel="stylesheet" href="./css/pedidos.css" />
+  <link rel="stylesheet" href="../css/Beneficiario.css" />
+  <link rel="icon" href="./imgs/LogoBranco.png" type="image/x-icon" />
+  <script defer src="./js/InstituicaoBeneficiaria.js"></script>
+
 </head>
-
 <body>
-    <header class="header" id="mainHeader">
-        <img src="./imgs/LogoBranco.png" alt="ReVeste Logo" class="logoBranco" />
-        <h2 class="section-title">Meus Pedidos</h2>
-        <input class="search-bar" type="text" placeholder="Pesquisar minhas doações" id="search" />
-        <div class="user-menu">
-            <button class="donate-button" id="openFormBtn">Pedir Doação</button>
-            <img src="./imgs/user-icon.png" alt="Usuário" id="userIcon" />
-            <div class="dropdown hidden" id="dropdownMenu">
-            <button id="btnPerfil">Meu Perfil</button>
-            <button id="btnLogout">Sair</button>
-            </div>
-          </div>
-    </header>
-    <div id="listaPedidos"></div>
+  <header class="header" id="mainHeader">
+    <img src="./imgs/LogoBranco.png" alt="ReVeste Logo" class="logo" />
+    <b class="section-title">Meus Pedidos</b>
+    <div class="search-bar">
+      <input type="text" placeholder="Pesquisar minhas doações" id="search" />
+    </div>
+    <div class="user-menu">
+      <button class="donate-button" id="openFormBtn">Pedir Doação</button>
+      <img src="./imgs/user-icon.png" alt="Usuário" id="userIcon" />
+      <div class="dropdown hidden" id="dropdownMenu">
+        <button id="btnPerfil">Meu Perfil</button>
+        <button id="btnLogout">Sair</button>
+      </div>
+    </div>
+  </header>
 
-    <div id="formContainer">
-        <form method="POST" id="form">
-            <button type="button" class="close-btn" id="closeFormBtn">×</button>
+  <div id="listaPedidos"></div>
 
-            <h2>Cadastrar Item</h2>
+  <div id="formContainer">
+    <form method="POST" id="form">
+      <button type="button" class="close-btn" id="closeFormBtn">×</button>
+      <h2>Cadastrar Item</h2>
 
-            <label for="name_item">Nome do Item:</label>
-            <input type="text" id="name_item" name="name_item" required>
+      <label for="name_item">Nome do Item:</label>
+      <input type="text" id="name_item" name="name_item" required>
 
-            <label for="description">Descrição:</label>
-            <textarea id="description" name="description" required></textarea>
+      <label for="description">Descrição:</label>
+      <textarea id="description" name="description" required></textarea>
 
-            <label for="quantity_item">Quantidade:</label>
-            <input type="number" id="quantity_item" name="quantity_item" min="1" required>
+      <label for="quantity_item">Quantidade:</label>
+      <input type="number" id="quantity_item" name="quantity_item" min="1" required>
 
-            <label for="category">Categoria:</label>
-            <select id="category" name="category" required>
+      <label for="category">Categoria:</label>
+      <select id="category" name="category" required>
         <option value="roupas">Roupas</option>
         <option value="alimentos">Alimentos</option>
         <option value="móveis">Móveis</option>
@@ -52,58 +52,69 @@
         <option value="brinquedos">Brinquedos</option>
       </select>
 
-            <label for="urgencia_enum">Urgência:</label>
-            <select id="urgencia_enum" name="urgencia_enum" required>
+      <label for="urgencia_enum">Urgência:</label>
+      <select id="urgencia_enum" name="urgencia_enum" required>
         <option value="Baixa">Baixa</option>
         <option value="Média">Média</option>
         <option value="Alta">Alta</option>
         <option value="Urgente">Urgente</option>
       </select>
 
-            <label for="locate">Localização:</label>
-            <input id="locate" type="text" placeholder="Digite seu endereço" required>
+      <label for="locate">Localização:</label>
+      <input id="locate" type="text" placeholder="Digite seu endereço" required>
 
-            <button type="submit">Pedir Doação</button>
-        </form>
-    </div>
+      <button type="submit">Pedir Doação</button>
+    </form>
+  </div>
+  <div class="card-modal-overlay" id="cardModalOverlay">
+  <div class="card-modal" id="cardModalContent">
+    <button class="close-btn" id="closeCardModal">×</button>
+    <div id="modalCardContent"></div>
+  </div>
+</div>
 
-    <script>
-        const openFormBtn = document.getElementById('openFormBtn');
-        const closeFormBtn = document.getElementById('closeFormBtn');
-        const formContainer = document.getElementById('formContainer');
-        const header = document.getElementById('mainHeader');
 
-        openFormBtn.addEventListener('click', () => {
-            formContainer.style.display = 'flex';
-            header.style.display = 'none';
-        });
+  <script>
+    const openFormBtn = document.getElementById('openFormBtn');
+    const closeFormBtn = document.getElementById('closeFormBtn');
+    const formContainer = document.getElementById('formContainer');
+    const header = document.getElementById('mainHeader');
 
-        closeFormBtn.addEventListener('click', () => {
-            formContainer.style.display = 'none';
-            header.style.display = 'flex';
-        });
+    openFormBtn.addEventListener('click', () => {
+      formContainer.style.display = 'flex';
+      header.style.display = 'none';
+    });
 
-        formContainer.addEventListener('click', (e) => {
-            if (e.target === formContainer) {
-                formContainer.style.display = 'none';
-                header.style.display = 'flex';
-            }
-        });
-    </script>
-    <script>
+    closeFormBtn.addEventListener('click', () => {
+      formContainer.style.display = 'none';
+      header.style.display = 'flex';
+    });
+
+    formContainer.addEventListener('click', (e) => {
+      if (e.target === formContainer) {
+        formContainer.style.display = 'none';
+        header.style.display = 'flex';
+      }
+    });
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>
+  <script>
     window.initAutocomplete = function () {
       const input = document.getElementById("locate");
       const autocomplete = new google.maps.places.Autocomplete(input, {
         types: ["geocode"],
         componentRestrictions: { country: "br" }
       });
+    }
 
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener("place_changed", function () {
         const place = autocomplete.getPlace();
-        console.log("Endereço selecionado:", place.formatted_address);
+        if (!place.geometry) {
+          input.value = "";
+        }
+        console.log("Local selecionado:", place.formatted_address);
       });
-    };
-  </script>
+</script>
+  
 </body>
-
 </html>

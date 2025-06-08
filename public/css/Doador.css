@@ -26,17 +26,17 @@
 .section-title {
   color: #ffffff;
   font-size: 2rem;
-  margin-top:0rem;
+  margin-top:1rem;
   font-weight: bold;
   text-align: center;
   flex: 1 1 100%;
 }
 
 .user-menu img {
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  margin-top: 2rem;
+  margin-top: -8rem;
   margin-right: 1rem;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -44,7 +44,7 @@
 
 .logoBranco {
   height: 100px;
-  margin-top: -6rem;
+  margin-top: -4rem;
   object-fit: contain;
 }
 
@@ -54,7 +54,22 @@
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 700px;
+  max-width: 700px; 
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 20px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  font-size: 1rem;
+  margin-top: 80px;
+  transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #ffffff;
 }
 
   .filter-select {
@@ -90,4 +105,61 @@
 
 .btn-doar:hover {
   background-color: #104c60;
+}
+
+#dropdownMenu {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  z-index: 20;
+  width: 80px;
+  height: auto;
+}
+
+#dropdownMenu.hidden {
+  display: none; 
+}
+
+#dropdownMenu button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+#dropdownMenu button:hover {
+  background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    padding: 0 1rem;
+    width: 100%;
+  }
+
+  .user-menu img{
+    margin-bottom: 50px;
+    margin-right: 5px
+  }
+  .logoBranco {
+    height: 80px;
+    margin-top: -150px;
+    margin-left: -15px;
+  }
+  #dropdownMenu {
+    top: -20px;
+    right: 10px;
+    width: 100px; 
+  }
 }
