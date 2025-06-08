@@ -330,7 +330,7 @@ main {
 
     .logo-nav {
         height: 60px;
-        margin: 0 auto;
+        margin-left: 145px;
     }
 
     .btn-container {
@@ -348,6 +348,7 @@ main {
         background: white;
         color: #00151f;
         border-radius: 5px;
+        margin-left: 90px;
     }
 
     .menu {
