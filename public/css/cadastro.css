@@ -14,12 +14,6 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: url('./imgs/image.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            height: 100vh;
-            margin: 0;
 }
 
 .swiper {
@@ -210,10 +204,10 @@ footer a:hover {
 }
 
 @media (max-width: 768px) {
-  /* .swiper {
+  .swiper {
     padding: 20px 0;
     height: 610px;
-  } */
+  }
 
   .swiper-slide {
     max-width: 280px;
