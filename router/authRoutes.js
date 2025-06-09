@@ -729,10 +729,10 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
 
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;
-  const { namePer, emailPer, passwordPer, cpfPer, telPer } = req.body;
+  const { namePer, emailPer, passwordPer, telPer } = req.body;
   const chave = process.env.JWT_SECRET;
 
-  if (!id || !namePer || !emailPer || !passwordPer || !cpfPer || !telPer) {
+  if (!id || !namePer || !emailPer || !passwordPer || !telPer) {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 

@@ -34,11 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const telPer = document.getElementById("inputTel").value.trim();
     const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
 
-    if (!cpfRegex.test(cpfRaw)) {
-            msgModal.innerText = "❌ CPF inválido. Use o formato 000.000.000-00.";
-            msgModal.style.color = "red";
-            return;
-        }
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
 
     if (!namePer || !emailPer || !passwordPer || !cpfPer) {
@@ -53,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, namePer, emailPer, passwordPer, cpfPer, telPer }),
+        body: JSON.stringify({ id, namePer, emailPer, passwordPer, telPer }),
       });
 
       const resultado = await res.json();
