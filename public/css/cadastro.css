@@ -250,7 +250,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .swiper-slide {
     max-width: 300px;
     padding: 12px 15px;
@@ -284,4 +284,4 @@ footer a:hover {
     right: 5px;
     color: #ffffff7f;
   }
-}
+} */
