@@ -2,18 +2,17 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: #00151f;
   color: #00151f;
-  overflow-x: hidden;
-
-  display: flex;
+  overflow: hidden;
+  height: 100vh; 
+  display: flex; 
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
 .swiper {
@@ -21,28 +20,31 @@ body {
   max-width: 1000px;
   padding: 40px 0;
   overflow: visible !important;
+  height: 100%; 
+  display: flex; 
+  align-items: center;
 }
 
 .swiper-slide {
-    pointer-events: none;
-    opacity: 0.5;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .swiper-slide.swiper-slide-active {
-    pointer-events: auto;
-    opacity: 1;
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .swiper-slide {
-    pointer-events: none;
-    filter: blur(2px) brightness(0.8);
-    opacity: 0.6;
+  pointer-events: none;
+  filter: blur(2px) brightness(0.8);
+  opacity: 0.6;
 }
 
 .swiper-slide.swiper-slide-active {
-    pointer-events: auto;
-    filter: none;
-    opacity: 1;
+  pointer-events: auto;
+  filter: none;
+  opacity: 1;
 }
 
 
@@ -50,18 +52,18 @@ body {
   display: block;
   margin: 8px auto 0px auto;
   width: 130px;
-  height: auto; 
+  height: auto;
 }
 
 .swiper-slide {
   background: linear-gradient(135deg, #f1ecec, #f1ecec);
   border-radius: 20px;
-  padding: 14px;
+  padding: 20px;
   width: 100%;
   max-width: 400px;
-  min-height: 100%;
-  height: 650px;
-  max-height: 105vh;
+  min-height: 100%; 
+  height: auto; 
+  max-height: calc(100vh - 80px);
 
   display: flex;
   flex-direction: column;
@@ -71,7 +73,7 @@ body {
   transition: transform 0.5s ease;
   text-align: center;
 
-  overflow-y: auto;
+  overflow-y: auto; 
   -webkit-overflow-scrolling: touch;
 
   scrollbar-width: thin;
@@ -94,10 +96,10 @@ body {
 }
 
 input, textarea, select, button {
-    touch-action: manipulation;
-    user-select: text;
-    -webkit-user-select: text;
-    -ms-user-select: text;
+  touch-action: manipulation;
+  user-select: text;
+  -webkit-user-select: text;
+  -ms-user-select: text;
 }
 
 
@@ -153,15 +155,31 @@ button:hover {
   background-color: #1c292e;
 }
 
-.swiper-button-prev {
+.swiper-button-prev,
+.swiper-button-next {
   color: #ffffff;
-  left: -90px;
+  position: absolute;
+  top: 50%; 
+  transform: translateY(-50%);
+  z-index: 10;
+  font-size: 24px; 
+  width: 40px;
+  height: 40px; 
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-prev {
+  left: 10px; 
 }
 
 .swiper-button-next {
-  color: #ffffff; 
-  right: -90px;    
+  right: 10px;
 }
+
 
 .hidden {
   display: none;
@@ -184,34 +202,35 @@ footer a:hover {
 }
 
 .btn-nav {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    padding: 10px 20px;
-    background-color: #564c1c;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-    font-size: 1em;
-    z-index: 1000;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 10px 20px;
+  background-color: #564c1c;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  font-size: 1em;
+  z-index: 1000;
 }
 
 .btn-nav:hover {
-    background: #383212;
-    color: #ffffff;
+  background: #383212;
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {
   .swiper {
     padding: 20px 0;
-    height: 610px;
+    height: auto;
   }
 
   .swiper-slide {
     max-width: 280px;
-    padding: 15px 20px;
+    padding: 20px; 
+    max-height: calc(100vh - 40px); 
   }
 
   form {
@@ -233,22 +252,27 @@ footer a:hover {
     font-size: 14px;
   }
 
+  .swiper-button-prev,
+  .swiper-button-next {
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+  }
+
   .swiper-button-prev {
-    left: -50px;
-    color: #ffffffcc;
+    left: 5px;
   }
 
   .swiper-button-next {
-    right: -50px;
-    color: #ffffffcc;
+    right: 5px;
   }
 }
 
 @media (max-width: 480px) {
   .swiper-slide {
-    max-width: 300px;
-    padding: 12px 15px;
     height: auto;
+    padding: 15px; 
+    max-height: calc(100vh - 30px); 
   }
 
   form {
@@ -269,13 +293,18 @@ footer a:hover {
     font-size: 13px;
   }
 
+  .swiper-button-prev,
+  .swiper-button-next {
+    font-size: 18px;
+    width: 25px;
+    height: 25px;
+  }
+
   .swiper-button-prev {
-    left: 5px;
-    color: #ffffff7f;
+    left: 2px;
   }
 
   .swiper-button-next {
-    right: 5px;
-    color: #ffffff7f;
+    right: 2px;
   }
 }
