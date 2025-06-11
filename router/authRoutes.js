@@ -686,7 +686,7 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
 
   const buscarSenhaSQL = `
     SELECT CONVERT(AES_DECRYPT(passworddonor, ?) USING utf8mb4) AS senha
-    FROM pessoa_beneficiaria
+    FROM doador
     WHERE id = ?
   `;
 
