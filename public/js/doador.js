@@ -47,108 +47,129 @@ window.addEventListener('DOMContentLoaded', async() => {
     }
 
     try {
-        const response = await fetch(`./auth/pedidos?id=${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        const pedidos = await response.json();
-
-        const listaPedidos = document.getElementById("listaPedidos");
-
-        if (pedidos.length === 0) {
-            listaPedidos.innerHTML = "<p>Nenhum pedido encontrado.</p>";
-        } else {
-            for (const pedido of pedidos) {
-                const card = document.createElement("div");
-                card.classList.add("card-pedido");
-
-                let nomeDoador = "Desconhecido";
-                let telefoneDoador = "Não informado";
-                let emailDoador = "";
-
-                try {
-                    if (pedido.pessoa_beneficiaria_id) {
-                        const resPessoa = await fetch(`./auth/pessoa?id=${pedido.pessoa_beneficiaria_id}`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-                        const pessoaData = await resPessoa.json();
-
-                       if (Array.isArray(pessoaData) && pessoaData.length > 0 && pessoaData[0].namePer) {
-                            nomeDoador = pessoaData[0].namePer;
-                            telefoneDoador = pessoaData[0].telPer || "";
-                            emailDoador = pessoaData[0].emailPer || "";
-                        } else if (pessoaData.namePer) {
-                            nomeDoador = pessoaData.namePer;
-                            telefoneDoador = pessoaData.telPer || "";
-                            emailDoador = pessoaData.emailPer || "";
-                        }
-                    } else if (pedido.instituicao_id) {
-                        const resInst = await fetch(`./auth/instituicao?id=${pedido.instituicao_id}`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
-                        const instData = await resInst.json();
-
-                        if (Array.isArray(instData) && instData.length > 0 && instData[0].nameInc) {
-                            nomeDoador = instData[0].nameInc;
-                            telefoneDoador = instData[0].telInc || "";
-                            emailDoador = instData[0].emailInc || "";
-                        } else if (instData.nameInc) {
-                            nomeDoador = instData.nameInc;
-                            telefoneDoador = instData.telInc || "";
-                            emailDoador = instData.emailInc || "";
-                        }
-                    }
-                } catch (err) {
-                    console.warn("Erro ao buscar nome do doador:", err);
-                }
-
-                 card.innerHTML = `
-    <head>
-        <link rel="stylesheet" href="../css/Doador.css">
-    </head>
-    <h3>${pedido.name_item}</h3>
-    <p><strong>Feito por:</strong> ${nomeDoador}</p>
-    <p><strong>Telefone:</strong> ${telefoneDoador || "Não informado"}</p>
-    <p><strong>E-mail:</strong> ${emailDoador || "Não informado"}</p>
-    <p><strong>Descrição:</strong> ${pedido.description}</p>
-    <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
-    <p><strong>Categoria:</strong> ${pedido.category}</p>
-    <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
-    <p><strong>Localização:</strong> ${pedido.locate}</p>
-    <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
-    <p><strong>Status:</strong> ${pedido.status}</p>
-    ${pedido.status === "Aberto" ? `
-        <p>
-            <button class="btn-doar"
-                data-id="${pedido.id}"
-                data-nome="${pedido.name_item}"
-                data-desc="${pedido.description}"
-                data-doador="${nomeDoador}"
-                data-telefone="${telefoneDoador || "Não informado"}"
-                data-email="${emailDoador || ""}"
-                data-quant="${pedido.quantity_item}"
-                data-cat="${pedido.category}"
-                data-urg="${pedido.urgencia_enum}"
-                data-loc="${pedido.locate}"
-                data-data="${pedido.opened_at}"
-                data-status="${pedido.status}"
-            >Doar</button>
-        </p>` : ""
-    }
-`;
-
-listaPedidos.appendChild(card);
-
-            }
+    const response = await fetch(`./auth/pedidos?id=${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
         }
-    } catch (err) {
-        console.error("Erro ao buscar pedidos:", err);
+    });
+    const pedidos = await response.json();
+
+    const prioridadeStatus = {
+        "Aberto": 1,
+        "Concluído": 2,
+        "Cancelado": 2
+    };
+
+    const prioridadeUrgencia = {
+        "Urgente": 1,
+        "Alta": 2,
+        "Média": 3,
+        "Baixa": 4
+    };
+
+    const pedidosOrdenados = pedidos.sort((a, b) => {
+        const prioridadeA = prioridadeStatus[a.status] || 3;
+        const prioridadeB = prioridadeStatus[b.status] || 3;
+
+        if (prioridadeA !== prioridadeB) {
+            return prioridadeA - prioridadeB;
+        }
+
+        const urgenciaA = prioridadeUrgencia[a.urgencia_enum] || 5;
+        const urgenciaB = prioridadeUrgencia[b.urgencia_enum] || 5;
+
+        return urgenciaA - urgenciaB;
+    });
+
+    const listaPedidos = document.getElementById("listaPedidos");
+    listaPedidos.innerHTML = "";
+
+    if (pedidosOrdenados.length === 0) {
+        listaPedidos.innerHTML = "<p>Nenhum pedido encontrado.</p>";
+    } else {
+        for (const pedido of pedidosOrdenados) {
+            let nomeDoador = "Desconhecido";
+            let telefoneDoador = "Não informado";
+            let emailDoador = "Não informado";
+
+            try {
+                if (pedido.pessoa_beneficiaria_id) {
+                    const resPessoa = await fetch(`./auth/pessoa?id=${pedido.pessoa_beneficiaria_id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const pessoaData = await resPessoa.json();
+                    const pessoa = Array.isArray(pessoaData) ? pessoaData[0] : pessoaData;
+
+                    if (pessoa?.namePer) {
+                        nomeDoador = pessoa.namePer;
+                        telefoneDoador = pessoa.telPer || "Não informado";
+                        emailDoador = pessoa.emailPer || "Não informado";
+                    }
+
+                } else if (pedido.instituicao_id) {
+                    const resInst = await fetch(`./auth/instituicao?id=${pedido.instituicao_id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const instData = await resInst.json();
+                    const inst = Array.isArray(instData) ? instData[0] : instData;
+
+                    if (inst?.nameInc) {
+                        nomeDoador = inst.nameInc;
+                        telefoneDoador = inst.telInc || "Não informado";
+                        emailDoador = inst.emailInc || "Não informado";
+                    }
+                }
+            } catch (err) {
+                console.warn("Erro ao buscar nome do doador:", err);
+            }
+
+            // Criação do card
+            const card = document.createElement("div");
+            card.classList.add("card-pedido");
+
+            card.innerHTML = `
+                <h3>${pedido.name_item}</h3>
+                <p><strong>Feito por:</strong> ${nomeDoador}</p>
+                <p><strong>Telefone:</strong> ${telefoneDoador}</p>
+                <p><strong>E-mail:</strong> ${emailDoador}</p>
+                <p><strong>Descrição:</strong> ${pedido.description}</p>
+                <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
+                <p><strong>Categoria:</strong> ${pedido.category}</p>
+                <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
+                <p><strong>Localização:</strong> ${pedido.locate}</p>
+                <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
+                <p><strong>Status:</strong> ${pedido.status}</p>
+                ${pedido.status === "Aberto" ? `
+                    <p>
+                        <button class="btn-doar"
+                            data-id="${pedido.id}"
+                            data-nome="${pedido.name_item}"
+                            data-desc="${pedido.description}"
+                            data-doador="${nomeDoador}"
+                            data-telefone="${telefoneDoador}"
+                            data-email="${emailDoador}"
+                            data-quant="${pedido.quantity_item}"
+                            data-cat="${pedido.category}"
+                            data-urg="${pedido.urgencia_enum}"
+                            data-loc="${pedido.locate}"
+                            data-data="${pedido.opened_at}"
+                            data-status="${pedido.status}"
+                        >Doar</button>
+                    </p>` : ""
+                }
+            `;
+
+            listaPedidos.appendChild(card);
+        }
     }
+} catch (err) {
+    console.error("Erro ao buscar pedidos:", err);
+}
+
             try {
             document.querySelectorAll('.btn-doar').forEach(button => {
                 button.addEventListener('click', () => {
