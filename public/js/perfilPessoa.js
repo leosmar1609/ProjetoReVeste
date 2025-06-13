@@ -134,6 +134,14 @@ function formatarCPF(cpf) {
   return cpf.replace(/(\d{3})\d{3}\d{2}(\d{1})(\d{2})/, "$1.***.**$2-$3");
 }
 
+function formatarTel(tel){
+  tel = tel.replace(/\D/g, '');
+
+  if (tel.length < 10) return tel;
+
+  return tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+}
+
 async function carregarDadosDoDoador(id) {
   try {
     const token = localStorage.getItem('token');
@@ -159,7 +167,7 @@ async function carregarDadosDoDoador(id) {
     document.getElementById('inputName').value = dados.namePer;
     document.getElementById('inputEmail').value = dados.emailPer;
     document.getElementById('inputCpf').value = formatarCPF(dados.cpfPer);
-    document.getElementById('inputTel').value = dados.telPer || '';
+    document.getElementById('inputTel').value = formatarTel(dados.telPer || '');
 
     document.getElementById('inputPassword').value = '';
     document.getElementById('msgModal').textContent = '';

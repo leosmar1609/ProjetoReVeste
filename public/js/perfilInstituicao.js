@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("nameInc").textContent = instituicao.nameInc;
     document.getElementById("emailInc").textContent = instituicao.emailInc;
     document.getElementById("locationInc").textContent = instituicao.locationInc;
-    document.getElementById("cnpjInc").textContent = instituicao.cnpjInc;
+    document.getElementById("cnpjInc").textContent = formatarCNPJ(instituicao.cnpjInc);
     document.getElementById("telInc").textContent = instituicao.telInc || "Não informado";
 
     if (idUsuarioLogado === String(instituicao.id)) {

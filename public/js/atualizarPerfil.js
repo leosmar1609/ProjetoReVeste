@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const formAlterar = document.getElementById("formAlterar");
   const msgModal = document.getElementById("msgModal");
   const cpfInput = document.getElementById('inputCpf');
+  const telInput = document.getElementById('inputTel');
 
   if (!idPerfil || !formAlterar) return;
 
@@ -22,6 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
             cpfInput.value = value;
         }
     });
+
+    telInput.addEventListener('input', () => {
+  let value = telInput.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+  if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+
+  if (value.length > 6) {
+    telInput.value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+  } else if (value.length > 2) {
+    telInput.value = value.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+  } else {
+    telInput.value = value;
+  }
+});
 
   formAlterar.addEventListener("submit", async (e) => {
     e.preventDefault();
