@@ -55,7 +55,7 @@ telInput.addEventListener('input', () => {
         }
 
         const cpfPer = cpfRaw.replace(/[.-]/g, '');
-        const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+        const emailRegex = /^[a-zA-Z]{1}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
         const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
         const telRegex = /^\(\d{2}\)\s\d{5}-\d{4}$/;
         

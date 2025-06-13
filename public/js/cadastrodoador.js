@@ -6,7 +6,7 @@ document.getElementById('registerFormDoador').addEventListener('submit', async(e
     const namedonor = document.getElementById('namedonor').value;
     const emaildonor = document.getElementById('emaildonor').value;
     const passworddonor = document.getElementById('passworddonor').value;
-    const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z]{1}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
     const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
 
     if (!emailRegex.test(emaildonor)) {

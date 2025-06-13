@@ -36,7 +36,7 @@ telInput.addEventListener('input', () => {
 
     const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
     const senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
-    const emailRegex = /^[a-zA-Z]{3}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z]{1}[a-zA-Z0-9._]*@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
     const telRegex = /^\(\d{2}\)\s\d{5}-\d{4}$/;
 
     form.addEventListener('submit', async (e) => {
