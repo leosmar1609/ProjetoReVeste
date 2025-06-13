@@ -127,42 +127,45 @@ window.addEventListener('DOMContentLoaded', async() => {
                 console.warn("Erro ao buscar nome do doador:", err);
             }
 
-            // Criação do card
             const card = document.createElement("div");
             card.classList.add("card-pedido");
 
-            card.innerHTML = `
-            <head><link rel="stylesheet" href="../css/Doador.css"></head>
-                <h3>${pedido.name_item}</h3>
-                <p><strong>Feito por:</strong> ${nomeDoador}</p>
-                <p><strong>Telefone:</strong> ${telefoneDoador}</p>
-                <p><strong>E-mail:</strong> ${emailDoador}</p>
-                <p><strong>Descrição:</strong> ${pedido.description}</p>
-                <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
-                <p><strong>Categoria:</strong> ${pedido.category}</p>
-                <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
-                <p><strong>Localização:</strong> ${pedido.locate}</p>
-                <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
-                <p><strong>Status:</strong> ${pedido.status}</p>
-                ${pedido.status === "Aberto" ? `
-                    <p>
-                        <button class="btn-doar"
-                            data-id="${pedido.id}"
-                            data-nome="${pedido.name_item}"
-                            data-desc="${pedido.description}"
-                            data-doador="${nomeDoador}"
-                            data-telefone="${telefoneDoador}"
-                            data-email="${emailDoador}"
-                            data-quant="${pedido.quantity_item}"
-                            data-cat="${pedido.category}"
-                            data-urg="${pedido.urgencia_enum}"
-                            data-loc="${pedido.locate}"
-                            data-data="${pedido.opened_at}"
-                            data-status="${pedido.status}"
-                        >Doar</button>
-                    </p>` : ""
-                }
-            `;
+            if (pedido.status !== "Cancelado") {
+    card.innerHTML = `
+    <head><link rel="stylesheet" href="../css/Doador.css"></head>
+        <h3>${pedido.name_item}</h3>
+        <p><strong>Feito por:</strong> ${nomeDoador}</p>
+        <p><strong>Telefone:</strong> ${telefoneDoador}</p>
+        <p><strong>E-mail:</strong> ${emailDoador}</p>
+        <p><strong>Descrição:</strong> ${pedido.description}</p>
+        <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
+        <p><strong>Categoria:</strong> ${pedido.category}</p>
+        <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
+        <p><strong>Localização:</strong> ${pedido.locate}</p>
+        <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
+        <p><strong>Status:</strong> ${pedido.status}</p>
+        ${pedido.status === "Aberto" ? `
+            <p>
+                <button class="btn-doar"
+                    data-id="${pedido.id}"
+                    data-nome="${pedido.name_item}"
+                    data-desc="${pedido.description}"
+                    data-doador="${nomeDoador}"
+                    data-telefone="${telefoneDoador}"
+                    data-email="${emailDoador}"
+                    data-quant="${pedido.quantity_item}"
+                    data-cat="${pedido.category}"
+                    data-urg="${pedido.urgencia_enum}"
+                    data-loc="${pedido.locate}"
+                    data-data="${pedido.opened_at}"
+                    data-status="${pedido.status}"
+                >Doar</button>
+            </p>
+        ` : ""}
+    `;
+} else {
+    card.style.display = "none";
+}
 
             listaPedidos.appendChild(card);
         }
