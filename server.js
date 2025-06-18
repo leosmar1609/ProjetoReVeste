@@ -3,8 +3,12 @@ import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './api-docs.json' assert { type: 'json' };
+
+const require = createRequire(import.meta.url);
+const swaggerDocument = require('./api-docs.json');
+
 import authRoutes from './router/authRoutes.js';
 import emailRoutes from './router/emailRoutes.js';
 
@@ -23,7 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/auth', authRoutes);
-app.use('/', authRoutes);
 app.use('/api', emailRoutes);
 
 app.get('/', (req, res) => {
