@@ -138,7 +138,7 @@ async function carregarDadosDoDoador(idDoador) {
   try {
     const token = localStorage.getItem('token');
 
-    const resposta = await fetch(`/doador?id=${idDoador}`, {
+    const resposta = await fetch(`./auth/doador?id=${idDoador}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
