@@ -1,0 +1,1655 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API - Cadastro de Usuários",
+    "description": "Documentação das rotas de cadastro e consulta de instituições beneficiárias e pessoas físicas.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/registerIB": {
+      "post": {
+        "summary": "Cadastro de Instituição Beneficiária",
+        "description": "Cadastra uma nova instituição beneficiária.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nameInc": { "type": "string" },
+                  "emailInc": { "type": "string", "format": "email" },
+                  "passwordInc": { "type": "string", "format": "password" },
+                  "cnpjInc": { "type": "string" },
+                  "locationInc": { "type": "string" },
+                  "telInc": { "type": "string" }
+                },
+                "required": ["nameInc", "emailInc", "passwordInc", "cnpjInc", "locationInc", "telInc"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "✅ Cadastro realizado! Verifique seu e-mail." },
+          "400": { "description": "Preencha todos os campos!" },
+          "409": { "description": "❌ E-mail ou CNPJ já cadastrado." },
+          "500": { "description": "Erro ao cadastrar instituição." }
+        }
+      }
+    },
+    "/registerdonor": {
+      "post": {
+        "summary": "Cadastro de Doador",
+        "description": "Cadastra um novo doador.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "namedonor": { "type": "string" },
+                  "emaildonor": { "type": "string", "format": "email" },
+                  "passworddonor": { "type": "string", "format": "password" }
+                },
+                "required": ["namedonor", "emaildonor", "passworddonor"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Cadastro realizado!" },
+          "400": { "description": "Preencha todos os campos!" },
+          "409": { "description": "❌ E-mail já cadastrado." },
+          "500": { "description": "Erro ao cadastrar doador." }
+        }
+      }
+    },
+    "/instituicao": {
+      "get": {
+        "summary": "Consulta de Instituição",
+        "description": "Busca uma instituição beneficiária por ID, e-mail ou CNPJ.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "cnpj",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Consulta realizada com sucesso." },
+          "400": { "description": "Parâmetro inválido." },
+          "404": { "description": "Instituição não encontrada." },
+          "500": { "description": "Erro no servidor." }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/pessoa": {
+      "get": {
+        "summary": "Consulta de Pessoa Beneficiária",
+        "description": "Retorna dados de uma pessoa beneficiária com base no ID informado. Requer autenticação via token.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID da pessoa beneficiária"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados da pessoa retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "namePer": { "type": "string" },
+                    "emailPer": { "type": "string" },
+                    "cpfPer": { "type": "string" },
+                    "telPer": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "ID não fornecido" },
+          "404": { "description": "Pessoa não encontrada" },
+          "500": { "description": "Erro no servidor" }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/registerPB": {
+      "post": {
+        "summary": "Cadastro de Pessoa Beneficiária",
+        "description": "Registra uma nova pessoa beneficiária no sistema, com verificação de e-mail e CPF.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "namePer": {
+                    "type": "string",
+                    "example": "João da Silva"
+                  },
+                  "emailPer": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "joao@email.com"
+                  },
+                  "passwordPer": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "senha123"
+                  },
+                  "cpfPer": {
+                    "type": "string",
+                    "example": "123.456.789-00"
+                  },
+                  "telPer": {
+                    "type": "string",
+                    "example": "(11) 91234-5678"
+                  }
+                },
+                "required": ["namePer", "emailPer", "passwordPer", "cpfPer", "telPer"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cadastro realizado com sucesso. Um e-mail de verificação foi enviado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cadastro realizado! Verifique seu e-mail."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Preencha todos os campos!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "E-mail ou CPF já cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "E-mail já cadastrado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao verificar ou cadastrar pessoa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro ao cadastrar pessoa."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      },
+    "/verificar-email": {
+      "get": {
+        "summary": "Verificação de E-mail da Pessoa Beneficiária",
+        "description": "Verifica o e-mail de uma pessoa beneficiária através de um token JWT enviado na URL.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+            },
+            "description": "Token JWT enviado por e-mail para verificação de conta."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "E-mail verificado com sucesso.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "E-mail verificado com sucesso!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ausente na URL.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Token ausente."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou expirado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Token inválido ou expirado."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao tentar verificar o e-mail.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Erro interno."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+      "/verificar-emailIB": {
+      "get": {
+        "summary": "Verificação de E-mail da Instituição Beneficiária",
+        "description": "Verifica o e-mail de uma instituição beneficiária por meio de um token JWT enviado via query string.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+            },
+            "description": "Token JWT enviado no e-mail para verificação da instituição beneficiária."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "E-mail verificado com sucesso.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "E-mail verificado com sucesso!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token ausente.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Token ausente."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou expirado.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Token inválido ou expirado."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao tentar verificar o e-mail.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Erro interno."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login de Usuário",
+        "description": "Permite o login de uma pessoa beneficiária, instituição beneficiária ou doador, retornando um token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "userType"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "usuario@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "senha123"
+                  },
+                  "userType": {
+                    "type": "string",
+                    "enum": ["pessoa", "instituicao", "doador"],
+                    "example": "pessoa"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tipo": {
+                      "type": "string",
+                      "example": "pessoa"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "example": 12
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário não verificado ou credenciais inválidas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Usuário ou senha inválidos para pessoa"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Tipo de usuário não reconhecido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Tipo de usuário não reconhecido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/cadastrar-itemP": {
+      "post": {
+        "summary": "Cadastrar Pedido por Pessoa Beneficiária",
+        "description": "Cadastra um novo pedido feito por uma pessoa beneficiária. Todos os campos são obrigatórios.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name_item",
+                  "description",
+                  "quantity_item",
+                  "category",
+                  "urgencia_enum",
+                  "locate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 7,
+                    "description": "ID da pessoa beneficiária"
+                  },
+                  "name_item": {
+                    "type": "string",
+                    "example": "Cesta Básica",
+                    "description": "Nome do item solicitado"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Itens essenciais para alimentação de família com 4 pessoas.",
+                    "description": "Descrição do item"
+                  },
+                  "quantity_item": {
+                    "type": "integer",
+                    "example": 3,
+                    "description": "Quantidade desejada"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Alimentos",
+                    "description": "Categoria do item"
+                  },
+                  "urgencia_enum": {
+                    "type": "string",
+                    "enum": ["Urgente", "Alta", "Média", "Baixa"],
+                    "example": "Urgente",
+                    "description": "Nível de urgência"
+                  },
+                  "locate": {
+                    "type": "string",
+                    "example": "Rua das Acácias, 123 - SP",
+                    "description": "Localização para entrega"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pedido cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Pedido realizado com sucesso."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida (campos obrigatórios ausentes ou ID inválido).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Preencha todos os campos!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao cadastrar o pedido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao criar o pedido."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cadastrar-itemI": {
+      "post": {
+        "summary": "Cadastrar Pedido por Instituição Beneficiária",
+        "description": "Registra um novo pedido no sistema feito por uma instituição beneficiária. Todos os campos são obrigatórios.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name_item",
+                  "description",
+                  "quantity_item",
+                  "category",
+                  "urgencia_enum",
+                  "locate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 12,
+                    "description": "ID da instituição beneficiária"
+                  },
+                  "name_item": {
+                    "type": "string",
+                    "example": "Roupa de frio",
+                    "description": "Nome do item solicitado"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Roupas de inverno para população em situação de rua",
+                    "description": "Descrição detalhada do pedido"
+                  },
+                  "quantity_item": {
+                    "type": "integer",
+                    "example": 50,
+                    "description": "Quantidade solicitada"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Vestuário",
+                    "description": "Categoria do item"
+                  },
+                  "urgencia_enum": {
+                    "type": "string",
+                    "enum": ["Urgente", "Alta", "Média", "Baixa"],
+                    "example": "Alta",
+                    "description": "Nível de urgência do pedido"
+                  },
+                  "locate": {
+                    "type": "string",
+                    "example": "Av. Central, 456 - Bairro Centro",
+                    "description": "Endereço de entrega"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pedido cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Pedido realizado com sucesso."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição mal formatada ou dados inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID inválido!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao tentar cadastrar o pedido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno ao criar o pedido."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedidosP": {
+      "get": {
+        "summary": "Listar pedidos por pessoa beneficiária",
+        "description": "Retorna todos os pedidos feitos por uma pessoa beneficiária específica com base no ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "ID da pessoa beneficiária",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "pessoa_beneficiaria_id": { "type": "integer" },
+                      "name_item": { "type": "string" },
+                      "description": { "type": "string" },
+                      "quantity_item": { "type": "integer" },
+                      "category": { "type": "string" },
+                      "urgencia_enum": { "type": "string" },
+                      "locate": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/pedidosI": {
+      "get": {
+        "summary": "Listar pedidos por instituição",
+        "description": "Retorna todos os pedidos feitos por uma instituição com base no ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "ID da instituição",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "instituicao_id": { "type": "integer" },
+                      "name_item": { "type": "string" },
+                      "description": { "type": "string" },
+                      "quantity_item": { "type": "integer" },
+                      "category": { "type": "string" },
+                      "urgencia_enum": { "type": "string" },
+                      "locate": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/pedidos": {
+      "get": {
+        "summary": "Listar todos os pedidos",
+        "description": "Retorna todos os pedidos cadastrados no sistema.",
+        "responses": {
+          "200": {
+            "description": "Lista completa de pedidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "pessoa_beneficiaria_id": { "type": "integer" },
+                      "instituicao_id": { "type": "integer" },
+                      "name_item": { "type": "string" },
+                      "description": { "type": "string" },
+                      "quantity_item": { "type": "integer" },
+                      "category": { "type": "string" },
+                      "urgencia_enum": { "type": "string" },
+                      "locate": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/doador": {
+      "get": {
+        "summary": "Buscar doador por ID",
+        "description": "Retorna os dados de um doador específico com base no ID. Requer autenticação com token JWT.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "ID do doador",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Doador encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "nome": { "type": "string" },
+                    "email": { "type": "string" },
+                    "telefone": { "type": "string" },
+                    "cpf": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token de autenticação não fornecido"
+          },
+          "403": {
+            "description": "Token inválido ou expirado"
+          },
+          "404": {
+            "description": "Doador não encontrado"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/deletedoador": {
+    "delete": {
+    "summary": "Deletar doador",
+    "description": "Remove um doador do banco de dados com base no ID. Requer autenticação com token JWT.",
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "query",
+        "required": true,
+        "description": "ID do doador a ser deletado",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Doador deletado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Doador deletado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID do doador não fornecido"
+      },
+      "404": {
+        "description": "Doador não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/deleteinstituicao": {
+  "delete": {
+    "summary": "Deletar instituição beneficiária",
+    "description": "Remove uma instituição beneficiária e seus pedidos associados do banco de dados. Requer autenticação com token JWT.",
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "query",
+        "required": true,
+        "description": "ID da instituição beneficiária a ser deletada",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Instituição deletada com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Instituição deletada com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID da instituição não fornecido"
+      },
+      "404": {
+        "description": "Instituição não encontrada"
+      },
+      "500": {
+        "description": "Erro ao excluir pedidos ou instituição"
+      }
+    }
+  }
+},
+"/deletepessoa": {
+  "delete": {
+    "summary": "Deletar pessoa beneficiária",
+    "description": "Remove uma pessoa beneficiária e seus pedidos associados do banco de dados. Requer autenticação com token JWT.",
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "query",
+        "required": true,
+        "description": "ID da pessoa beneficiária a ser deletada",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuário deletado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Usuário deletado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID da pessoa não fornecido"
+      },
+      "404": {
+        "description": "Usuário não encontrado"
+      },
+      "500": {
+        "description": "Erro ao excluir pedidos ou usuário"
+      }
+    }
+  }
+},
+"/deletepedido": {
+  "delete": {
+    "summary": "Deletar pedido",
+    "description": "Remove um pedido do banco de dados com base no ID.",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "query",
+        "required": true,
+        "description": "ID do pedido a ser deletado",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Pedido deletado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido deletado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID do pedido não fornecido"
+      },
+      "404": {
+        "description": "Pedido não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/doadorup/{id}": {
+  "put": {
+    "summary": "Atualizar dados do doador",
+    "description": "Atualiza o nome e email do doador. A atualização exige que a senha atual seja informada corretamente. Requer autenticação JWT.",
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "ID do doador a ser atualizado",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["nameDoador", "emailDoador", "passwordDoador"],
+            "properties": {
+              "nameDoador": {
+                "type": "string",
+                "description": "Nome do doador"
+              },
+              "emailDoador": {
+                "type": "string",
+                "format": "email",
+                "description": "Email do doador"
+              },
+              "passwordDoador": {
+                "type": "string",
+                "description": "Senha atual do doador para validação"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Doador atualizado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Doador atualizado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Campos obrigatórios não preenchidos"
+      },
+      "401": {
+        "description": "Senha atual incorreta"
+      },
+      "404": {
+        "description": "Doador não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/pessoaup/{id}": {
+  "put": {
+    "summary": "Atualizar dados da pessoa beneficiária",
+    "description": "Atualiza nome, email e telefone da pessoa beneficiária. Exige que a senha atual seja informada corretamente.",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "ID da pessoa beneficiária a ser atualizada",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["namePer", "emailPer", "passwordPer", "telPer"],
+            "properties": {
+              "namePer": {
+                "type": "string",
+                "description": "Nome da pessoa beneficiária"
+              },
+              "emailPer": {
+                "type": "string",
+                "format": "email",
+                "description": "Email da pessoa beneficiária"
+              },
+              "passwordPer": {
+                "type": "string",
+                "description": "Senha atual para validação"
+              },
+              "telPer": {
+                "type": "string",
+                "description": "Telefone da pessoa beneficiária"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Pessoa atualizada com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pessoa atualizada com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Campos obrigatórios não preenchidos"
+      },
+      "403": {
+        "description": "Senha incorreta"
+      },
+      "404": {
+        "description": "Pessoa não encontrada"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/beneficiarioup/{id}": {
+  "put": {
+    "summary": "Atualizar dados da instituição beneficiária",
+    "description": "Atualiza nome, email, CNPJ, localização e telefone da instituição beneficiária, exigindo confirmação da senha atual.",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "ID da instituição beneficiária a ser atualizada",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["nameInc", "emailInc", "passwordInc", "cnpjInc", "locationInc", "telInc"],
+            "properties": {
+              "nameInc": {
+                "type": "string",
+                "description": "Nome da instituição"
+              },
+              "emailInc": {
+                "type": "string",
+                "format": "email",
+                "description": "Email da instituição"
+              },
+              "passwordInc": {
+                "type": "string",
+                "description": "Senha atual para validação"
+              },
+              "cnpjInc": {
+                "type": "string",
+                "description": "CNPJ da instituição"
+              },
+              "locationInc": {
+                "type": "string",
+                "description": "Localização da instituição"
+              },
+              "telInc": {
+                "type": "string",
+                "description": "Telefone da instituição"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Instituição atualizada com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "✅ Instituição atualizada com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Campos obrigatórios não preenchidos"
+      },
+      "401": {
+        "description": "Senha atual incorreta"
+      },
+      "404": {
+        "description": "Instituição não encontrada"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/pedidosup": {
+  "put": {
+    "summary": "Atualizar status de um pedido",
+    "description": "Atualiza o status de um pedido com base no ID informado no corpo da requisição.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["id", "status"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID do pedido a ser atualizado"
+              },
+              "status": {
+                "type": "string",
+                "description": "Novo status do pedido"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Pedido atualizado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido atualizado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Campos obrigatórios não preenchidos"
+      },
+      "404": {
+        "description": "Pedido não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/confirmar-recebimento": {
+  "put": {
+    "summary": "Confirmar recebimento do pedido",
+    "description": "Atualiza o status do pedido para 'Concluído' com base no ID informado no corpo da requisição.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID do pedido que terá o recebimento confirmado"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Recebimento confirmado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Recebimento confirmado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID do pedido não informado"
+      },
+      "404": {
+        "description": "Pedido não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/cancelar-pedido": {
+  "put": {
+    "summary": "Cancelar pedido",
+    "description": "Atualiza o status do pedido para 'Cancelado' com base no ID informado no corpo da requisição.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID do pedido que será cancelado"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Pedido cancelado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido cancelado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID do pedido não informado"
+      },
+      "404": {
+        "description": "Pedido não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/recuperaremail/{tipo}/{email}": {
+  "get": {
+    "summary": "Recuperar dados por e-mail",
+    "description": "Busca usuário pelo e-mail em uma das tabelas: instituição, doador ou pessoa beneficiária, conforme o tipo especificado.",
+    "parameters": [
+      {
+        "name": "tipo",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": ["instituicao", "doador", "pessoa"]
+        },
+        "description": "Tipo do usuário para busca"
+      },
+      {
+        "name": "email",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "email"
+        },
+        "description": "E-mail do usuário a ser buscado"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuário encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Usuário encontrado"
+                },
+                "dados": {
+                  "type": "object",
+                  "description": "Dados do usuário encontrado",
+                  "example": {
+                    "id": 1,
+                    "name": "Nome do Usuário",
+                    "email": "email@exemplo.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Tipo de usuário inválido"
+      },
+      "404": {
+        "description": "E-mail não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor"
+      }
+    }
+  }
+},
+"/enviar-recuperacao": {
+  "post": {
+    "summary": "Enviar e-mail para recuperação de senha",
+    "description": "Envia um e-mail com link para recuperação de senha ao usuário conforme o tipo informado.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "usuario@example.com"
+              },
+              "tipo": {
+                "type": "string",
+                "enum": ["instituicao", "doador", "pessoa"],
+                "example": "doador"
+              }
+            },
+            "required": ["email", "tipo"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "E-mail de recuperação enviado com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "E-mail de recuperação enviado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Email e tipo são obrigatórios"
+      },
+      "500": {
+        "description": "Erro ao enviar o e-mail de recuperação"
+      }
+    }
+  }
+  },
+  "/atualizar-senha": {
+  "put": {
+    "summary": "Atualizar senha do usuário",
+    "description": "Atualiza a senha do usuário conforme o tipo (instituição, doador ou pessoa). A senha é armazenada criptografada.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "usuario@example.com"
+              },
+              "tipo": {
+                "type": "string",
+                "enum": ["instituicao", "doador", "pessoa"],
+                "example": "pessoa"
+              },
+              "novaSenha": {
+                "type": "string",
+                "example": "NovaSenha123"
+              }
+            },
+            "required": ["email", "tipo", "novaSenha"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Senha atualizada com sucesso",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Senha atualizada com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Email, tipo ou nova senha ausentes ou tipo inválido"
+      },
+      "404": {
+        "description": "Usuário não encontrado"
+      },
+      "500": {
+        "description": "Erro no servidor ao atualizar a senha"
+      }
+    }
+  }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+
+}
+}
