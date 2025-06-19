@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-const secretKey = process.env.JWT_SECRET; 
+const secretKey = process.env.JWT_SECRET;
 
 export default function autenticarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -7,9 +7,9 @@ export default function autenticarToken(req, res, next) {
 
     if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
+    jwt.verify(token, secretKey, (err, usuario) => {
         if (err) return res.status(403).json({ message: 'Token inválido.' });
-        req.usuario = usuario; 
+        req.usuario = usuario;
         next();
     });
 }
