@@ -156,5 +156,4 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
   });
 });
 
-
 export default router;

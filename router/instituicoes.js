@@ -47,6 +47,7 @@ router.post('/registerIB', (req, res) => {
         });
     });
 });
+
 router.get('/instituicao', autenticarToken, (req, res) => {
     const { id, email, cnpj } = req.query;
 
@@ -118,6 +119,7 @@ router.get('/verificar-emailIB', (req, res) => {
         });
     });
 });
+
 router.post('/cadastrar-itemI', async(req, res) => {
     const { id, name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
 

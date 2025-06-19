@@ -40,7 +40,6 @@ router.get('/pessoa', autenticarToken, (req, res) => {
     });
 });
 
-
 router.post('/registerPB', (req, res) => {
     const { namePer, emailPer, passwordPer, cpfPer, telPer } = req.body;
 
@@ -124,6 +123,7 @@ router.post('/cadastrar-itemP', async(req, res) => {
         }
     });
 });
+
 router.get('/pedidosP', (req, res) => {
     const id = req.query.id;
     const sql = 'SELECT * FROM Pedidos WHERE pessoa_beneficiaria_id = ?';
@@ -166,6 +166,7 @@ router.delete('/deletepessoa', autenticarToken, (req, res) => {
     });
 });
 });
+
 router.put('/pessoaup/:id', (req, res) => {
   const id = req.params.id;
   const { namePer, emailPer, passwordPer, telPer } = req.body;
