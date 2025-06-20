@@ -11,7 +11,7 @@ const baseUrl = process.env.BASE_URL;
 import { enviarEmailVerificacaoPessoa } from './emailService.js';
 import { enviarEmailVerificacaoInstituicao } from './emailService.js';
 
-router.get('/recuperaremail/:tipo/:email', (req, res) => {
+router.get('/recuperaremail/:tipo/:email', async (req, res) => {
   const { tipo, email } = req.params;
 
   let tabela, campoEmail;
@@ -35,18 +35,18 @@ router.get('/recuperaremail/:tipo/:email', (req, res) => {
 
   const sql = `SELECT * FROM ${tabela} WHERE ${campoEmail} = ?`;
 
-  db.query(sql, [email], (err, resultado) => {
-    if (err) {
-      console.error('Erro ao buscar e-mail:', err);
-      return res.status(500).json({ mensagem: 'Erro no servidor' });
-    }
+  try {
+    const [resultado] = await db.query(sql, [email]);
 
     if (resultado.length === 0) {
       return res.status(404).json({ mensagem: 'E-mail não encontrado' });
     }
 
     res.status(200).json({ mensagem: 'Usuário encontrado', dados: resultado[0] });
-  });
+  } catch (err) {
+    console.error('Erro ao buscar e-mail:', err);
+    res.status(500).json({ mensagem: 'Erro no servidor' });
+  }
 });
 
 router.post('/enviar-recuperacao', async (req, res) => {
@@ -91,6 +91,7 @@ router.post('/enviar-recuperacao', async (req, res) => {
 router.put('/atualizar-senha', async (req, res) => {
   const { email, tipo, novaSenha } = req.body;
   const chave = process.env.JWT_SECRET;
+
   if (!email || !tipo || !novaSenha) {
     return res.status(400).json({ mensagem: 'Email, tipo e nova senha são obrigatórios' });
   }
@@ -105,7 +106,7 @@ router.put('/atualizar-senha', async (req, res) => {
     tabela = 'doador';
     campoSenha = 'passworddonor';
     campoEmail = 'emaildonor';
-  }else if (tipo === 'pessoa') {
+  } else if (tipo === 'pessoa') {
     tabela = 'pessoa_beneficiaria';
     campoSenha = 'passwordPer';
     campoEmail = 'emailPer';
@@ -115,28 +116,29 @@ router.put('/atualizar-senha', async (req, res) => {
 
   const sql = `UPDATE ${tabela} SET ${campoSenha} = AES_ENCRYPT(?, ?) WHERE ${campoEmail} = ?`;
 
-  db.query(sql, [novaSenha, chave, email], (err, resultado) => {
-    if (err) {
-      console.error('Erro ao atualizar a senha:', err);
-      return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar a senha' });
-    }
+  try {
+    const [resultado] = await db.query(sql, [novaSenha, chave, email]);
 
     if (resultado.affectedRows === 0) {
       return res.status(404).json({ mensagem: 'Usuário não encontrado' });
     }
 
     res.status(200).json({ mensagem: 'Senha atualizada com sucesso' });
-  });
+  } catch (err) {
+    console.error('Erro ao atualizar a senha:', err);
+    res.status(500).json({ mensagem: 'Erro no servidor ao atualizar a senha' });
+  }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
+  const chave = process.env.JWT_SECRET;
 
-  const handleLogin = (emailCol, type, result, res) => {
+  const handleLogin = (emailCol, type, result) => {
     if (result.length > 0) {
       const user = result[0];
 
-      if ((type === "instituicao" && user.verificada === 0) || 
+      if ((type === "instituicao" && user.verificada === 0) ||
           (type === "pessoa" && user.verificado === 0)) {
         if (type === "instituicao") enviarEmailVerificacaoInstituicao(email);
         else if (type === "pessoa") enviarEmailVerificacaoPessoa(email);
@@ -157,24 +159,35 @@ router.post('/login', (req, res) => {
 
     return res.status(401).json({ error: `Usuário ou senha inválidos para ${type}` });
   };
-  const chave = process.env.JWT_SECRET;
-  if (userType === "instituicao") {
-    db.query('SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result1) => {
-      if (err) return res.status(500).json({ error: "Erro no servidor" });
-      handleLogin('emailInc', 'instituicao', result1, res);
-    });
-  } else if (userType === "pessoa") {
-    db.query('SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result2) => {
-      if (err) return res.status(500).json({ error: "Erro no servidor" });
-      handleLogin('emailPer', 'pessoa', result2, res);
-    });
-  } else if (userType === "doador") {
-    db.query('SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = AES_ENCRYPT(?, ?)', [email, password, chave], (err, result3) => {
-      if (err) return res.status(500).json({ error: "Erro no servidor" });
-      handleLogin('emaildonor', 'doador', result3, res);
-    });
-  } else {
+
+  try {
+    if (userType === "instituicao") {
+      const [result1] = await db.query(
+        'SELECT * FROM instituicao_beneficiaria WHERE emailInc = ? AND passwordInc = AES_ENCRYPT(?, ?)',
+        [email, password, chave]
+      );
+      return handleLogin('emailInc', 'instituicao', result1);
+    }
+
+    if (userType === "pessoa") {
+      const [result2] = await db.query(
+        'SELECT * FROM pessoa_beneficiaria WHERE emailPer = ? AND passwordPer = AES_ENCRYPT(?, ?)',
+        [email, password, chave]
+      );
+      return handleLogin('emailPer', 'pessoa', result2);
+    }
+
+    if (userType === "doador") {
+      const [result3] = await db.query(
+        'SELECT * FROM doador WHERE emaildonor = ? AND passworddonor = AES_ENCRYPT(?, ?)',
+        [email, password, chave]
+      );
+      return handleLogin('emaildonor', 'doador', result3);
+    }
+
     return res.status(400).json({ error: 'Tipo de usuário não reconhecido' });
+  } catch (err) {
+    return res.status(500).json({ error: "Erro no servidor" });
   }
 });
 

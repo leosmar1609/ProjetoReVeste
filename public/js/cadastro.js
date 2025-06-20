@@ -75,7 +75,7 @@ telInput.addEventListener('input', () => {
         }
 
         try {
-            const res = await fetch(`/instituicao?email=${emailInc}&cnpj=${cleanCnpj}`);
+            const res = await fetch(`/auth/instituicao?email=${emailInc}&cnpj=${cleanCnpj}`);
             if (res.ok) {
                 const data = await res.json();
                 if (data.exists) {

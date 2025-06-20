@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch('./auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     email,

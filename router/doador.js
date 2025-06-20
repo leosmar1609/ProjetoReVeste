@@ -7,104 +7,94 @@ dotenv.config();
 import db from '../db.js';
 const secretKey = process.env.JWT_SECRET; 
 
-router.post('/registerdonor', (req, res) => {
+router.post('/registerdonor', async (req, res) => {
     const { namedonor, emaildonor, passworddonor } = req.body;
 
     if (!namedonor || !emaildonor || !passworddonor) {
         return res.status(400).json({ error: 'Preencha todos os campos!' });
     }
 
-    const checkSql = `SELECT * FROM doador WHERE emaildonor = ?`;
-    db.query(checkSql, [emaildonor], (checkErr, checkResults) => {
-        if (checkErr) {
-            console.error('Erro ao verificar duplicidade:', checkErr);
-            return res.status(500).json({ error: 'Erro ao verificar duplicidade.' });
-        }
+    try {
+    const [checkResults] = await db.query(
+      'SELECT * FROM doador WHERE emaildonor = ?',
+      [emaildonor]
+    );
 
-        if (checkResults.length > 0) {
-            const jaExiste = checkResults[0];
-            if (jaExiste.emaildonor === emaildonor) {
-                return res.status(409).json({ error: '❌ E-mail já cadastrado.' });
-            }
-        }
-        const chave = process.env.JWT_SECRET;
-    const sql = `INSERT INTO doador (namedonor, emaildonor, passworddonor) 
-               VALUES (?, ?, AES_ENCRYPT(?, ?))`;
-    db.query(sql, [namedonor, emaildonor, passworddonor, chave], (err, results) => {
-        if (err) {
-            console.error('Erro ao criar a conta', err);
-        } else {
+    if (checkResults.length > 0) {
+      return res.status(409).json({ error: '❌ E-mail já cadastrado.' });
+    }
 
-            res.status(201).send('Cadastro realizado!');
-        }
-    });
-});
+    const chave = process.env.JWT_SECRET;
+    await db.query(
+      'INSERT INTO doador (namedonor, emaildonor, passworddonor) VALUES (?, ?, AES_ENCRYPT(?, ?))',
+      [namedonor, emaildonor, passworddonor, chave]
+    );
+
+    res.status(201).send('Cadastro realizado!');
+  } catch (err) {
+    console.error('Erro ao registrar doador:', err);
+    res.status(500).json({ error: 'Erro ao registrar doador.' });
+  }
 });
 
-router.get('/pedidos', (req, res) => {
-    const id = req.query.id;
+router.get('/pedidos', async (req, res) => {
+  const id = req.query.id;
+
+  try {
     const sql = 'SELECT * FROM Pedidos';
-    db.query(sql, [id], (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar pedido:', err);
-            res.status(500).send('Erro no servidor');
-        } else {
-            res.json(results);
-        }
-    });
+    const [results] = await db.query(sql, [id]);
+
+    res.json(results);
+  } catch (err) {
+    console.error('Erro ao buscar pedido:', err);
+    res.status(500).send('Erro no servidor');
+  }
 });
 
-router.get('/doador', (req, res) => {
+router.get('/doador', async (req, res) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) return res.sendStatus(401);
 
-  jwt.verify(token, secretKey, (err, user) => {
-    if (err) return res.sendStatus(403);
-
-    const id = req.query.id;
-    const sql = 'SELECT * FROM doador WHERE id = ?';
-
-    db.query(sql, [id], (err, results) => {
-      if (err) {
-        console.error('Erro ao buscar doador:', err);
-        return res.status(500).json({ erro: 'Erro no servidor' });
-      }
-
-      if (results.length === 0) {
-        return res.status(404).json({ erro: 'Doador não encontrado' });
-      }
-
-      res.json(results[0]); // OK: retornando doador encontrado
-    });
-  });
-});
-
-router.delete('/deletedoador', autenticarToken, (req, res) => {
+  try {
+    const user = jwt.verify(token, secretKey);
     const id = req.query.id;
 
-    if (!id) {
-        return res.status(400).json({ mensagem: 'ID do doador é obrigatório' });
+    const [results] = await db.query('SELECT * FROM doador WHERE id = ?', [id]);
+
+    if (results.length === 0) {
+      return res.status(404).json({ erro: 'Doador não encontrado' });
     }
 
-    const sql = 'DELETE FROM doador WHERE id = ?';
-
-    db.query(sql, [id], (err, resultado) => {
-        if (err) {
-            console.error('Erro ao deletar doador:', err);
-            return res.status(500).send('Erro no servidor');
-        }
-
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ mensagem: 'Doador não encontrado' });
-        }
-
-        res.status(200).json({ mensagem: 'Doador deletado com sucesso' });
-    });
+    res.json(results[0]);
+  } catch (err) {
+    return res.sendStatus(403);
+  }
 });
 
-router.put('/doadorup/:id', autenticarToken, (req, res) => {
+router.delete('/deletedoador', autenticarToken, async (req, res) => {
+  const id = req.query.id;
+
+  if (!id) {
+    return res.status(400).json({ mensagem: 'ID do doador é obrigatório' });
+  }
+
+  try {
+    const [resultado] = await db.query('DELETE FROM doador WHERE id = ?', [id]);
+
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ mensagem: 'Doador não encontrado' });
+    }
+
+    res.status(200).json({ mensagem: 'Doador deletado com sucesso' });
+  } catch (err) {
+    console.error('Erro ao deletar doador:', err);
+    res.status(500).send('Erro no servidor');
+  }
+});
+
+router.put('/doadorup/:id', autenticarToken, async (req, res) => {
   const id = req.params.id;
   const { nameDoador, emailDoador, passwordDoador } = req.body;
   const chave = process.env.JWT_SECRET;
@@ -113,17 +103,11 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
     return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
   }
 
-  const buscarSenhaSQL = `
-    SELECT CONVERT(AES_DECRYPT(passworddonor, ?) USING utf8mb4) AS senha
-    FROM doador
-    WHERE id = ?
-  `;
-
-  db.query(buscarSenhaSQL, [chave, id], (erroBusca, resultadosBusca) => {
-    if (erroBusca) {
-      console.error('Erro ao buscar senha do doador:', erroBusca);
-      return res.status(500).json({ mensagem: 'Erro no servidor ao verificar senha' });
-    }
+  try {
+    const [resultadosBusca] = await db.query(
+      `SELECT CONVERT(AES_DECRYPT(passworddonor, ?) USING utf8mb4) AS senha FROM doador WHERE id = ?`,
+      [chave, id]
+    );
 
     if (resultadosBusca.length === 0) {
       return res.status(404).json({ mensagem: 'Doador não encontrado' });
@@ -135,25 +119,20 @@ router.put('/doadorup/:id', autenticarToken, (req, res) => {
       return res.status(401).json({ mensagem: '❌ A senha atual está incorreta. Tente novamente.' });
     }
 
-    const atualizarSQL = `
-      UPDATE doador
-      SET namedonor = ?, emaildonor = ?
-      WHERE id = ?
-    `;
+    const [resultado] = await db.query(
+      `UPDATE doador SET namedonor = ?, emaildonor = ? WHERE id = ?`,
+      [nameDoador, emailDoador, id]
+    );
 
-    db.query(atualizarSQL, [nameDoador, emailDoador, id], (errAtualizar, resultado) => {
-      if (errAtualizar) {
-        console.error('Erro ao atualizar doador:', errAtualizar);
-        return res.status(500).json({ mensagem: 'Erro no servidor ao atualizar dados' });
-      }
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ mensagem: 'Doador não encontrado' });
+    }
 
-      if (resultado.affectedRows === 0) {
-        return res.status(404).json({ mensagem: 'Doador não encontrado' });
-      }
-
-      res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
-    });
-  });
+    res.status(200).json({ mensagem: 'Doador atualizado com sucesso' });
+  } catch (err) {
+    console.error('Erro ao atualizar doador:', err);
+    res.status(500).json({ mensagem: 'Erro no servidor ao atualizar dados' });
+  }
 });
 
 export default router;

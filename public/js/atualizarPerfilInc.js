@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const msgModal = document.getElementById("msgModal");
   const cnpjInput = document.getElementById('inputCNPJ');
    const telInput = document.getElementById('inputTel');
+  const token = localStorage.getItem("token");
 
   cnpjInput.addEventListener('input', () => {
         let value = cnpjInput.value.replace(/\D/g, '');
@@ -20,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
         telInput.addEventListener('input', () => {
-  let value = telInput.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+  let value = telInput.value.replace(/\D/g, '');
 
-  if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+  if (value.length > 11) value = value.slice(0, 11);
 
   if (value.length > 6) {
     telInput.value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
@@ -65,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
         },
         body: JSON.stringify({ id, nameInc, emailInc, passwordInc, cnpjInc, locationInc, telInc }),
       });

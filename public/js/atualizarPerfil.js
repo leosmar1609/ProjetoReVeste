@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const msgModal = document.getElementById("msgModal");
   const cpfInput = document.getElementById('inputCpf');
   const telInput = document.getElementById('inputTel');
+  const token = localStorage.getItem("token");
 
   if (!idPerfil || !formAlterar) return;
 
@@ -62,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
         },
         body: JSON.stringify({ id, namePer, emailPer, passwordPer, telPer }),
       });
