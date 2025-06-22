@@ -1,5 +1,4 @@
 import express from 'express';
-
 import pessoasFisicasRoutes from './pessoasFisicas.js';
 import instituicoesRoutes from './instituicoes.js';
 import doadorRoutes from './doador.js';
