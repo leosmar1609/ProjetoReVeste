@@ -8,7 +8,7 @@ Rotas separadas e modularizadas;
 
 Documentação com Swagger;
 
-Arquivo ds.js;
+Arquivo db.js;
 
 type module adicionado;
 
