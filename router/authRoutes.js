@@ -6,6 +6,7 @@ import pedidosRoutes from './pedidos.js';
 import rotasGerais from './rotasGerais.js';
 import { enviarEmailVerificacaoPessoa } from './emailService.js';
 import { enviarEmailVerificacaoInstituicao } from './emailService.js';
+import paymentRoutes from './paymentRoutes.js';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use(pedidosRoutes);
 router.use(rotasGerais);
 router.use(enviarEmailVerificacaoPessoa);
 router.use(enviarEmailVerificacaoInstituicao);
+router.use(paymentRoutes);
 
 export default router;

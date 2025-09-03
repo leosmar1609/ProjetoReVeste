@@ -95,7 +95,7 @@ router.get('/verificar-email', async (req, res) => {
 });
 
 router.post('/cadastrar-itemP', async (req, res) => {
-  const { id, name_item, description, quantity_item, category, urgencia_enum, locate } = req.body;
+  const { id, name_item, description, quantity_item, category, urgencia_enum, locate, chave_pix, pixType } = req.body;
 
   if (!id || !name_item || !description || !quantity_item || !category || !urgencia_enum || !locate) {
     return res.status(400).json({ error: 'Preencha todos os campos!' });
@@ -108,11 +108,11 @@ router.post('/cadastrar-itemP', async (req, res) => {
 
   try {
     const sql = `
-      INSERT INTO Pedidos (name_item, description, quantity_item, category, status, urgencia_enum, locate, pessoa_beneficiaria_id)
-      VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?)
+      INSERT INTO Pedidos (name_item, description, quantity_item, category, status, chave_pix, pixType, urgencia_enum, locate, pessoa_beneficiaria_id)
+      VALUES (?, ?, ?, ?, 'Aberto', ?, ?, ?, ?, ?)
     `;
 
-    await db.query(sql, [name_item, description, quantity_item, category, urgencia_enum, locate, idInt]);
+    await db.query(sql, [name_item, description, quantity_item, category, chave_pix, pixType, urgencia_enum, locate, idInt]);
     res.status(201).json({ message: 'Pedido realizado com sucesso.' });
   } catch (err) {
     console.error('Erro ao criar pedido:', err);

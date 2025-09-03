@@ -8,46 +8,47 @@ window.addEventListener('DOMContentLoaded', async() => {
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const idDoador = urlParams.get('id');
 
-    if (!id || id === "") {
+    if (!idDoador || idDoador === "") {
         console.warn('ID do usuário não fornecido ou inválido na URL. Redirecionando para login.');
         window.location.href = 'login.html';
         return; 
     }
 
     try {
-        const res = await fetch(`./auth/doador?id=${id}`, {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${token}` 
-            }
-        });
-
-        if (!res.ok) {
-            
-            const errorData = await res.json().catch(() => ({ message: res.statusText })); 
-            console.error(`Erro ao buscar usuário: Status ${res.status} - ${errorData.message}`);
-
-            if (res.status === 401 || res.status === 403) {
-                console.warn('Erro de autenticação/autorização. Redirecionando para login.');
-                window.location.href = 'login.html';
-                return;
-            } else {
-                window.location.href = 'login.html';
-                return; 
-            }
+    const res = await fetch(`./auth/doador?id=${idDoador}`, {
+        method: 'GET', 
+        headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}` 
         }
-        const data = await res.json();
-       
-    } catch (error) {
-        console.error("Erro na requisição ou processamento:", error);
+    });
+
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: res.statusText })); 
+        console.error(`Erro ao buscar usuário: Status ${res.status} - ${errorData.message}`);
+
+        if (res.status === 401 || res.status === 403) {
+            console.warn('Erro de autenticação/autorização. Redirecionando para login.');
+        }
         window.location.href = 'login.html';
+        return;
     }
 
+    const data = await res.json();
+
+    const pix = data.chave_pix;
+    const emailDoador = data.emaildonor;
+
+} catch (error) {
+    console.error("Erro na requisição ou processamento:", error);
+    window.location.href = 'login.html';
+}
+
+
     try {
-    const response = await fetch(`./auth/pedidos?id=${id}`, {
+    const response = await fetch(`./auth/pedidos?id=${idDoador}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -140,6 +141,8 @@ window.addEventListener('DOMContentLoaded', async() => {
         <p><strong>Descrição:</strong> ${pedido.description}</p>
         <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
         <p><strong>Categoria:</strong> ${pedido.category}</p>
+        <p><strong>Tipo de chave:</strong> ${pedido.pixType || 'N/A'}</p>
+        <p><strong>Chave Pix:</strong> ${pedido.chave_pix || 'N/A'}</p>
         <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
         <p><strong>Localização:</strong> ${pedido.locate}</p>
         <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
@@ -154,7 +157,9 @@ window.addEventListener('DOMContentLoaded', async() => {
                     data-telefone="${telefoneDoador}"
                     data-email="${emailDoador}"
                     data-quant="${pedido.quantity_item}"
-                    data-cat="${pedido.category}"
+                    data-cat="${pedido.category.toLowerCase().replace(/\s+/g, '')}"
+                    data-pix="${pedido.chave_pix || ''}"
+                    data-pixType="${pedido.pixType || ''}"
                     data-urg="${pedido.urgencia_enum}"
                     data-loc="${pedido.locate}"
                     data-data="${pedido.opened_at}"
@@ -188,6 +193,8 @@ window.addEventListener('DOMContentLoaded', async() => {
                         <p><strong>E-mail:</strong> ${button.dataset.email || ""}</p>
                         <p><strong>Quantidade:</strong> ${button.dataset.quant}</p>
                         <p><strong>Categoria:</strong> ${button.dataset.cat}</p>
+                        <p><strong>Chave Pix:</strong> ${button.dataset.pix || 'N/A'}</p>
+                        <p><strong>Tipo de chave:</strong> ${button.dataset.pixType || 'N/A'}</p>
                         <p><strong>Urgência:</strong> ${button.dataset.urg}</p>
                         <p><strong>Localização:</strong> ${button.dataset.loc}</p>
                         <p><strong>Data:</strong> ${formatarData(button.dataset.data)}</p>
@@ -195,6 +202,13 @@ window.addEventListener('DOMContentLoaded', async() => {
                     `;
 
                     modal.dataset.idPedido = button.dataset.id;
+                    modal.dataset.cat = button.dataset.cat;      // <--- Adicionado
+                    modal.dataset.nome = button.dataset.nome;   // <--- Adicionado
+                    modal.dataset.quant = button.dataset.quant; // <--- Adicionado
+                    modal.dataset.doador = button.dataset.doador;
+                    modal.dataset.email = button.dataset.email;
+                    modal.dataset.pix = button.dataset.pix; // <--- Adicionado
+                    modal.dataset.pixType = button.dataset.pixType; // <--- Adicionado
                     modal.classList.remove("hidden");
                 });
             });
@@ -236,17 +250,47 @@ document.getElementById("fecharModal").addEventListener("click", () => {
 
 
 document.getElementById("confirmarDoacao").addEventListener("click", async () => {
-    const idPedido = document.getElementById("modalDoacao").dataset.idPedido;
+    const modal = document.getElementById("modalDoacao");
 
+    // Pega todos os dados do modal
+    const idPedido = modal.dataset.idPedido;
+    const cat = modal.dataset.cat?.toLowerCase().replace(/\s+/g, ''); // normalize
+    const nome = modal.dataset.nome;
+    const quant = modal.dataset.quant;
+    const doador = modal.dataset.doador;
+    const email = modal.dataset.email;
+    const chavePix = modal.dataset.pix;
+    const emailDoador = modal.dataset.email;
+    const pix = modal.dataset.pixType;
+    if (!idPedido || !cat) {
+        alert("Dados do pedido incompletos. Tente novamente.");
+        return;
+    }
+
+    // Se a categoria for dinheiro, redireciona para pagamento
+    if (cat === "pix") {
+        const idEnc = encodeURIComponent(idPedido);
+        const itemEnc = encodeURIComponent(nome);
+        const quantEnc = encodeURIComponent(quant);
+        const doadorEnc = encodeURIComponent(doador);
+        const emailEnc = encodeURIComponent(email);
+        const emailDoadorEnc = encodeURIComponent(emailDoador);
+        const pixEnc = encodeURIComponent(chavePix); // <--- Adicionado
+        const chaveEnc = encodeURIComponent(pix); // <--- Adicionado
+        const idDoador = new URLSearchParams(window.location.search).get('id') || null; // <-- aqui
+
+        window.location.href = `pagamento.html?id=${idEnc}&item=${itemEnc}&quant=${quantEnc}&doador=${doadorEnc}&email=${emailEnc}&emailDoador=${emailDoadorEnc}&pix=${pixEnc}&chave=${chaveEnc}&idDoador=${idDoador}`; // <--- Adicionado
+        return; // interrompe o restante
+    }
+
+    // Para outras categorias, confirma a doação via API
     const confirmar = confirm("Você realmente deseja confirmar a doação?");
-        if (!confirmar) return;
+    if (!confirmar) return;
 
     try {
         const response = await fetch('./auth/pedidosup', {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: idPedido, status: 'Pendente' })
         });
 
@@ -262,7 +306,7 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
         alert('Erro ao confirmar a doação. Tente novamente mais tarde.');
     }
 
-    document.getElementById("modalDoacao").classList.add("hidden");
+    modal.classList.add("hidden");
 });
 
 const userIcon = document.getElementById("userIcon");

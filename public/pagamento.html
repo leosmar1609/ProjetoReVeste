@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento via PIX</title>
+  <link rel="stylesheet" href="./css/stylePix.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Biblioteca pix-qrcode-generator local -->
+  <script src="./js/pix-qrcode.min.js"></script>
+  <!-- Script externo -->
+  <script src="./js/pagamentoPix.js" defer></script>
+  <script src="./js/confirmacao.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Pagamento via PIX</h1>
+    <div id="detalhes"></div>
+    <div id="qrcode"></div>
+    <div id="codigoPixWrapper">
+      <label for="codigoPix"><strong>Código Copia e Cola:</strong></label>
+      <textarea id="codigoPix" rows="5" readonly></textarea>
+      <button id="copiarCodigo">Copiar código</button>
+    </div>
+
+    <!-- Novo botão -->
+    <div class="payment-confirm">
+      <button id="btnConfirmarPagamento">✅ Já realizei o pagamento</button>
+    </div>
+  </div>
+</body>
+</html>
