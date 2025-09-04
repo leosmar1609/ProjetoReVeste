@@ -1,11 +1,9 @@
-// pagamento.js
 document.addEventListener("DOMContentLoaded", () => {
   const btnConfirmar = document.getElementById("btnConfirmarPagamento");
 
-  // Recupera o idPedido da URL
   const urlParams = new URLSearchParams(window.location.search);
   const idPedido = urlParams.get("id");
-   const idDoador = urlParams.get("idDoador") || null; // <-- aqui
+   const idDoador = urlParams.get("idDoador") || null;
 
 
   if (!btnConfirmar) return;
@@ -23,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         alert("Doação confirmada! O recebimento será confirmado em breve.");
-        // Redireciona para a página anterior com o id
         window.location.href = `dd8372783hasd738WA.html?id=${idDoador}`;
       } else {
         const resData = await response.json();

@@ -115,7 +115,6 @@
       }
     });
 
-    // Exibe/esconde campo PIX
     category.addEventListener("change", () => {
       if (category.value === "pix") {
         pixFields.style.display = "block";
@@ -123,7 +122,7 @@
       } else {
         pixFields.style.display = "none";
         pixInput.required = false;
-        pixInput.value = ""; // limpa campo se trocar categoria
+        pixInput.value = "";
       }
     });
   </script>

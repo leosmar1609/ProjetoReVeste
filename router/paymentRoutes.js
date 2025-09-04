@@ -3,12 +3,10 @@ import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 const router = express.Router();
 
-// Config do Mercado Pago (token no .env)
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN
 });
 
-// Criar pagamento Pix
 router.post('/pix', async (req, res) => {
   try {
     const { amount, email } = req.body;

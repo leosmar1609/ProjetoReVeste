@@ -1,16 +1,13 @@
-// pagamentoPix.js
 document.addEventListener("DOMContentLoaded", () => {
-  // ---- Parâmetros da URL ----
   const url = new URLSearchParams(window.location.search);
   const idPedido = url.get("id") || "***";
-  const idDoador = url.get("doadorId") || null; // <-- aqui
+  const idDoador = url.get("doadorId") || null; 
   const item = url.get("item") || "";
-  const valor = Number(url.get("quant")) || 1; // quantidade = valor em reais
+  const valor = Number(url.get("quant")) || 1;
   const doador = url.get("doador") || "";
   const chavePix = url.get("pix") || "";
   const cidadeParam = url.get("cidade") || "BRASIL";
 
-  // ---- Elementos da página (use qualquer um dos dois ids de container) ----
   const detalhesDiv = document.getElementById("detalhes");
   const qrcodeContainer =
     document.getElementById("qrcode-container") ||
@@ -20,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusQrcode = document.getElementById("status-qrcode");
   const codigoPixTextarea = document.getElementById("codigoPix");
 
-  // ---- Utilidades ----
   const asciiUpper = (s, max) =>
     (s || "")
       .toString()
@@ -29,12 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .toUpperCase()
       .slice(0, max);
 
-  // Nome (59) até 25 chars; Cidade (60) até ~15 chars
   const recebedorNome = asciiUpper(doador, 25);
   const cidade = asciiUpper(cidadeParam, 15);
   const txid = (idPedido || "***").toString().slice(0, 25);
 
-  // ---- Classe para gerar o payload PIX BR Code ----
   class PixBRCode {
     constructor({ key, name, city, txid, amount }) {
       if (!key) throw new Error("Chave PIX obrigatória!");
@@ -48,14 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
           : (Number(amount) || 0).toFixed(2);
     }
 
-    // TLV: id + len(2) + value
     _f(id, value) {
       const v = String(value ?? "");
       const len = v.length.toString().padStart(2, "0");
       return `${id}${len}${v}`;
     }
 
-    // CRC16-CCITT (0x1021) inicial 0xFFFF
     _crc16(str) {
       let crc = 0xffff;
       for (let i = 0; i < str.length; i++) {
@@ -70,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     getPayload() {
       const payloadFormatIndicator = "000201";
-      const poiMethod = "010211"; // 11 = estático (12 = dinâmico)
+      const poiMethod = "010211";
 
-      // Merchant Account Info (ID "26"): GUI + Chave (e opcionalmente descrição "02")
       const gui = this._f("00", "br.gov.bcb.pix");
       const key = this._f("01", this.key);
       const mai = this._f("26", gui + key);
@@ -84,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = this._f("59", this.name || "RECEBEDOR");
       const city = this._f("60", this.city || "BRASIL");
 
-      // Dados adicionais (62): TXID (05)
       const addData = this._f("62", this._f("05", this.txid));
 
       const partial =
@@ -98,14 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
         name +
         city +
         addData +
-        "6304"; // reserva do CRC
+        "6304";
 
       const crc = this._crc16(partial);
       return partial + crc;
     }
   }
 
-  // ---- Mostrar detalhes do pedido ----
   if (detalhesDiv) {
     detalhesDiv.innerHTML = `
       <p><strong>Pedido ID:</strong> ${idPedido}</p>
@@ -117,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // ---- Geração do QR Code ----
   function gerarQRCode() {
     if (!chavePix) {
       if (statusText) {
@@ -151,9 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const payload = pix.getPayload();
 
-      // Exibe/copia o payload
       if (codigoPixTextarea) codigoPixTextarea.value = payload;
-      // Botão copiar código
 const copiarBtn = document.getElementById("copiarCodigo");
 if (copiarBtn && codigoPixTextarea) {
   copiarBtn.onclick = () => {
@@ -163,14 +149,12 @@ if (copiarBtn && codigoPixTextarea) {
   };
 }
 
-
-      // Renderiza o QR
       if (!qrcodeContainer) {
         throw new Error(
           'Contêiner do QR Code não encontrado (#qrcode-container ou #qrcode).'
         );
       }
-      qrcodeContainer.innerHTML = ""; // limpa antes de redesenhar
+      qrcodeContainer.innerHTML = "";
       new QRCode(qrcodeContainer, {
         text: payload,
         width: 200,
@@ -191,9 +175,7 @@ if (copiarBtn && codigoPixTextarea) {
     }
   }
 
-  // Botão
   if (btnPagar) btnPagar.addEventListener("click", gerarQRCode);
 
-  // Opcional: já gerar na abertura se tiver chave
   if (chavePix) gerarQRCode();
 });

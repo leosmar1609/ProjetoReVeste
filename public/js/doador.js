@@ -202,13 +202,13 @@ window.addEventListener('DOMContentLoaded', async() => {
                     `;
 
                     modal.dataset.idPedido = button.dataset.id;
-                    modal.dataset.cat = button.dataset.cat;      // <--- Adicionado
-                    modal.dataset.nome = button.dataset.nome;   // <--- Adicionado
-                    modal.dataset.quant = button.dataset.quant; // <--- Adicionado
+                    modal.dataset.cat = button.dataset.cat;      
+                    modal.dataset.nome = button.dataset.nome;  
+                    modal.dataset.quant = button.dataset.quant;
                     modal.dataset.doador = button.dataset.doador;
                     modal.dataset.email = button.dataset.email;
-                    modal.dataset.pix = button.dataset.pix; // <--- Adicionado
-                    modal.dataset.pixType = button.dataset.pixType; // <--- Adicionado
+                    modal.dataset.pix = button.dataset.pix;
+                    modal.dataset.pixType = button.dataset.pixType; 
                     modal.classList.remove("hidden");
                 });
             });
@@ -252,9 +252,8 @@ document.getElementById("fecharModal").addEventListener("click", () => {
 document.getElementById("confirmarDoacao").addEventListener("click", async () => {
     const modal = document.getElementById("modalDoacao");
 
-    // Pega todos os dados do modal
     const idPedido = modal.dataset.idPedido;
-    const cat = modal.dataset.cat?.toLowerCase().replace(/\s+/g, ''); // normalize
+    const cat = modal.dataset.cat?.toLowerCase().replace(/\s+/g, ''); 
     const nome = modal.dataset.nome;
     const quant = modal.dataset.quant;
     const doador = modal.dataset.doador;
@@ -267,7 +266,6 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
         return;
     }
 
-    // Se a categoria for dinheiro, redireciona para pagamento
     if (cat === "pix") {
         const idEnc = encodeURIComponent(idPedido);
         const itemEnc = encodeURIComponent(nome);
@@ -275,15 +273,14 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
         const doadorEnc = encodeURIComponent(doador);
         const emailEnc = encodeURIComponent(email);
         const emailDoadorEnc = encodeURIComponent(emailDoador);
-        const pixEnc = encodeURIComponent(chavePix); // <--- Adicionado
-        const chaveEnc = encodeURIComponent(pix); // <--- Adicionado
-        const idDoador = new URLSearchParams(window.location.search).get('id') || null; // <-- aqui
+        const pixEnc = encodeURIComponent(chavePix);
+        const chaveEnc = encodeURIComponent(pix);
+        const idDoador = new URLSearchParams(window.location.search).get('id') || null;
 
-        window.location.href = `pagamento.html?id=${idEnc}&item=${itemEnc}&quant=${quantEnc}&doador=${doadorEnc}&email=${emailEnc}&emailDoador=${emailDoadorEnc}&pix=${pixEnc}&chave=${chaveEnc}&idDoador=${idDoador}`; // <--- Adicionado
-        return; // interrompe o restante
+        window.location.href = `pagamento.html?id=${idEnc}&item=${itemEnc}&quant=${quantEnc}&doador=${doadorEnc}&email=${emailEnc}&emailDoador=${emailDoadorEnc}&pix=${pixEnc}&chave=${chaveEnc}&idDoador=${idDoador}`;
+        return;
     }
 
-    // Para outras categorias, confirma a doação via API
     const confirmar = confirm("Você realmente deseja confirmar a doação?");
     if (!confirmar) return;
 
