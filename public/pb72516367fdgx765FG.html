@@ -39,8 +39,8 @@
       <label for="description">Descrição:</label>
       <textarea id="description" name="description" required></textarea>
 
-      <label for="quantity_item">Quantidade ou valor:</label>
-      <input type="number" id="quantity_item" name="quantity_item" min="1" required placeholder="Ex: 3 (quantidade) ou 150 (valor em R$)">
+      <label for="quantity_item">Quantidade:</label>
+      <input type="number" id="quantity_item" name="quantity_item" min="1" required >
 
       <label for="category">Categoria:</label>
       <select id="category" name="category" required>
@@ -49,23 +49,7 @@
         <option value="móveis">Móveis</option>
         <option value="eletrônicos">Eletrônicos</option>
         <option value="brinquedos">Brinquedos</option>
-        <option value="pix">Pix</option>
       </select>
-
-      <!-- Campo PIX (escondido até selecionar "Pix") -->
-      <div id="pixFields" style="display: none; margin-top: 10px;">
-        <label for="pixType">Tipo de Chave PIX:</label>
-        <select id="pixType">
-          <option value="cpf">CPF</option>
-          <option value="cnpj">CNPJ</option>
-          <option value="email">E-mail</option>
-          <option value="telefone">Telefone</option>
-          <option value="aleatoria">Chave Aleatória</option>
-        </select>
-
-        <label for="pix">Chave PIX:</label>
-        <input type="text" id="pix" name="pix" placeholder="Insira sua chave PIX">
-      </div>
 
       <label for="urgencia_enum">Urgência:</label>
       <select id="urgencia_enum" name="urgencia_enum" required>
@@ -95,8 +79,6 @@
     const formContainer = document.getElementById('formContainer');
     const header = document.getElementById('mainHeader');
     const category = document.getElementById('category');
-    const pixFields = document.getElementById('pixFields');
-    const pixInput = document.getElementById('pix');
 
     openFormBtn.addEventListener('click', () => {
       formContainer.style.display = 'flex';
@@ -115,16 +97,6 @@
       }
     });
 
-    category.addEventListener("change", () => {
-      if (category.value === "pix") {
-        pixFields.style.display = "block";
-        pixInput.required = true;
-      } else {
-        pixFields.style.display = "none";
-        pixInput.required = false;
-        pixInput.value = "";
-      }
-    });
   </script>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM5bwJi3EdeZu89zaF6iIJWj21BAgiI-8&libraries=places&language=pt-BR&region=BR&callback=initAutocomplete" async defer></script>

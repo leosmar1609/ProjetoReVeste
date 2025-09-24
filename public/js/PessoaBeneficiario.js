@@ -63,8 +63,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                     <p><strong>Descrição:</strong> ${pedido.description}</p>
                     <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
                     <p><strong>Categoria:</strong> ${pedido.category}</p>
-                    <p><strong>Chave PIX:</strong> ${pedido.chave_pix || "N/A"}</p>
-                    <p><strong>Tipo de chave:</strong> ${pedido.pixType || "N/A"}</p>
                     <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
                     <p><strong>Localização:</strong> ${pedido.locate}</p>
                     <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
@@ -161,8 +159,6 @@ document.getElementById('form').addEventListener('submit', async(e) => {
     const category = document.getElementById("category").value;
     const urgencia_enum = document.getElementById("urgencia_enum").value;
     const locate = document.getElementById("locate").value;
-    const chave_pix = document.getElementById("pix").value;
-    const pixType = document.getElementById("pixType").value;
 
     const response = await fetch('./auth/cadastrar-itemP', {
         method: 'POST',
@@ -176,9 +172,7 @@ document.getElementById('form').addEventListener('submit', async(e) => {
             quantity_item,
             category,
             urgencia_enum,
-            locate,
-            chave_pix,
-            pixType
+            locate
         })
     });
 

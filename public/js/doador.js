@@ -38,7 +38,6 @@ window.addEventListener('DOMContentLoaded', async() => {
 
     const data = await res.json();
 
-    const pix = data.chave_pix;
     const emailDoador = data.emaildonor;
 
 } catch (error) {
@@ -141,8 +140,6 @@ window.addEventListener('DOMContentLoaded', async() => {
         <p><strong>Descrição:</strong> ${pedido.description}</p>
         <p><strong>Quantidade:</strong> ${pedido.quantity_item}</p>
         <p><strong>Categoria:</strong> ${pedido.category}</p>
-        <p><strong>Tipo de chave:</strong> ${pedido.pixType || 'N/A'}</p>
-        <p><strong>Chave Pix:</strong> ${pedido.chave_pix || 'N/A'}</p>
         <p><strong>Urgência:</strong> ${pedido.urgencia_enum}</p>
         <p><strong>Localização:</strong> ${pedido.locate}</p>
         <p><strong>Data do pedido:</strong> ${formatarData(pedido.opened_at)}</p>
@@ -158,8 +155,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                     data-email="${emailDoador}"
                     data-quant="${pedido.quantity_item}"
                     data-cat="${pedido.category.toLowerCase().replace(/\s+/g, '')}"
-                    data-pix="${pedido.chave_pix || ''}"
-                    data-pixType="${pedido.pixType || ''}"
                     data-urg="${pedido.urgencia_enum}"
                     data-loc="${pedido.locate}"
                     data-data="${pedido.opened_at}"
@@ -193,8 +188,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                         <p><strong>E-mail:</strong> ${button.dataset.email || ""}</p>
                         <p><strong>Quantidade:</strong> ${button.dataset.quant}</p>
                         <p><strong>Categoria:</strong> ${button.dataset.cat}</p>
-                        <p><strong>Chave Pix:</strong> ${button.dataset.pix || 'N/A'}</p>
-                        <p><strong>Tipo de chave:</strong> ${button.dataset.pixType || 'N/A'}</p>
                         <p><strong>Urgência:</strong> ${button.dataset.urg}</p>
                         <p><strong>Localização:</strong> ${button.dataset.loc}</p>
                         <p><strong>Data:</strong> ${formatarData(button.dataset.data)}</p>
@@ -207,8 +200,6 @@ window.addEventListener('DOMContentLoaded', async() => {
                     modal.dataset.quant = button.dataset.quant;
                     modal.dataset.doador = button.dataset.doador;
                     modal.dataset.email = button.dataset.email;
-                    modal.dataset.pix = button.dataset.pix;
-                    modal.dataset.pixType = button.dataset.pixType; 
                     modal.classList.remove("hidden");
                 });
             });
@@ -254,30 +245,8 @@ document.getElementById("confirmarDoacao").addEventListener("click", async () =>
 
     const idPedido = modal.dataset.idPedido;
     const cat = modal.dataset.cat?.toLowerCase().replace(/\s+/g, ''); 
-    const nome = modal.dataset.nome;
-    const quant = modal.dataset.quant;
-    const doador = modal.dataset.doador;
-    const email = modal.dataset.email;
-    const chavePix = modal.dataset.pix;
-    const emailDoador = modal.dataset.email;
-    const pix = modal.dataset.pixType;
     if (!idPedido || !cat) {
         alert("Dados do pedido incompletos. Tente novamente.");
-        return;
-    }
-
-    if (cat === "pix") {
-        const idEnc = encodeURIComponent(idPedido);
-        const itemEnc = encodeURIComponent(nome);
-        const quantEnc = encodeURIComponent(quant);
-        const doadorEnc = encodeURIComponent(doador);
-        const emailEnc = encodeURIComponent(email);
-        const emailDoadorEnc = encodeURIComponent(emailDoador);
-        const pixEnc = encodeURIComponent(chavePix);
-        const chaveEnc = encodeURIComponent(pix);
-        const idDoador = new URLSearchParams(window.location.search).get('id') || null;
-
-        window.location.href = `pagamento.html?id=${idEnc}&item=${itemEnc}&quant=${quantEnc}&doador=${doadorEnc}&email=${emailEnc}&emailDoador=${emailDoadorEnc}&pix=${pixEnc}&chave=${chaveEnc}&idDoador=${idDoador}`;
         return;
     }
 

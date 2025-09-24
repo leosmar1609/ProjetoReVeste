@@ -10,7 +10,6 @@ const swaggerDocument = require('./api-docs.json');
 
 import authRoutes from './router/authRoutes.js';
 import emailRoutes from './router/emailRoutes.js';
-import paymentRoutes from './router/paymentRoutes.js';
 
 dotenv.config();
 
@@ -28,7 +27,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/auth', authRoutes);
 app.use('/api', emailRoutes);
-app.use('/payments', paymentRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
